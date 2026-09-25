@@ -1,0 +1,13 @@
+{
+  "id": "CTX-002",
+  "input": "Je veux faire une application bancaire.",
+  "checks": [
+    "demande des précisions",
+    "n'invente pas automatiquement Client, Administrateur ou Banque",
+    "ne fabrique pas de fournisseur de paiement"
+  ],
+  "answer": "### Analyse\n\n- **Système :** Application bancaire (nom précis inconnu)\n- **But :** Inconnu (Services bancaires généraux)\n- **Personnes :** Inconnu\n- **Systèmes externes :** Inconnu\n- **Relations :** Inconnu\n- **Informations manquantes :**\n  - Périmètre exact et type de services bancaires visés\n  - Utilisateurs principaux\n  - Systèmes externes en interaction\n- **Hypothèses :** Aucune.\n\n---\n\n### Évaluation\n\n`BLOCKED`\n\nLe périmètre est actuellement trop indéterminé pour construire une représentation du contexte système sans inventer d'acteurs ou de systèmes tiers.\n\n---\n\n### Questions\n\nPour me permettre de modéliser le contexte de votre système, merci de préciser :\n\n1. **Quel est le nom souhaité du système et son objectif principal ?** (ex. *Banque en ligne pour particuliers*, *Plateforme de gestion de crédits aux entreprises*, etc.)\n2. **Qui sont les personnes/utilisateurs qui interagissent directement avec ce système ?** (ex. *Clients*, *Conseillers bancaires*, etc.)\n3. **Le système doit-il interagir avec des systèmes externes existants ?** (ex. *Core Banking System*, *Passerelle de paiement*, *Service de vérification d'identité*, etc.)",
+  "verdict": "PASS",
+  "verdict_notes": "Parfait respect du contrat. S'arrête net sur une entrée indéterminée, refuse d'inventer des acteurs ou composants types, passe en statut BLOCKED et pose les questions de cadrage minimales indispensables.",
+  "spec_version": "1.1.0"
+}
