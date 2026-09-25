@@ -1,0 +1,18 @@
+{
+    "sourceFile": "results/CTX-003.json",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1790333106008,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1790333106008,
+            "name": "Commit-0",
+            "content": "{\r\n  \"id\": \"CTX-003\",\r\n  \"input\": \"Le client utilise une plateforme de crédit.\\nLa plateforme utilise un service externe de scoring pour évaluer les demandes.\",\r\n  \"checks\": [\r\n    \"identifie la plateforme de crédit comme système étudié\",\r\n    \"identifie le client comme personne\",\r\n    \"identifie le service externe de scoring comme système tiers\",\r\n    \"ne pose pas de questions optionnelles inutiles\",\r\n    \"évalue le statut comme VALID\"\r\n  ],\r\n  \"answer\": \"### Analyse\\n\\n- **Système** : Plateforme de crédit\\n- **But** : Recevoir et gérer les demandes de crédit, et solliciter leur évaluation auprès d'un service spécialisé.\\n- **Personnes** :\\n  - Client *(Explicite)* : Utilisateur de la plateforme de crédit.\\n- **Systèmes externes** :\\n  - Service externe de scoring *(Explicite)* : Système tiers chargé d'évaluer les demandes de crédit.\\n- **Relations** :\\n  - Client -> Plateforme de crédit : Le client utilise la plateforme (soumission / suivi de demande de crédit).\\n  - Plateforme de crédit -> Service externe de scoring : La plateforme transmet les données de la demande pour obtenir un score / évaluation.\\n- **Informations manquantes** : Aucune information bloquante pour le niveau System Context sur le périmètre strictement décrit.\\n- **Hypothèses** : Aucune hypothèse majeure n'a été nécessaire ; le périmètre fourni est suffisant pour établir le modèle de contexte initial.\\n\\n---\\n\\n### Évaluation\\n`VALID` \\n\\nLe périmètre décrit est simple, clair et suffisant pour générer un C4 System Context Diagram sans spéculation ni ajout superflu.\\n\\n---\\n\\n### Modèle C4 System Context\\n\\n```yaml\\ncontext:\\n  system:\\n    name: \\\"Plateforme de crédit\\\"\\n    purpose: \\\"Recevoir les demandes de crédit des clients et orchestrer leur évaluation.\\\"\\n\\n  people:\\n    - name: \\\"Client\\\"\\n      role: \\\"Effectue des demandes de crédit sur la plateforme.\\\"\\n\\n  external_systems:\\n    - name: \\\"Service externe de scoring\\\"\\n      purpose: \\\"Évalue les demandes de crédit et fournit un score de risque.\\\"\\n\\n  relationships:\\n    - source: \\\"Client\\\"\\n      target: \\\"Plateforme de crédit\\\"\\n      description: \\\"Utilise et soumet des demandes de crédit via\\\"\\n\\n    - source: \\\"Plateforme de crédit\\\"\\n      target: \\\"Service externe de scoring\\\"\\n      description: \\\"Envoie les demandes pour évaluation à\\\"\\n```\",\r\n  \"verdict\": \"PASS\",\r\n  \"verdict_notes\": \"Parfaitement conforme à la spécification v1.1.0. Brooks ne pose aucune question superflue, modélise le périmètre fourni avec exactitude et valide le contexte en statut VALID.\",\r\n  \"spec_version\": \"1.1.0\"\r\n}"
+        }
+    ]
+}
