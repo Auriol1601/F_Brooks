@@ -1,0 +1,18 @@
+{
+    "sourceFile": "results/CTX-009.json",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1790335346545,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1790335346545,
+            "name": "Commit-0",
+            "content": "{\r\n  \"id\": \"CTX-009\",\r\n  \"input\": \"Les utilisateurs reçoivent des notifications lorsque leur demande est traitée.\",\r\n  \"checks\": [\r\n    \"identifie le besoin de notification sans inventer un système externe précis (ex. SendGrid, Twilio)\",\r\n    \"ne suppose pas le type de notification (email, SMS, push)\",\r\n    \"rend l'incertitude et l'indétermination visibles\",\r\n    \"évalue le statut comme BLOCKED ou REVIEW_REQUIRED\"\r\n  ],\r\n  \"answer\": \"### Analyse\\n\\n- **Système** : INCONNU (Non spécifié)\\n- **But** : INCONNU (Au-delà du fait de traiter des demandes et d'envoyer des notifications)\\n- **Personnes** :\\n  - Utilisateurs (*EXPLICITE* : reçoivent des notifications sur l'état de leur demande)\\n- **Systèmes externes** : INCONNU\\n- **Relations** :\\n  - [Système inconnu] -> Utilisateurs : Envoie des notifications (*EXPLICITE*)\\n- **Informations manquantes** :\\n  - Identité et périmètre du système principal.\\n  - Nature des \\\"demandes\\\" traitées (ex: demandes de congés, tickets de support, prêts bancaires, etc.).\\n  - Existence d'autres acteurs (ex: un valideur/gestionnaire) ou de systèmes externes (ex: fournisseur d'e-mail/SMS).\\n- **Hypothèses** : Aucune (attente de cadrage).\\n\\n---\\n\\n### Évaluation\\n\\n`BLOCKED` \\n\\n---\\n\\n### Questions\\n\\nAfin de pouvoir établir le C4 System Context Diagram, merci de préciser :\\n\\n1. **Quel est le nom et la fonction principale du système à représenter ?** (Ex. *Plateforme de gestion de support*, *Système de demande de congés*, etc.)\\n2. **Quel type de demande les utilisateurs soumettent-ils à ce système ?**\\n3. **Existe-t-il un autre acteur qui traite la demande (ex: un gestionnaire, un administrateur) ou un système externe utilisé pour envoyer les notifications ?**\",\r\n  \"verdict\": \"PASS\",\r\n  \"verdict_notes\": \"Brooks capte le besoin de notification sans attribuer de service tiers, met en évidence les incertitudes et suspend la modélisation en statut BLOCKED.\",\r\n  \"spec_version\": \"1.1.0\"\r\n}"
+        }
+    ]
+}
