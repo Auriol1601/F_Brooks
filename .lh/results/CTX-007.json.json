@@ -1,0 +1,18 @@
+{
+    "sourceFile": "results/CTX-007.json",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1790335013438,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1790335013438,
+            "name": "Commit-0",
+            "content": "{\r\n  \"id\": \"CTX-007\",\r\n  \"input\": \"Seuls les administrateurs utilisent le système.\\n\\nLes employés peuvent également soumettre leurs demandes directement dans le système.\",\r\n  \"checks\": [\r\n    \"détecte la contradiction sur les utilisateurs (administrateurs seuls vs employés)\",\r\n    \"ne choisit pas silencieusement une interprétation\",\r\n    \"évalue le statut comme REVIEW_REQUIRED ou BLOCKED\",\r\n    \"demande une clarification explicite sur la contradiction\"\r\n  ],\r\n  \"answer\": \"### Analyse\\n\\n- **Système** : Non spécifié (Système de gestion de demandes).\\n- **But** : Gestion de demandes (nature des demandes non précisée).\\n- **Personnes** : Administrateurs, Employés (*Contradiction détectée*).\\n- **Systèmes externes** : Aucun mentionné.\\n- **Relations** :\\n  - Employés -> Soumettre des demandes (en contradiction avec l'exclusivité accordée aux administrateurs).\\n- **Informations manquantes / Contradictions** :\\n  - **Contradiction majeure** : La première phrase indique que *seuls* les administrateurs utilisent le système, tandis que la seconde indique que les employés l'utilisent également directement.\\n  - **Précision du périmètre** : Le nom et le but précis du système (type de demandes) ne sont pas précisés.\\n\\n---\\n\\n### Évaluation\\n\\n`REVIEW_REQUIRED` \\n\\n---\\n\\n### Questions\\n\\nPour lever le blocage et me permettre de définir les frontières du système :\\n\\n1. **Qui interagit directement avec le système ?** Les employés ont-ils un accès direct pour soumettre leurs demandes, ou transmettent-ils leurs demandes aux administrateurs hors du système ?\\n2. **Quel est le but précis du système ?** (S'agit-il de congés, de notes de frais, de tickets de support, ou d'un autre type de demandes ?)\",\r\n  \"verdict\": \"PASS\",\r\n  \"verdict_notes\": \"Brooks identifie la contradiction explicite entre les deux instructions sans spéculer, passe en REVIEW_REQUIRED et demande la clarification requise.\",\r\n  \"spec_version\": \"1.1.0\"\r\n}"
+        }
+    ]
+}

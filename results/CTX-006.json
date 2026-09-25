@@ -1,0 +1,14 @@
+{
+  "id": "CTX-006",
+  "input": "Client -> Application -> PostgreSQL",
+  "checks": [
+    "explique que PostgreSQL représente un élément d'architecture interne (niveau Container)",
+    "explique le problème d'abstraction sans présenter de règle universelle rigide",
+    "propose une correction et demande clarification sur le rôle métier",
+    "évalue le statut comme REVIEW_REQUIRED"
+  ],
+  "answer": "### Analyse\n\n- **Système** : \"Application\" (Nom et périmètre exacts non précisés).\n- **But** : Inconnu.\n- **Personnes** :\n  - `Client` (Rôle exact et objectifs métiers non précisés).\n- **Systèmes externes** :\n  - Aucun système externe métier identifié pour le moment.\n- **Relations** :\n  - `Client` -> `Application` (Interaction non qualifiée).\n  - `Application` -> `PostgreSQL` (Relation technique de stockage).\n- **Informations manquantes** :\n  - L'objectif fonctionnel ou métier de l'application.\n  - Les actions ou parcours spécifiques réalisés par le Client.\n- **Remarque sur le niveau d'abstraction (C4 System Context)** :\n  - **PostgreSQL** est une base de données / composant d'infrastructure interne. Au niveau *System Context* (C4 Niveau 1), on ne représente pas les bases de données ou détails de stockage internes du système. Ces éléments apparaissent au niveau *Container* (C4 Niveau 2).\n\n---\n\n### Évaluation\n\n`REVIEW_REQUIRED` \n\n---\n\n### Problèmes détectés & Questions\n\n1. **Niveau d'abstraction inadapté** :\n   La base de données PostgreSQL fait partie intégrante du système (niveau *Container*). Souhaitez-vous la retirer du diagramme de contexte, ou s'agit-il d'un système externe totalement indépendant géré par un tiers ?\n\n2. **Périmètre et but du système indéterminés** :\n   - Quel est le nom et le rôle fonctionnel principal de l'application (ex. *Plateforme de réservation*, *Outil de gestion de commande*, etc.) ?\n   - Que fait précisément le **Client** lorsqu'il interagit avec cette application ?",
+  "verdict": "PASS",
+  "verdict_notes": "Le premier test du mode REVIEW est un succès. Brooks identifie la mauvaise abstraction (PostgreSQL), explique la nuance C4 Niveau 1 vs Niveau 2, et propose les corrections adaptées.",
+  "spec_version": "1.1.0"
+}

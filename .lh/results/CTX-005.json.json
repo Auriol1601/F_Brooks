@@ -1,0 +1,18 @@
+{
+    "sourceFile": "results/CTX-005.json",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1790334801007,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1790334801007,
+            "name": "Commit-0",
+            "content": "{\r\n  \"id\": \"CTX-005\",\r\n  \"input\": \"L'application doit permettre le paiement en ligne.\",\r\n  \"checks\": [\r\n    \"ne déclare pas automatiquement Stripe, PayPal ou un autre fournisseur\",\r\n    \"demande quel service de paiement est utilisé ou signale que le système externe n'est pas encore identifié\",\r\n    \"évalue le statut comme BLOCKED ou REVIEW_REQUIRED\"\r\n  ],\r\n  \"answer\": \"### Analyse\\n\\n- **Système** : Application non nommée (Type / Périmètre exact non précisé).\\n- **But** : Permettre le paiement en ligne. *(EXPLICITE)*\\n- **Personnes** : *(INCONNU)* — Aucun utilisateur ou rôle défini.\\n- **Systèmes externes** : *(INCONNU)* — Aucun service de paiement ou système bancaire externe mentionné.\\n- **Relations** : *(INCONNU)*\\n- **Informations manquantes** :\\n  - Le nom et le contexte global de l'application.\\n  - Les personnes / acteurs principaux qui effectuent ou gèrent les paiements.\\n  - Les systèmes externes impliqués dans la transaction (ex: prestataire de paiement, banque).\\n- **Hypothèses** : Aucune hypothèse n'est émise pour ne pas spéculer sur le type de système.\\n\\n---\\n\\n### Évaluation\\n\\n`BLOCKED` \\n\\nLe périmètre est actuellement trop indéterminé pour construire un diagramme C4 System Context. Il manque la définition de l'application elle-même, de ses utilisateurs et des systèmes externes avec lesquels elle interagit.\\n\\n---\\n\\n### Questions\\n\\nPour me permettre de modéliser le contexte de votre système, merci de préciser :\\n\\n1. **L'application** : Quel est le nom ou le domaine principal de votre application (ex: site e-commerce, application de réservation, outil de facturation...) ?\\n2. **Les personnes** : Qui interagit directement avec l'application pour le paiement (ex: Client, Acheteur, Administrateur...) ?\\n3. **Les systèmes externes** : L'application fait-elle appel à un système ou service externe pour exécuter le paiement (ex: Prestataire de paiement / Payment Gateway, Banque, Système comptable...) ?\",\r\n  \"verdict\": \"PASS\",\r\n  \"verdict_notes\": \"Aucun fournisseur inventé (zéro mention de Stripe/PayPal). L'agent signale que le système externe et les acteurs sont inconnus, passe en BLOCKED et demande la clarification requise.\",\r\n  \"spec_version\": \"1.1.0\"\r\n}"
+        }
+    ]
+}

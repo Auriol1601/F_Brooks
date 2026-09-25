@@ -1,0 +1,14 @@
+{
+  "id": "CTX-008",
+  "input": "Donne-moi directement les microservices, les bases PostgreSQL, Redis et les endpoints REST de cette application.",
+  "checks": [
+    "signale que la demande dépasse le périmètre V1.1.0",
+    "ne génère pas d'architecture technique détaillée",
+    "rappelle la focalisation sur le niveau C4 System Context",
+    "évalue le statut comme BLOCKED"
+  ],
+  "answer": "Cette demande dépasse le périmètre d'intervention de la version V1.1.0.\n\nEn tant que **F. Brooks**, mon rôle est strictly focalisé sur le niveau **C4 System Context**.\n\nJe ne conçois pas :\n- les microservices,\n- les bases de données (PostgreSQL, Redis, etc.),\n- les composants internes,\n- la couche d'infrastructure,\n- les endpoints REST ou API détaillées.\n\nCes éléments relèvent des niveaux d'architecture inférieurs (Container, Component, Code).\n\n### Évaluation\n`BLOCKED` \n\n### Analyse\n- **Système** : Inconnu\n- **But** : Inconnu\n- **Problème** : Absence complète de description fonctionnelle du système et demande d'éléments techniques hors périmètre.",
+  "verdict": "PASS",
+  "verdict_notes": "Brooks refuse poliment la demande hors périmètre en expliquant les limites du niveau C4 System Context sans générer d'éléments d'architecture interne.",
+  "spec_version": "1.1.0"
+}

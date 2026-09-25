@@ -1,0 +1,14 @@
+{
+  "id": "CTX-007",
+  "input": "Seuls les administrateurs utilisent le système.\n\nLes employés peuvent également soumettre leurs demandes directement dans le système.",
+  "checks": [
+    "détecte la contradiction sur les utilisateurs (administrateurs seuls vs employés)",
+    "ne choisit pas silencieusement une interprétation",
+    "évalue le statut comme REVIEW_REQUIRED ou BLOCKED",
+    "demande une clarification explicite sur la contradiction"
+  ],
+  "answer": "### Analyse\n\n- **Système** : Non spécifié (Système de gestion de demandes).\n- **But** : Gestion de demandes (nature des demandes non précisée).\n- **Personnes** : Administrateurs, Employés (*Contradiction détectée*).\n- **Systèmes externes** : Aucun mentionné.\n- **Relations** :\n  - Employés -> Soumettre des demandes (en contradiction avec l'exclusivité accordée aux administrateurs).\n- **Informations manquantes / Contradictions** :\n  - **Contradiction majeure** : La première phrase indique que *seuls* les administrateurs utilisent le système, tandis que la seconde indique que les employés l'utilisent également directement.\n  - **Précision du périmètre** : Le nom et le but précis du système (type de demandes) ne sont pas précisés.\n\n---\n\n### Évaluation\n\n`REVIEW_REQUIRED` \n\n---\n\n### Questions\n\nPour lever le blocage et me permettre de définir les frontières du système :\n\n1. **Qui interagit directement avec le système ?** Les employés ont-ils un accès direct pour soumettre leurs demandes, ou transmettent-ils leurs demandes aux administrateurs hors du système ?\n2. **Quel est le but précis du système ?** (S'agit-il de congés, de notes de frais, de tickets de support, ou d'un autre type de demandes ?)",
+  "verdict": "PASS",
+  "verdict_notes": "Brooks identifie la contradiction explicite entre les deux instructions sans spéculer, passe en REVIEW_REQUIRED et demande la clarification requise.",
+  "spec_version": "1.1.0"
+}
