@@ -1,0 +1,1 @@
+-e "tests_results/*.json\n.DS_Store\nnode_modules/" 
