@@ -1,39 +1,162 @@
 {
   "configuration" : { },
-  "description" : "Test de démarrage Structurizr Lite",
+  "description" : "Description",
   "documentation" : { },
   "id" : 1,
-  "lastModifiedDate" : "2026-09-25T15:14:04Z",
+  "lastModifiedDate" : "2026-09-25T17:51:43Z",
   "model" : {
     "people" : [ {
+      "description" : "Intègre les API de paiement et les SDK.",
       "id" : "1",
-      "name" : "Utilisateur",
+      "name" : "Développeur",
       "properties" : {
-        "structurizr.dsl.identifier" : "user"
+        "structurizr.dsl.identifier" : "dev"
       },
       "relationships" : [ {
-        "description" : "Utilise",
-        "destinationId" : "2",
-        "id" : "3",
+        "description" : "Intègre l'API",
+        "destinationId" : "6",
+        "id" : "11",
         "sourceId" : "1",
+        "tags" : "Relationship"
+      } ],
+      "tags" : "Element,Person"
+    }, {
+      "description" : "Gère son activité e-commerce et suit ses ventes.",
+      "id" : "2",
+      "name" : "Commerçant",
+      "properties" : {
+        "structurizr.dsl.identifier" : "merchant"
+      },
+      "relationships" : [ {
+        "description" : "Utilise les services de paiement",
+        "destinationId" : "6",
+        "id" : "12",
+        "sourceId" : "2",
+        "tags" : "Relationship"
+      } ],
+      "tags" : "Element,Person"
+    }, {
+      "description" : "Partenaire utilisant la passerelle sous supervision.",
+      "id" : "3",
+      "name" : "Fintech",
+      "properties" : {
+        "structurizr.dsl.identifier" : "fintech"
+      },
+      "relationships" : [ {
+        "description" : "Accède aux services",
+        "destinationId" : "6",
+        "id" : "13",
+        "sourceId" : "3",
+        "tags" : "Relationship"
+      } ],
+      "tags" : "Element,Person"
+    }, {
+      "description" : "Institution financière membre distribuant la solution.",
+      "id" : "4",
+      "name" : "Banque",
+      "properties" : {
+        "structurizr.dsl.identifier" : "bank"
+      },
+      "relationships" : [ {
+        "description" : "Paramètre et administre",
+        "destinationId" : "6",
+        "id" : "14",
+        "sourceId" : "4",
+        "tags" : "Relationship"
+      } ],
+      "tags" : "Element,Person"
+    }, {
+      "description" : "Effectue les achats en ligne.",
+      "id" : "5",
+      "name" : "Client final",
+      "properties" : {
+        "structurizr.dsl.identifier" : "client"
+      },
+      "relationships" : [ {
+        "description" : "Paie en ligne",
+        "destinationId" : "6",
+        "id" : "15",
+        "sourceId" : "5",
         "tags" : "Relationship"
       } ],
       "tags" : "Element,Person"
     } ],
     "softwareSystems" : [ {
+      "description" : "Passerelle de paiement unifiée en marque blanche.",
       "documentation" : { },
-      "id" : "2",
-      "name" : "Système F. Brooks",
+      "id" : "6",
+      "name" : "Gateway e-commerce GIM-UEMOA",
       "properties" : {
-        "structurizr.dsl.identifier" : "softwareSystem"
+        "structurizr.dsl.identifier" : "gatewaySystem"
+      },
+      "relationships" : [ {
+        "description" : "Route les transactions cartes",
+        "destinationId" : "7",
+        "id" : "16",
+        "sourceId" : "6",
+        "tags" : "Relationship"
+      }, {
+        "description" : "Interagit avec les services PI-SPI",
+        "destinationId" : "8",
+        "id" : "17",
+        "sourceId" : "6",
+        "tags" : "Relationship"
+      }, {
+        "description" : "Vérifie la fraude",
+        "destinationId" : "9",
+        "id" : "18",
+        "sourceId" : "6",
+        "tags" : "Relationship"
+      }, {
+        "description" : "Exécute l'authentification 3DS",
+        "destinationId" : "10",
+        "id" : "19",
+        "sourceId" : "6",
+        "tags" : "Relationship"
+      } ],
+      "tags" : "Element,Software System"
+    }, {
+      "description" : "Switch monétique régional pour les cartes.",
+      "documentation" : { },
+      "id" : "7",
+      "name" : "Gim-switch",
+      "properties" : {
+        "structurizr.dsl.identifier" : "gimSwitch"
+      },
+      "tags" : "Element,Software System"
+    }, {
+      "description" : "Interface de paiement et services interbancaires.",
+      "documentation" : { },
+      "id" : "8",
+      "name" : "PI-SPI",
+      "properties" : {
+        "structurizr.dsl.identifier" : "piSpi"
+      },
+      "tags" : "Element,Software System"
+    }, {
+      "description" : "Module d'évaluation et de scoring des risques.",
+      "documentation" : { },
+      "id" : "9",
+      "name" : "Gestion fraude",
+      "properties" : {
+        "structurizr.dsl.identifier" : "gestionFraude"
+      },
+      "tags" : "Element,Software System"
+    }, {
+      "description" : "Serveur d'authentification forte.",
+      "documentation" : { },
+      "id" : "10",
+      "name" : "3DS secure",
+      "properties" : {
+        "structurizr.dsl.identifier" : "threeDSecure"
       },
       "tags" : "Element,Software System"
     } ]
   },
-  "name" : "Test F. Brooks",
+  "name" : "Name",
   "properties" : {
-    "structurizr.inspection.error" : "4",
-    "structurizr.dsl" : "77u/d29ya3NwYWNlICJUZXN0IEYuIEJyb29rcyIgIlRlc3QgZGUgZMOpbWFycmFnZSBTdHJ1Y3R1cml6ciBMaXRlIiB7CiAgICBtb2RlbCB7CiAgICAgICAgdXNlciA9IHBlcnNvbiAiVXRpbGlzYXRldXIiCiAgICAgICAgc29mdHdhcmVTeXN0ZW0gPSBzb2Z0d2FyZVN5c3RlbSAiU3lzdMOobWUgRi4gQnJvb2tzIgogICAgICAgIHVzZXIgLT4gc29mdHdhcmVTeXN0ZW0gIlV0aWxpc2UiCiAgICB9CiAgICB2aWV3cyB7CiAgICAgICAgc3lzdGVtQ29udGV4dCBzb2Z0d2FyZVN5c3RlbSAiU3lzdGVtQ29udGV4dCIgewogICAgICAgICAgICBpbmNsdWRlICoKICAgICAgICAgICAgYXV0b2xheW91dCBscgogICAgICAgIH0KICAgIH0KfQ==",
+    "structurizr.inspection.error" : "10",
+    "structurizr.dsl" : "77u/d29ya3NwYWNlIHsKICAgIG1vZGVsIHsKICAgICAgICAvLyBQZXJzb25uZXMKICAgICAgICBkZXYgPSBwZXJzb24gIkTDqXZlbG9wcGV1ciIgIkludMOoZ3JlIGxlcyBBUEkgZGUgcGFpZW1lbnQgZXQgbGVzIFNESy4iCiAgICAgICAgbWVyY2hhbnQgPSBwZXJzb24gIkNvbW1lcsOnYW50IiAiR8OocmUgc29uIGFjdGl2aXTDqSBlLWNvbW1lcmNlIGV0IHN1aXQgc2VzIHZlbnRlcy4iCiAgICAgICAgZmludGVjaCA9IHBlcnNvbiAiRmludGVjaCIgIlBhcnRlbmFpcmUgdXRpbGlzYW50IGxhIHBhc3NlcmVsbGUgc291cyBzdXBlcnZpc2lvbi4iCiAgICAgICAgYmFuayA9IHBlcnNvbiAiQmFucXVlIiAiSW5zdGl0dXRpb24gZmluYW5jacOocmUgbWVtYnJlIGRpc3RyaWJ1YW50IGxhIHNvbHV0aW9uLiIKICAgICAgICBjbGllbnQgPSBwZXJzb24gIkNsaWVudCBmaW5hbCIgIkVmZmVjdHVlIGxlcyBhY2hhdHMgZW4gbGlnbmUuIgoKICAgICAgICAvLyBTeXN0w6htZSBFdHVkacOpCiAgICAgICAgZ2F0ZXdheVN5c3RlbSA9IHNvZnR3YXJlU3lzdGVtICJHYXRld2F5IGUtY29tbWVyY2UgR0lNLVVFTU9BIiAiUGFzc2VyZWxsZSBkZSBwYWllbWVudCB1bmlmacOpZSBlbiBtYXJxdWUgYmxhbmNoZS4iCgogICAgICAgIC8vIFN5c3TDqG1lcyBFeHRlcm5lcwogICAgICAgIGdpbVN3aXRjaCA9IHNvZnR3YXJlU3lzdGVtICJHaW0tc3dpdGNoIiAiU3dpdGNoIG1vbsOpdGlxdWUgcsOpZ2lvbmFsIHBvdXIgbGVzIGNhcnRlcy4iCiAgICAgICAgcGlTcGkgPSBzb2Z0d2FyZVN5c3RlbSAiUEktU1BJIiAiSW50ZXJmYWNlIGRlIHBhaWVtZW50IGV0IHNlcnZpY2VzIGludGVyYmFuY2FpcmVzLiIKICAgICAgICBnZXN0aW9uRnJhdWRlID0gc29mdHdhcmVTeXN0ZW0gIkdlc3Rpb24gZnJhdWRlIiAiTW9kdWxlIGQnw6l2YWx1YXRpb24gZXQgZGUgc2NvcmluZyBkZXMgcmlzcXVlcy4iCiAgICAgICAgdGhyZWVEU2VjdXJlID0gc29mdHdhcmVTeXN0ZW0gIjNEUyBzZWN1cmUiICJTZXJ2ZXVyIGQnYXV0aGVudGlmaWNhdGlvbiBmb3J0ZS4iCgogICAgICAgIC8vIEludGVyYWN0aW9ucyAoTml2ZWF1IDEgdW5pcXVlbWVudCkKICAgICAgICBkZXYgLT4gZ2F0ZXdheVN5c3RlbSAiSW50w6hncmUgbCdBUEkiCiAgICAgICAgbWVyY2hhbnQgLT4gZ2F0ZXdheVN5c3RlbSAiVXRpbGlzZSBsZXMgc2VydmljZXMgZGUgcGFpZW1lbnQiCiAgICAgICAgZmludGVjaCAtPiBnYXRld2F5U3lzdGVtICJBY2PDqGRlIGF1eCBzZXJ2aWNlcyIKICAgICAgICBiYW5rIC0+IGdhdGV3YXlTeXN0ZW0gIlBhcmFtw6h0cmUgZXQgYWRtaW5pc3RyZSIKICAgICAgICBjbGllbnQgLT4gZ2F0ZXdheVN5c3RlbSAiUGFpZSBlbiBsaWduZSIKCiAgICAgICAgZ2F0ZXdheVN5c3RlbSAtPiBnaW1Td2l0Y2ggIlJvdXRlIGxlcyB0cmFuc2FjdGlvbnMgY2FydGVzIgogICAgICAgIGdhdGV3YXlTeXN0ZW0gLT4gcGlTcGkgIkludGVyYWdpdCBhdmVjIGxlcyBzZXJ2aWNlcyBQSS1TUEkiCiAgICAgICAgZ2F0ZXdheVN5c3RlbSAtPiBnZXN0aW9uRnJhdWRlICJWw6lyaWZpZSBsYSBmcmF1ZGUiCiAgICAgICAgZ2F0ZXdheVN5c3RlbSAtPiB0aHJlZURTZWN1cmUgIkV4w6ljdXRlIGwnYXV0aGVudGlmaWNhdGlvbiAzRFMiCiAgICB9CgogICAgdmlld3MgewogICAgICAgIHN5c3RlbUNvbnRleHQgZ2F0ZXdheVN5c3RlbSAiQ29udGV4dERpYWdyYW0iIHsKICAgICAgICAgICAgaW5jbHVkZSAqCiAgICAgICAgICAgIGF1dG9MYXlvdXQgbHIKICAgICAgICB9CiAgICB9Cn0=",
     "structurizr.inspection.info" : "0",
     "structurizr.inspection.ignore" : "0",
     "structurizr.inspection.warning" : "0"
@@ -59,15 +182,63 @@
         "id" : "2",
         "x" : 0,
         "y" : 0
+      }, {
+        "id" : "3",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "4",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "5",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "6",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "7",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "8",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "9",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "10",
+        "x" : 0,
+        "y" : 0
       } ],
       "enterpriseBoundaryVisible" : true,
-      "key" : "SystemContext",
-      "name" : "System Context View: Système F. Brooks",
+      "key" : "ContextDiagram",
+      "name" : "System Context View: Gateway e-commerce GIM-UEMOA",
       "order" : 1,
       "relationships" : [ {
-        "id" : "3"
+        "id" : "11"
+      }, {
+        "id" : "12"
+      }, {
+        "id" : "13"
+      }, {
+        "id" : "14"
+      }, {
+        "id" : "15"
+      }, {
+        "id" : "16"
+      }, {
+        "id" : "17"
+      }, {
+        "id" : "18"
+      }, {
+        "id" : "19"
       } ],
-      "softwareSystemId" : "2"
+      "softwareSystemId" : "6"
     } ]
   }
 }

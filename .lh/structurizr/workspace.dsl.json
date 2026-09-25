@@ -1,0 +1,26 @@
+{
+    "sourceFile": "structurizr/workspace.dsl",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 2,
+            "patches": [
+                {
+                    "date": 1790355661273,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1790355760888,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,5 +1,5 @@\n-﻿   workspace {\n+   workspace {\n        model {\n            clientParticulier = person \"Client Particulier\" \"Utilise l'application mobile pour payer et transférer de l'argent.\"\n            marchand = person \"Marchand\" \"Utilise l'application Paymechap Business pour encaisser et gérer ses fonds.\"\n \n"
+                },
+                {
+                    "date": 1790356653697,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,5 +1,5 @@\n-﻿structurizr\n+structurizr\n    workspace {\n             model {\n                 // Personnes\n                 dev = person \"Développeur\" \"Intègre les API de paiement et les\n"
+                }
+            ],
+            "date": 1790355661273,
+            "name": "Commit-0",
+            "content": "   workspace {\n       model {\n           clientParticulier = person \"Client Particulier\" \"Utilise\n l'application mobile pour payer et transférer de l'argent.\"\n           marchand = person \"Marchand\" \"Utilise l'application Paymechap\n Business pour encaisser et gérer ses fonds.\"\n\n           paymechap = softwareSystem \"Paymechap\" \"Application de paiement\n mobile et e-wallet pour la zone UEMOA.\" {\n               description \"Permet le transfert d'argent, le paiement\n marchand et la gestion de portefeuille électronique.\"\n           }\n\n           mobileMoney = softwareSystem \"Opérateurs Mobile Money\" \"Systèmes\n des Telcos et agrégateurs pour les opérations de cash-in et cash-out.\"\n           gimUemoa = softwareSystem \"Switch Interbancaire (GIM-UEMOA)\"\n \"Système pour la compensation et les virements interbancaires.\"\n           kycService = softwareSystem \"Service KYC / SMS Gateway\" \"Service\n tiers pour la conformité réglementaire et l'authentification (OTP).\"\n\n           # Relations\n           clientParticulier -> paymechap \"Effectue des transferts et des\n paiements via\"\n           marchand -> paymechap \"Gère ses encaissements et demande des\n virements via\"\n\n           paymechap -> mobileMoney \"Réalise les opérations de cash-in et\n cash-out avec\"\n           paymechap -> gimUemoa \"Réalise la compensation et les virements\n avec\"\n           paymechap -> kycService \"Vérifie l'identité et envoie les\n notifications OTP via\"\n       }\n\n       views {\n           systemContext paymechap \"SystemContext\" {\n               include *\n               autoLayout lr\n           }\n       }\n   }"
+        }
+    ]
+}
