@@ -1,0 +1,10 @@
+services:
+  structurizr:
+    image: structurizr/structurizr
+    container_name: f_brooks_structurizr
+    command: local
+    ports:
+      - "8080:8080"
+    volumes:
+      - D:\F_Brooks\structurizr:/usr/local/structurizr
+    restart: unless-stopped

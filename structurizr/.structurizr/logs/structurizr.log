@@ -1,0 +1,29 @@
+2026-09-25T15:13:56.069Z  INFO 1 --- [main] com.structurizr.server.Local             : ***********************************************************************************
+2026-09-25T15:13:56.073Z  INFO 1 --- [main] com.structurizr.server.Local             :   _____ _                   _              _          
+2026-09-25T15:13:56.074Z  INFO 1 --- [main] com.structurizr.server.Local             :  / ____| |                 | |            (_)         
+2026-09-25T15:13:56.075Z  INFO 1 --- [main] com.structurizr.server.Local             : | (___ | |_ _ __ _   _  ___| |_ _   _ _ __ _ _____ __ 
+2026-09-25T15:13:56.076Z  INFO 1 --- [main] com.structurizr.server.Local             :  \___ \| __| '__| | | |/ __| __| | | | '__| |_  / '__|
+2026-09-25T15:13:56.077Z  INFO 1 --- [main] com.structurizr.server.Local             :  ____) | |_| |  | |_| | (__| |_| |_| | |  | |/ /| |   
+2026-09-25T15:13:56.078Z  INFO 1 --- [main] com.structurizr.server.Local             : |_____/ \__|_|   \__,_|\___|\__|\__,_|_|  |_/___|_|   
+2026-09-25T15:13:56.079Z  INFO 1 --- [main] com.structurizr.server.Local             :                                                       
+2026-09-25T15:13:56.081Z  INFO 1 --- [main] com.structurizr.server.Local             : Local v2026.09.19
+2026-09-25T15:13:56.082Z  INFO 1 --- [main] com.structurizr.server.Local             : ***********************************************************************************
+2026-09-25T15:13:56.083Z  INFO 1 --- [main] com.structurizr.server.Local             :  - structurizr.authentication: none
+2026-09-25T15:13:56.084Z  INFO 1 --- [main] com.structurizr.server.Local             :  - structurizr.autorefreshinterval: 0
+2026-09-25T15:13:56.085Z  INFO 1 --- [main] com.structurizr.server.Local             :  - structurizr.autosaveinterval: 5000
+2026-09-25T15:13:56.086Z  INFO 1 --- [main] com.structurizr.server.Local             :  - structurizr.cache: none
+2026-09-25T15:13:56.087Z  INFO 1 --- [main] com.structurizr.server.Local             :  - structurizr.data: file
+2026-09-25T15:13:56.088Z  INFO 1 --- [main] com.structurizr.server.Local             :  - structurizr.datadirectory: /usr/local/structurizr
+2026-09-25T15:13:56.090Z  INFO 1 --- [main] com.structurizr.server.Local             :  - structurizr.debug: false
+2026-09-25T15:13:56.091Z  INFO 1 --- [main] com.structurizr.server.Local             :  - structurizr.editable: true
+2026-09-25T15:13:56.092Z  INFO 1 --- [main] com.structurizr.server.Local             :  - structurizr.logging.filename: /usr/local/structurizr/.structurizr/logs/structurizr.log
+2026-09-25T15:13:56.093Z  INFO 1 --- [main] com.structurizr.server.Local             :  - structurizr.network.timeout: 60000
+2026-09-25T15:13:56.094Z  INFO 1 --- [main] com.structurizr.server.Local             :  - structurizr.network.urls.allowed: .*
+2026-09-25T15:13:56.095Z  INFO 1 --- [main] com.structurizr.server.Local             :  - structurizr.search: lucene
+2026-09-25T15:13:56.096Z  INFO 1 --- [main] com.structurizr.server.Local             :  - structurizr.themes: /usr/local/structurizr/themes/
+2026-09-25T15:13:56.097Z  INFO 1 --- [main] com.structurizr.server.Local             :  - structurizr.workspace.maxsize: 1MB
+2026-09-25T15:13:56.099Z  INFO 1 --- [main] com.structurizr.server.Local             :  - structurizr.workspace.threads: 10
+2026-09-25T15:13:56.100Z  INFO 1 --- [main] com.structurizr.server.Local             :  - structurizr.workspaces: 1
+2026-09-25T15:13:56.101Z  INFO 1 --- [main] com.structurizr.server.Local             : ***********************************************************************************
+2026-09-25T15:13:56.102Z  INFO 1 --- [main] com.structurizr.server.Local             : Themes:
+2026-09-25T15:13:56.104Z  INFO 1 --- [main] com.structurizr.server.Local             : ***********************************************************************************
