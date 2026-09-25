@@ -1,0 +1,18 @@
+{
+    "sourceFile": "results/CTX-004.json",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1790334065596,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1790334065596,
+            "name": "Commit-0",
+            "content": "{\r\n  \"id\": \"CTX-004\",\r\n  \"input\": \"Un employé utilise l'application RH.\\nL'application récupère certaines informations depuis le système RH central.\",\r\n  \"checks\": [\r\n    \"identifie l'application RH comme système étudié\",\r\n    \"identifie l'employé comme personne\",\r\n    \"identifie le système RH central comme système externe\",\r\n    \"ne descend pas dans le détail technique de l'intégration\",\r\n    \"évalue le statut comme VALID\"\r\n  ],\r\n  \"answer\": \"### Analyse\\n\\n- **Système** : Application RH\\n- **But** : Permettre à un employé d'interagir avec l'application RH, laquelle s'appuie sur le système RH central pour récupérer des informations.\\n- **Personnes** :\\n  - Employé (Role : Utilisateur de l'application)\\n- **Systèmes externes** :\\n  - Système RH central (Purpose : Source de données RH)\\n- **Relations** :\\n  - Employé -> Application RH : Utilise l'application\\n  - Application RH -> Système RH central : Récupère des informations\\n- **Informations manquantes** : Aucune information bloquante pour établir le schéma de contexte du périmètre décrit.\\n- **Hypothèses** : Aucune.\\n\\n---\\n\\n### Évaluation\\n`VALID` \\n\\nLes informations fournies sont suffisantes pour établir une représentation initiale claire et cohérente au niveau **C4 System Context**, sans extrapolation.\\n\\n---\\n\\n### Représentation du contexte\\n\\n```yaml\\ncontext:\\n  system:\\n    name: \\\"Application RH\\\"\\n    purpose: \\\"Permet aux employés d'accéder à leurs services et informations RH.\\\"\\n\\n  people:\\n    - name: \\\"Employé\\\"\\n      role: \\\"Utilise l'application RH.\\\"\\n\\n  external_systems:\\n    - name: \\\"Système RH central\\\"\\n      purpose: \\\"Conserve et fournit les informations RH de l'entreprise.\\\"\\n\\n  relationships:\\n    - source: \\\"Employé\\\"\\n      target: \\\"Application RH\\\"\\n      description: \\\"Utilise\\\"\\n\\n    - source: \\\"Application RH\\\"\\n      target: \\\"Système RH central\\\"\\n      description: \\\"Récupère des informations depuis\\\"\\n```\\n\\n---\\n\\n### Explication\\nLe périmètre décrit est parfaitement aligné avec le niveau **System Context** :\\n- L'**Application RH** constitue le système étudié.\\n- L'**Employé** est l'acteur principal (personne) qui interagit directement avec ce système.\\n- Le **Système RH central** est identifié comme un système externe fournissant des données à l'application.\",\r\n  \"verdict\": \"PASS\",\r\n  \"verdict_notes\": \"Conforme à la spécification v1.1.0. Brooks évalue le périmètre de manière frugale et fidèle sans poser de questions optionnelles non requises.\",\r\n  \"spec_version\": \"1.1.0\"\r\n}"
+        }
+    ]
+}
