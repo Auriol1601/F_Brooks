@@ -21,6 +21,7 @@ import sys
 import urllib.request
 import urllib.error
 from pathlib import Path
+from automation.structurizr_writer import save_workspace
 
 MODEL = os.getenv("GEMINI_MODEL", "gemini-2.5-flash")
 API_URL = (
@@ -217,11 +218,31 @@ def main():
 
         print(answer)
 
+        # ============================================================
+        # AUTOMATISATION STRUCTURIZR
+        # ============================================================
+
+        structurizr_result = save_workspace(answer)
+
+        if structurizr_result["saved"]:
+
+            print("\n✓ STRUCTURIZR")
+            print("Workspace sauvegardé automatiquement :")
+            print(structurizr_result["path"])
+
+        else:
+
+            print("\n— STRUCTURIZR")
+            print("Workspace non sauvegardé :")
+            print(structurizr_result["reason"])
+
+
         result = {
             "id": test["id"],
             "input": test["input"],
             "checks": test["checks"],
             "answer": answer,
+            "structurizr": structurizr_result,
             "verdict": "MANUAL_REVIEW",
         }
 
