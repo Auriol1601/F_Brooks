@@ -3,7 +3,7 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 1,
+            "activePatchIndex": 4,
             "patches": [
                 {
                     "date": 1790678190338,
@@ -12,6 +12,18 @@
                 {
                     "date": 1790678291108,
                     "content": "Index: \n===================================================================\n--- \n+++ \n@@ -217,13 +217,33 @@\n             sys.exit(1)\n \n         print(answer)\n \n+        # ============================================================\n+        # AUTOMATISATION STRUCTURIZR\n+        # ============================================================\n+\n+        structurizr_result = save_workspace(answer)\n+\n+        if structurizr_result[\"saved\"]:\n+\n+            print(\"\\n✓ STRUCTURIZR\")\n+            print(\"Workspace sauvegardé automatiquement :\")\n+            print(structurizr_result[\"path\"])\n+\n+        else:\n+\n+            print(\"\\n— STRUCTURIZR\")\n+            print(\"Workspace non sauvegardé :\")\n+            print(structurizr_result[\"reason\"])\n+\n+\n         result = {\n             \"id\": test[\"id\"],\n             \"input\": test[\"input\"],\n             \"checks\": test[\"checks\"],\n             \"answer\": answer,\n+            \"structurizr\": structurizr_result,\n             \"verdict\": \"MANUAL_REVIEW\",\n         }\n \n         path = output_dir / f\"{test['id']}.json\"\n"
+                },
+                {
+                    "date": 1790678770462,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -22,9 +22,9 @@\n import urllib.error\n from pathlib import Path\n from automation.structurizr_writer import save_workspace\n \n-MODEL = os.getenv(\"GEMINI_MODEL\", \"gemini-2.5-flash\")\n+MODEL = os.getenv(\"GEMINI_MODEL\", \"gemini-.5-flash\")\n API_URL = (\n     \"https://generativelanguage.googleapis.com/v1beta/models/\"\n     + MODEL\n     + \":generateContent\"\n"
+                },
+                {
+                    "date": 1790678842725,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -22,9 +22,9 @@\n import urllib.error\n from pathlib import Path\n from automation.structurizr_writer import save_workspace\n \n-MODEL = os.getenv(\"GEMINI_MODEL\", \"gemini-.5-flash\")\n+MODEL = os.getenv(\"GEMINI_MODEL\", \"gemini-2.5-flash\")\n API_URL = (\n     \"https://generativelanguage.googleapis.com/v1beta/models/\"\n     + MODEL\n     + \":generateContent\"\n"
+                },
+                {
+                    "date": 1790678891050,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -22,9 +22,9 @@\n import urllib.error\n from pathlib import Path\n from automation.structurizr_writer import save_workspace\n \n-MODEL = os.getenv(\"GEMINI_MODEL\", \"gemini-2.5-flash\")\n+MODEL = os.getenv(\"GEMINI_MODEL\", \"gemini-3.5-flash-lite\")\n API_URL = (\n     \"https://generativelanguage.googleapis.com/v1beta/models/\"\n     + MODEL\n     + \":generateContent\"\n"
                 }
             ],
             "date": 1790678190338,

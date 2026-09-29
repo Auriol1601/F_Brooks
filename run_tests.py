@@ -23,7 +23,7 @@ import urllib.error
 from pathlib import Path
 from automation.structurizr_writer import save_workspace
 
-MODEL = os.getenv("GEMINI_MODEL", "gemini-2.5-flash")
+MODEL = os.getenv("GEMINI_MODEL", "gemini-3.5-flash-lite")
 API_URL = (
     "https://generativelanguage.googleapis.com/v1beta/models/"
     + MODEL
