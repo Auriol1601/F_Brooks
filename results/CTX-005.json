@@ -1,13 +1,40 @@
 {
   "id": "CTX-005",
   "input": "L'application doit permettre le paiement en ligne.",
-  "checks": [
-    "ne déclare pas automatiquement Stripe, PayPal ou un autre fournisseur",
-    "demande quel service de paiement est utilisé ou signale que le système externe n'est pas encore identifié",
-    "évalue le statut comme BLOCKED ou REVIEW_REQUIRED"
-  ],
-  "answer": "### Analyse\n\n- **Système** : Application non nommée (Type / Périmètre exact non précisé).\n- **But** : Permettre le paiement en ligne. *(EXPLICITE)*\n- **Personnes** : *(INCONNU)* — Aucun utilisateur ou rôle défini.\n- **Systèmes externes** : *(INCONNU)* — Aucun service de paiement ou système bancaire externe mentionné.\n- **Relations** : *(INCONNU)*\n- **Informations manquantes** :\n  - Le nom et le contexte global de l'application.\n  - Les personnes / acteurs principaux qui effectuent ou gèrent les paiements.\n  - Les systèmes externes impliqués dans la transaction (ex: prestataire de paiement, banque).\n- **Hypothèses** : Aucune hypothèse n'est émise pour ne pas spéculer sur le type de système.\n\n---\n\n### Évaluation\n\n`BLOCKED` \n\nLe périmètre est actuellement trop indéterminé pour construire un diagramme C4 System Context. Il manque la définition de l'application elle-même, de ses utilisateurs et des systèmes externes avec lesquels elle interagit.\n\n---\n\n### Questions\n\nPour me permettre de modéliser le contexte de votre système, merci de préciser :\n\n1. **L'application** : Quel est le nom ou le domaine principal de votre application (ex: site e-commerce, application de réservation, outil de facturation...) ?\n2. **Les personnes** : Qui interagit directement avec l'application pour le paiement (ex: Client, Acheteur, Administrateur...) ?\n3. **Les systèmes externes** : L'application fait-elle appel à un système ou service externe pour exécuter le paiement (ex: Prestataire de paiement / Payment Gateway, Banque, Système comptable...) ?",
+  "expected": {
+    "contextState": "INSUFFICIENT",
+    "must": [
+      "recognize_unidentified_payment_system"
+    ],
+    "must_not": [
+      "invent_stripe",
+      "invent_paypal",
+      "invent_payment_provider"
+    ]
+  },
+  "answer": "### 1. Analyse du contexte\n\n* **Système étudié :** Application (nom non précisé) — *EXPLICITE*\n* **Utilisateurs :** Non identifiés — *INCONNU*\n* **Systèmes externes :** Fournisseur ou système de paiement en ligne — *INCONNU*\n* **Relations :** Non formalisables sans identifier les acteurs et les systèmes externes.\n\n---\n\n### 2. État fonctionnel du contexte\n\n`contextState = INSUFFICIENT`\n\n---\n\n### 3. Analyse des manques\n\nLa description fournie indique une fonctionnalité (« paiement en ligne »), mais ne permet pas de déterminer :\n1. Quel utilisateur ou acteur interagit avec l'application pour effectuer ce paiement.\n2. Quel système externe (ex. : passerelle de paiement) est utilisé pour réaliser le paiement en ligne.\n\n---\n\n### 4. Questions nécessaires\n\nPour pouvoir modéliser correctement le contexte de ce système, veuillez préciser :\n* Qui sont les utilisateurs (ou autres systèmes) qui interagissent avec l'application ?\n* Le paiement en ligne s'appuie-t-il sur un système externe identifié (par exemple, un prestataire de paiement) ?",
+  "structurizr": {
+    "status": "SUCCESS",
+    "returncode": 0,
+    "stdout": "[STRUCTURIZR]\nAucun workspace Structurizr d�tect�.",
+    "stderr": ""
+  },
+  "evaluation": {
+    "verdict": "PASS",
+    "contextState": "INSUFFICIENT",
+    "criteria": {
+      "must": {
+        "recognize_unidentified_payment_system": true
+      },
+      "must_not": {
+        "invent_stripe": true,
+        "invent_paypal": true,
+        "invent_payment_provider": true
+      }
+    },
+    "failedCriteria": [],
+    "reason": "F. Brooks a correctement identifié que le contexte est insuffisant, a reconnu que le système de paiement externe est inconnu (non identifié) et n'a inventé aucun fournisseur de paiement tel que Stripe ou PayPal."
+  },
   "verdict": "PASS",
-  "verdict_notes": "Aucun fournisseur inventé (zéro mention de Stripe/PayPal). L'agent signale que le système externe et les acteurs sont inconnus, passe en BLOCKED et demande la clarification requise.",
-  "spec_version": "1.1.0"
+  "contextState": "INSUFFICIENT"
 }

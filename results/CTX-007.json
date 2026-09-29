@@ -1,14 +1,38 @@
 {
   "id": "CTX-007",
   "input": "Seuls les administrateurs utilisent le système.\n\nLes employés peuvent également soumettre leurs demandes directement dans le système.",
-  "checks": [
-    "détecte la contradiction sur les utilisateurs (administrateurs seuls vs employés)",
-    "ne choisit pas silencieusement une interprétation",
-    "évalue le statut comme REVIEW_REQUIRED ou BLOCKED",
-    "demande une clarification explicite sur la contradiction"
-  ],
-  "answer": "### Analyse\n\n- **Système** : Non spécifié (Système de gestion de demandes).\n- **But** : Gestion de demandes (nature des demandes non précisée).\n- **Personnes** : Administrateurs, Employés (*Contradiction détectée*).\n- **Systèmes externes** : Aucun mentionné.\n- **Relations** :\n  - Employés -> Soumettre des demandes (en contradiction avec l'exclusivité accordée aux administrateurs).\n- **Informations manquantes / Contradictions** :\n  - **Contradiction majeure** : La première phrase indique que *seuls* les administrateurs utilisent le système, tandis que la seconde indique que les employés l'utilisent également directement.\n  - **Précision du périmètre** : Le nom et le but précis du système (type de demandes) ne sont pas précisés.\n\n---\n\n### Évaluation\n\n`REVIEW_REQUIRED` \n\n---\n\n### Questions\n\nPour lever le blocage et me permettre de définir les frontières du système :\n\n1. **Qui interagit directement avec le système ?** Les employés ont-ils un accès direct pour soumettre leurs demandes, ou transmettent-ils leurs demandes aux administrateurs hors du système ?\n2. **Quel est le but précis du système ?** (S'agit-il de congés, de notes de frais, de tickets de support, ou d'un autre type de demandes ?)",
+  "expected": {
+    "contextState": "CONTRADICTORY",
+    "must": [
+      "detect_contradiction",
+      "ask_clarification"
+    ],
+    "must_not": [
+      "silently_choose_interpretation"
+    ]
+  },
+  "answer": "## 1. Analyse du contexte\n\n### Éléments explicites\n* **Administrateurs** : Personnes interagissant avec le système.\n* **Employés** : Personnes interagissant avec le système.\n* **Système** : Le système logiciel cible.\n\n### Relations explicites\n* `Administrateurs` → `Système` : Utilisent le système.\n* `Employés` → `Système` : Soumettent des demandes directement dans le système.\n\n---\n\n## 2. Évaluation des informations\n\n* **Informations manquantes** : Le nom officiel du système étudié est inconnu.\n* **Inconnus** : Nom du système (`INCONNU`), finalité précise du système au-delà de la soumission de demandes par les employés et de son utilisation par les administrateurs.\n* **Ambiguïtés** : Aucune ambiguïté technique.\n* **Contradictions** : **Oui.** Le premier énoncé indique que « *Seuls* les administrateurs utilisent le système », tandis que le second indique que « Les employés peuvent *également* soumettre leurs demandes directement dans le système ». Ces deux affirmations sont mutuellement exclusives quant aux accès autorisés.\n\n---\n\n## 3. État fonctionnel du contexte\n\n```text\ncontextState = CONTRADICTORY\n```\n\n---\n\n## 4. Clarification nécessaire\n\nUne contradiction directe a été détectée dans les règles d'accès :\n1. *« Seuls les administrateurs utilisent le système. »* exclut l'accès direct par d'autres profils.\n2. *« Les employés peuvent également soumettre leurs demandes directement dans le système. »* introduit un second profil utilisateur ayant un accès direct.\n\n**Question :**\n* Qui est autorisé à utiliser directement le système : uniquement les administrateurs, uniquement les employés, ou les deux ?",
+  "structurizr": {
+    "status": "SUCCESS",
+    "returncode": 0,
+    "stdout": "[STRUCTURIZR]\nAucun workspace Structurizr d�tect�.",
+    "stderr": ""
+  },
+  "evaluation": {
+    "verdict": "PASS",
+    "contextState": "CONTRADICTORY",
+    "criteria": {
+      "must": {
+        "detect_contradiction": true,
+        "ask_clarification": true
+      },
+      "must_not": {
+        "silently_choose_interpretation": true
+      }
+    },
+    "failedCriteria": [],
+    "reason": "La réponse de F. Brooks détecte correctement la contradiction entre les deux énoncés, pose une question de clarification explicite, n'invente pas d'interprétation silencieuse et qualifie correctement le contexte comme CONTRADICTORY."
+  },
   "verdict": "PASS",
-  "verdict_notes": "Brooks identifie la contradiction explicite entre les deux instructions sans spéculer, passe en REVIEW_REQUIRED et demande la clarification requise.",
-  "spec_version": "1.1.0"
+  "contextState": "CONTRADICTORY"
 }

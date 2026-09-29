@@ -1,15 +1,44 @@
 {
   "id": "CTX-004",
   "input": "Un employé utilise l'application RH.\nL'application récupère certaines informations depuis le système RH central.",
-  "checks": [
-    "identifie l'application RH comme système étudié",
-    "identifie l'employé comme personne",
-    "identifie le système RH central comme système externe",
-    "ne descend pas dans le détail technique de l'intégration",
-    "évalue le statut comme VALID"
-  ],
-  "answer": "### Analyse\n\n- **Système** : Application RH\n- **But** : Permettre à un employé d'interagir avec l'application RH, laquelle s'appuie sur le système RH central pour récupérer des informations.\n- **Personnes** :\n  - Employé (Role : Utilisateur de l'application)\n- **Systèmes externes** :\n  - Système RH central (Purpose : Source de données RH)\n- **Relations** :\n  - Employé -> Application RH : Utilise l'application\n  - Application RH -> Système RH central : Récupère des informations\n- **Informations manquantes** : Aucune information bloquante pour établir le schéma de contexte du périmètre décrit.\n- **Hypothèses** : Aucune.\n\n---\n\n### Évaluation\n`VALID` \n\nLes informations fournies sont suffisantes pour établir une représentation initiale claire et cohérente au niveau **C4 System Context**, sans extrapolation.\n\n---\n\n### Représentation du contexte\n\n```yaml\ncontext:\n  system:\n    name: \"Application RH\"\n    purpose: \"Permet aux employés d'accéder à leurs services et informations RH.\"\n\n  people:\n    - name: \"Employé\"\n      role: \"Utilise l'application RH.\"\n\n  external_systems:\n    - name: \"Système RH central\"\n      purpose: \"Conserve et fournit les informations RH de l'entreprise.\"\n\n  relationships:\n    - source: \"Employé\"\n      target: \"Application RH\"\n      description: \"Utilise\"\n\n    - source: \"Application RH\"\n      target: \"Système RH central\"\n      description: \"Récupère des informations depuis\"\n```\n\n---\n\n### Explication\nLe périmètre décrit est parfaitement aligné avec le niveau **System Context** :\n- L'**Application RH** constitue le système étudié.\n- L'**Employé** est l'acteur principal (personne) qui interagit directement avec ce système.\n- Le **Système RH central** est identifié comme un système externe fournissant des données à l'application.",
+  "expected": {
+    "contextState": "SUFFICIENT",
+    "must": [
+      "identify_employee",
+      "identify_hr_application",
+      "identify_hr_central_system",
+      "distinguish_person_from_external_system",
+      "identify_context_relationships"
+    ],
+    "must_not": [
+      "invent_internal_architecture"
+    ]
+  },
+  "answer": "1. **Compréhension & Analyse**\n   * **Éléments explicites :**\n     * `Employé` (personne utilisant l'application RH)\n     * `Application RH` (système étudié)\n     * `Système RH central` (système externe)\n     * Relation `Employé` → `Application RH` (utilise)\n     * Relation `Application RH` → `Système RH central` (récupère certaines informations)\n   * **Inférences structurelles :**\n     * `Employé` est modélisé comme une personne.\n     * `Application RH` est modélisée comme le système logiciel étudié.\n     * `Système RH central` est modélisé comme un système logiciel externe.\n   * **Informations inconnues :**\n     * Détails techniques des échanges entre l'application et le système externe (`INCONNU`).\n   * **Ambiguïtés :** Aucune.\n   * **Contradictions :** Aucune.\n   * **État du contexte (`contextState`) :** `SUFFICIENT`\n\n2. **Représentation C4 (System Context)**\n\n```structurizr\nworkspace \"Contexte - Application RH\" {\n\n    model {\n        employe = person \"Employé\"\n        appRH = softwareSystem \"Application RH\"\n        systemeRHCentral = softwareSystem \"Système RH central\"\n\n        employe -> appRH \"Utilise\"\n        appRH -> systemeRHCentral \"Récupère certaines informations\"\n    }\n\n    views {\n        systemContext appRH \"SystemContext\" {\n            include *\n            autoLayout\n        }\n    }\n}\n```",
+  "structurizr": {
+    "status": "SUCCESS",
+    "returncode": 0,
+    "stdout": "[STRUCTURIZR]\nWorkspace sauvegarde automatiquement :\nD:\\F_Brooks\\structurizr\\workspace.dsl",
+    "stderr": ""
+  },
+  "evaluation": {
+    "verdict": "PASS",
+    "contextState": "SUFFICIENT",
+    "criteria": {
+      "must": {
+        "identify_employee": true,
+        "identify_hr_application": true,
+        "identify_hr_central_system": true,
+        "distinguish_person_from_external_system": true,
+        "identify_context_relationships": true
+      },
+      "must_not": {
+        "invent_internal_architecture": true
+      }
+    },
+    "failedCriteria": [],
+    "reason": "La réponse de F. Brooks identifie correctement l'employé, l'application RH et le système RH central, distingue bien la personne du système externe, modélise les relations contextuelles sans inventer d'architecture interne, et pose un contextState à SUFFICIENT de manière cohérente."
+  },
   "verdict": "PASS",
-  "verdict_notes": "Conforme à la spécification v1.1.0. Brooks évalue le périmètre de manière frugale et fidèle sans poser de questions optionnelles non requises.",
-  "spec_version": "1.1.0"
+  "contextState": "SUFFICIENT"
 }

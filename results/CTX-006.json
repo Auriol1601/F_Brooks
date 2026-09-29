@@ -1,14 +1,44 @@
 {
   "id": "CTX-006",
-  "input": "Client -> Application -> PostgreSQL",
-  "checks": [
-    "explique que PostgreSQL représente un élément d'architecture interne (niveau Container)",
-    "explique le problème d'abstraction sans présenter de règle universelle rigide",
-    "propose une correction et demande clarification sur le rôle métier",
-    "évalue le statut comme REVIEW_REQUIRED"
-  ],
-  "answer": "### Analyse\n\n- **Système** : \"Application\" (Nom et périmètre exacts non précisés).\n- **But** : Inconnu.\n- **Personnes** :\n  - `Client` (Rôle exact et objectifs métiers non précisés).\n- **Systèmes externes** :\n  - Aucun système externe métier identifié pour le moment.\n- **Relations** :\n  - `Client` -> `Application` (Interaction non qualifiée).\n  - `Application` -> `PostgreSQL` (Relation technique de stockage).\n- **Informations manquantes** :\n  - L'objectif fonctionnel ou métier de l'application.\n  - Les actions ou parcours spécifiques réalisés par le Client.\n- **Remarque sur le niveau d'abstraction (C4 System Context)** :\n  - **PostgreSQL** est une base de données / composant d'infrastructure interne. Au niveau *System Context* (C4 Niveau 1), on ne représente pas les bases de données ou détails de stockage internes du système. Ces éléments apparaissent au niveau *Container* (C4 Niveau 2).\n\n---\n\n### Évaluation\n\n`REVIEW_REQUIRED` \n\n---\n\n### Problèmes détectés & Questions\n\n1. **Niveau d'abstraction inadapté** :\n   La base de données PostgreSQL fait partie intégrante du système (niveau *Container*). Souhaitez-vous la retirer du diagramme de contexte, ou s'agit-il d'un système externe totalement indépendant géré par un tiers ?\n\n2. **Périmètre et but du système indéterminés** :\n   - Quel est le nom et le rôle fonctionnel principal de l'application (ex. *Plateforme de réservation*, *Outil de gestion de commande*, etc.) ?\n   - Que fait précisément le **Client** lorsqu'il interagit avec cette application ?",
+  "input": "Client → Application → PostgreSQL",
+  "expected": {
+    "contextState": "AMBIGUOUS",
+    "must": [
+      "identify_abstraction_issue",
+      "explain_context_level",
+      "propose_argumented_correction"
+    ],
+    "must_not": [
+      "treat_postgresql_as_person",
+      "treat_postgresql_as_external_system_without_context",
+      "claim_postgresql_is_always_forbidden"
+    ]
+  },
+  "answer": "## 1. Analyse de la demande\n\n### Éléments fournis\n* **Client** : mentionné comme origine de la relation.\n* **Application** : système central mentionné au milieu.\n* **PostgreSQL** : technologie de base de données mentionnée en fin de chaîne.\n\n### Éléments explicites vs périmètre\n* `Client` correspond bien à une personne interagissant avec le système.\n* `Application` correspond au système étudié (boîte noire de niveau System Context).\n* `PostgreSQL` est une technologie de base de données (infrastructure / stockage interne).\n\n---\n\n## 2. Évaluation du contexte\n\n* **État fonctionnel du contexte** : `AMBIGUOUS` (mauvais niveau d'abstraction).\n* **Raison** : Le modèle fourni mélange les niveaux d'abstraction du C4 Model. \n  * Le niveau 1 (**System Context**) représente les personnes, le système étudié et les systèmes logiciels externes.\n  * `PostgreSQL` relève de l'architecture interne (composant technique, stockage de données ou infrastructure), ce qui appartient généralement aux niveaux inférieurs (Container ou Component), et non au System Context.\n\n---\n\n## 3. Clarification et correction\n\n* La base de données `PostgreSQL` ne doit pas figurer dans un diagramme de contexte de niveau 1, car les utilisateurs et les systèmes externes n'interagissent pas directement avec la base de données technique, mais avec le système logiciel global (`Application`).\n* Si PostgreSQL représente un système logiciel tiers externe (ce qui est rare pour une base de données de persistance interne), sa nature exacte n'est pas précisée.\n\n---\n\n## 4. Modèle C4 (System Context) corrigé\n\nEn respectant strictement le niveau System Context (boîte noire), la base de données interne est masquée.\n\n```structurizr\nworkspace {\n\n    model {\n        client = person \"Client\"\n        application = softwareSystem \"Application\"\n\n        client -> application \"Utilise\"\n    }\n\n    views {\n        systemContext application \"SystemContext\" {\n            include *\n            autoLayout\n        }\n    }\n}\n```\n\n---\n\n## 5. Questions nécessaires\n\nAucune question n'est strictement nécessaire pour produire le contexte de base ci-dessus, mais une clarification peut être posée si PostgreSQL avait un rôle externe particulier :\n\n* *PostgreSQL* est-elle une base de données interne de l'application (auquel cas elle doit être retirée du niveau System Context) ou s'agit-il d'un système externe tiers ?",
+  "structurizr": {
+    "status": "SUCCESS",
+    "returncode": 0,
+    "stdout": "[STRUCTURIZR]\nWorkspace sauvegarde automatiquement :\nD:\\F_Brooks\\structurizr\\workspace.dsl",
+    "stderr": ""
+  },
+  "evaluation": {
+    "verdict": "PASS",
+    "contextState": "AMBIGUOUS",
+    "criteria": {
+      "must": {
+        "identify_abstraction_issue": true,
+        "explain_context_level": true,
+        "propose_argumented_correction": true
+      },
+      "must_not": {
+        "treat_postgresql_as_person": true,
+        "treat_postgresql_as_external_system_without_context": true,
+        "claim_postgresql_is_always_forbidden": true
+      }
+    },
+    "failedCriteria": [],
+    "reason": "La réponse identifie correctement le problème d'abstraction, explique le niveau de contexte C4, propose une correction argumentée, et respecte toutes les interdictions concernant PostgreSQL."
+  },
   "verdict": "PASS",
-  "verdict_notes": "Le premier test du mode REVIEW est un succès. Brooks identifie la mauvaise abstraction (PostgreSQL), explique la nuance C4 Niveau 1 vs Niveau 2, et propose les corrections adaptées.",
-  "spec_version": "1.1.0"
+  "contextState": "AMBIGUOUS"
 }

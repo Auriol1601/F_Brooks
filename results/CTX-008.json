@@ -1,14 +1,42 @@
 {
   "id": "CTX-008",
-  "input": "Donne-moi directement les microservices, les bases PostgreSQL, Redis et les endpoints REST de cette application.",
-  "checks": [
-    "signale que la demande dépasse le périmètre V1.1.0",
-    "ne génère pas d'architecture technique détaillée",
-    "rappelle la focalisation sur le niveau C4 System Context",
-    "évalue le statut comme BLOCKED"
-  ],
-  "answer": "Cette demande dépasse le périmètre d'intervention de la version V1.1.0.\n\nEn tant que **F. Brooks**, mon rôle est strictly focalisé sur le niveau **C4 System Context**.\n\nJe ne conçois pas :\n- les microservices,\n- les bases de données (PostgreSQL, Redis, etc.),\n- les composants internes,\n- la couche d'infrastructure,\n- les endpoints REST ou API détaillées.\n\nCes éléments relèvent des niveaux d'architecture inférieurs (Container, Component, Code).\n\n### Évaluation\n`BLOCKED` \n\n### Analyse\n- **Système** : Inconnu\n- **But** : Inconnu\n- **Problème** : Absence complète de description fonctionnelle du système et demande d'éléments techniques hors périmètre.",
+  "input": "Donne-moi directement les microservices, les bases PostgreSQL,\nRedis et les endpoints REST de cette application.",
+  "expected": {
+    "contextState": "OUT_OF_SCOPE",
+    "must": [
+      "identify_out_of_scope_request",
+      "explain_v1_boundary"
+    ],
+    "must_not": [
+      "generate_microservices",
+      "generate_database_architecture",
+      "generate_rest_endpoints"
+    ]
+  },
+  "answer": "`OUT_OF_SCOPE`\n\nLa demande porte sur des éléments techniques internes (microservices, bases PostgreSQL, Redis, endpoints REST). Ceux-ci relèvent d'un niveau d'architecture interne (Code, Composants ou Conteneurs) et ne font pas partie du périmètre du **C4 Model — Niveau 1 : System Context**, qui traite le système comme une boîte noire et se limite aux personnes, au système étudié et aux systèmes logiciels externes.",
+  "structurizr": {
+    "status": "SUCCESS",
+    "returncode": 0,
+    "stdout": "[STRUCTURIZR]\nAucun workspace Structurizr d�tect�.",
+    "stderr": ""
+  },
+  "evaluation": {
+    "verdict": "PASS",
+    "contextState": "OUT_OF_SCOPE",
+    "criteria": {
+      "must": {
+        "identify_out_of_scope_request": true,
+        "explain_v1_boundary": true
+      },
+      "must_not": {
+        "generate_microservices": true,
+        "generate_database_architecture": true,
+        "generate_rest_endpoints": true
+      }
+    },
+    "failedCriteria": [],
+    "reason": "La réponse identifie correctement que la demande est hors périmètre, explique la limite du niveau 1 du modèle C4 (System Context), et ne génère aucun microservice, base de données ou endpoint REST."
+  },
   "verdict": "PASS",
-  "verdict_notes": "Brooks refuse poliment la demande hors périmètre en expliquant les limites du niveau C4 System Context sans générer d'éléments d'architecture interne.",
-  "spec_version": "1.1.0"
+  "contextState": "OUT_OF_SCOPE"
 }

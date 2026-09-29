@@ -1,16 +1,46 @@
 {
   "id": "CTX-001",
   "input": "Nous voulons créer une plateforme de gestion des congés.\nLes employés l'utilisent pour soumettre leurs demandes de congés.\nLe service RH reçoit les demandes et les valide.",
-  "checks": [
-    "identifie la plateforme comme système étudié",
-    "identifie l'employé comme personne",
-    "identifie le service RH sans inventer une technologie",
-    "ne descend pas dans l'architecture interne"
-  ],
-  "answer": "Bonjour. Je suis **F. Brooks**, votre agent spécialisé dans l'analyse et la modélisation du contexte d'un système logiciel selon le **C4 Model (Niveau 1 — System Context)**.\n\nJ'ai bien pris connaissance de votre description. Analysons ensemble le contexte de votre plateforme.\n\n---\n\n### Analyse du contexte\n\n* **Système étudié :** Plateforme de gestion des congés\n  * *Certitude :* EXPLICITE\n  * *But métier :* Permettre la soumission et la validation des demandes de congés.\n* **Personnes / Acteurs :**\n  * `Employé` (soumet les demandes de congés) — *Certitude : EXPLICITE*\n  * `Service RH` (reçoit et valide les demandes) — *Certitude : EXPLICITE*\n* **Systèmes externes :**\n  * Aucun système externe n'est mentionné pour l'instant (pas d'annuaire d'entreprise, de système de paie, ou de service de messagerie/notification). — *Certitude : INCONNU (et c'est très bien ainsi)*\n* **Relations :**\n  * `Employé` → `Plateforme de gestion des congés` : Soumet des demandes de congés\n  * `Service RH` → `Plateforme de gestion des congés` : Reçoit et valide les demandes de congés\n\n---\n\n### État fonctionnel du contexte\n\n* **Context State :** `SUFFICIENT`\n\nLes informations fournies sont suffisantes pour modéliser le contexte global de votre système sans introduire d'éléments superflus ou non mentionnés.\n\n---\n\n### Représentation Structurizr DSL\n\nVoici le diagramme de contexte (C4 Niveau 1) correspondant à votre description :\n\n```structurizr\nworkspace {\n\n    model {\n        employee = person \"Employé\" \"Salarié de l'entreprise qui souhaite poser des congés.\"\n        hrService = person \"Service RH\" \"Personnel des Ressources Humaines en charge du traitement des congés.\"\n        \n        leaveSystem = softwareSystem \"Plateforme de gestion des congés\" \"Permet aux employés de soumettre leurs demandes et aux RH de les valider.\"\n\n        employee -> leaveSystem \"Soumet des demandes de congés\"\n        hrService -> leaveSystem \"Reçoit et valide les demandes de congés\"\n    }\n\n    views {\n        systemContext leaveSystem \"SystemContext\" {\n            include *\n            autoLayout\n        }\n\n        styles {\n            element \"Person\" {\n                shape Person\n                background #08427b\n                color #ffffff\n            }\n            element \"Software System\" {\n                background #1168bd\n                color #ffffff\n            }\n        }\n    }\n\n}\n```\n\nSouhaitez-vous préciser d'autres aspects (par exemple, l'interaction des managers si elle existe, ou l'intégration avec d'autres outils existants), ou le modèle vous convient-il en l'état ?",
-  "structurizr": {
-    "saved": false,
-    "reason": "Évaluation différente de VALID."
+  "expected": {
+    "contextState": "SUFFICIENT",
+    "must": [
+      "identify_studied_system",
+      "identify_employee",
+      "identify_hr_service",
+      "identify_employee_relationship",
+      "identify_hr_relationship"
+    ],
+    "must_not": [
+      "invent_internal_architecture",
+      "invent_external_system"
+    ]
   },
-  "verdict": "MANUAL_REVIEW"
+  "answer": "### 1. Analyse du contexte\n\n* **Système étudié :** Plateforme de gestion des congés\n* **Personnes / Acteurs directs :** \n  * Employé (`EXPLICITE`)\n  * Service RH (`EXPLICITE`)\n* **Systèmes externes :** Aucun identifié\n* **Relations :**\n  * Employé → Plateforme de gestion des congés : Soumet des demandes de congés (`EXPLICITE`)\n  * Service RH → Plateforme de gestion des congés : Reçoit et valide les demandes (`EXPLICITE`)\n\n---\n\n### 2. Éléments inconnus et ambiguïtés\n\n* **Inconnu :** Aucun élément bloquant pour un niveau System Context. Les aspects techniques d'authentification, de notification ou de stockage sont hors périmètre.\n* **Ambigüité :** Aucune.\n\n---\n\n### 3. État fonctionnel du contexte\n\n`contextState = SUFFICIENT`\n\n---\n\n### 4. Représentation C4 (Structurizr DSL)\n\n```structurizr\nworkspace \"Gestion des congés\" \"Contexte du système de gestion des congés\" {\n\n    model {\n        employe = person \"Employé\" \"Utilise la plateforme pour soumettre ses demandes de congés.\"\n        serviceRH = person \"Service RH\" \"Reçoit et valide les demandes.\"\n        \n        plateformeConges = softwareSystem \"Plateforme de gestion des congés\" \"Permet aux employés de soumettre des demandes de congés.\"\n\n        employe -> plateformeConges \"Soumet des demandes de congés\"\n        serviceRH -> plateformeConges \"Reçoit et valide les demandes\"\n    }\n\n    views {\n        systemContext plateformeConges \"SystemContext\" {\n            include *\n            auto-layout\n        }\n    }\n}\n```",
+  "structurizr": {
+    "status": "SUCCESS",
+    "returncode": 0,
+    "stdout": "[STRUCTURIZR]\nAucun workspace Structurizr d�tect�.",
+    "stderr": ""
+  },
+  "evaluation": {
+    "verdict": "PASS",
+    "contextState": "SUFFICIENT",
+    "criteria": {
+      "must": {
+        "identify_studied_system": "Le système étudié (Plateforme de gestion des congés) est clairement identifié.",
+        "identify_employee": "L'employé est identifié comme acteur.",
+        "identify_hr_service": "Le service RH est identifié comme acteur.",
+        "identify_employee_relationship": "La relation entre l'employé et le système (soumission des demandes) est identifiée.",
+        "identify_hr_relationship": "La relation entre le service RH et le système (réception et validation des demandes) est identifiée."
+      },
+      "must_not": {
+        "invent_internal_architecture": "Aucune architecture interne n'a été inventée.",
+        "invent_external_system": "Aucun système externe non mentionné n'a été introduit."
+      }
+    },
+    "failedCriteria": [],
+    "reason": "La réponse de F. Brooks identifie parfaitement tous les éléments requis du contexte système (système étudié, acteurs et relations) à partir des informations fournies, sans inventer d'architecture interne ni de système externe, et pose correctement le contextState à SUFFICIENT."
+  },
+  "verdict": "PASS",
+  "contextState": "SUFFICIENT"
 }
