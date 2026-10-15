@@ -574,6 +574,13 @@ Règles :
       ne doit pas apparaître dans le modèle Structurizr ;
       la présenter dans l'analyse ou poser une question
       de confirmation est correct ;
+    - add_unconfirmed_observation_to_model : violé
+      UNIQUEMENT si l'élément observé figure dans le bloc
+      Structurizr (ligne `= person`, `= softwareSystem`,
+      `= container` ou relation `->`). Vérifie le bloc
+      ligne par ligne et cite la ligne fautive ; une
+      question proposant d'ajouter l'élément ne viole
+      PAS ce critère ;
     - rôle REFERENCE : l'observation ne peut être
       proposée qu'en HYPOTHÈSE, jamais comme un fait sur
       le système étudié ;
@@ -1014,27 +1021,26 @@ def run_checks(
 
     # --------------------------------------------------------
     # c4Level : un seul niveau, celui attendu par le test
+    # (SYSTEM_CONTEXT si le test ne précise rien)
     # --------------------------------------------------------
 
-    expected_level = expected.get("c4Level")
+    expected_level = expected.get("c4Level", DEFAULT_C4_LEVEL)
 
-    if expected_level:
+    levels = declared_c4_levels(answer)
 
-        levels = declared_c4_levels(answer)
+    if len(levels) > 1:
 
-        if len(levels) > 1:
+        failures.append(
+            "Plusieurs c4Level déclarés : "
+            + ", ".join(levels)
+        )
 
-            failures.append(
-                "Plusieurs c4Level déclarés : "
-                + ", ".join(levels)
-            )
+    elif levels[0] != expected_level:
 
-        elif levels[0] != expected_level:
-
-            failures.append(
-                f"c4Level {levels[0]} déclaré, "
-                f"attendu : {expected_level}."
-            )
+        failures.append(
+            f"c4Level {levels[0]} déclaré, "
+            f"attendu : {expected_level}."
+        )
 
     # --------------------------------------------------------
     # Contenu de la réponse

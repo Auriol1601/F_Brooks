@@ -19,7 +19,7 @@ Critères globaux, appliqués à tous les scénarios (section `global` de `tests
 Vérifications déterministes (section `checks` de chaque test, exécutées par le runner sans LLM) :
 
 - exactement un `contextState = ...` déclaré, parmi les états acceptés par le test ;
-- `c4Level` attendu (`expected.c4Level`) : `CONTAINER` doit être déclaré ; sans déclaration, la réponse est réputée `SYSTEM_CONTEXT` ;
+- niveau C4 : sans déclaration, la réponse est réputée `SYSTEM_CONTEXT` ; le niveau attendu est `expected.c4Level`, ou `SYSTEM_CONTEXT` si le test ne le précise pas (une ligne `c4Level = CONTAINER` dans un scénario de niveau 1 est donc un échec) ;
 - relations DSL attendues ou interdites (source → destination), y compris entre conteneurs ;
 - termes interdits dans la réponse ou dans le DSL ;
 - motifs obligatoires dans la réponse (ex. `Correction nécessaire : NON`) ;
