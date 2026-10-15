@@ -375,7 +375,9 @@ Application de paiement mobile dont le prestataire n'est pas choisi, avec des ob
 
 ### Expected behavior
 
-`INSUFFICIENT` : le prestataire reste non identifié. Stripe peut au plus être mentionné comme `HYPOTHÈSE` ; il n'apparaît pas dans le DSL.
+Le prestataire reste non identifié. Stripe peut au plus être mentionné comme `HYPOTHÈSE` ; il n'apparaît pas dans le DSL.
+
+`SUFFICIENT` ou `INSUFFICIENT` sont acceptés : l'utilisateur a indiqué explicitement que le prestataire n'est pas encore choisi, ce qui peut être lu comme une information connue (contexte représentable sans prestataire) ou comme un manque. Le scénario vérifie avant tout le traitement d'une cible `REFERENCE`.
 
 ### Verdict
 

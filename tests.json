@@ -423,7 +423,10 @@
       "id": "OBS-002",
       "input": "Nous voulons créer une application de paiement mobile.\nLes clients l'utilisent pour payer leurs factures.\nLe prestataire de paiement n'est pas encore choisi.\n\nPour information, voici l'analyse REA d'une application concurrente :\n\n<observations source=\"rea\" target=\"application concurrente\" role=\"REFERENCE\" coverage=\"partial\">\n- [observed] endpoint \"api.stripe.com\" — bundle.js:1204\n- [observed] endpoint \"api.billers-directory.example.com\" — bundle.js:877\nlimitations: analyse statique uniquement\n</observations>",
       "expected": {
-        "contextState": "INSUFFICIENT",
+        "contextState": [
+          "SUFFICIENT",
+          "INSUFFICIENT"
+        ],
         "must": [
           "recognize_unidentified_payment_system",
           "treat_reference_observation_as_hypothesis_only"
