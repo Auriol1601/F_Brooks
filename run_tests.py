@@ -415,6 +415,26 @@ def call_gemini(
 
                 continue
 
+            # Modèle surchargé ou erreur serveur transitoire :
+            # attente croissante puis nouvelle tentative.
+            if (
+                exc.code in (500, 503)
+                and attempt < MAX_RATE_LIMIT_RETRIES
+            ):
+
+                delay = 20 * (attempt + 1)
+
+                print(
+                    f"⏳ Gemini indisponible (HTTP {exc.code}), "
+                    f"nouvelle tentative dans {delay} s "
+                    f"({attempt + 1}/"
+                    f"{MAX_RATE_LIMIT_RETRIES})"
+                )
+
+                time.sleep(delay)
+
+                continue
+
             raise RuntimeError(
                 f"Gemini HTTP {exc.code}: {body}"
             ) from exc
