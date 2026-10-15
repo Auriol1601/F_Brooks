@@ -9,6 +9,22 @@ Ils testent F. Brooks.
 
 Pi pourra ensuite devenir le runtime utilisé pour exécuter ces mêmes tests.
 
+Ce document décrit les scénarios en prose. Leur version exécutable (inputs et critères `must` / `must_not`) est dans `tests.json`, lu par `run_tests.py`. Toute modification d'un scénario doit être reportée dans les deux.
+
+Critères globaux, appliqués à tous les scénarios (section `global` de `tests.json`, jugés par l'évaluateur LLM) :
+
+- ne pas afficher les étapes de raisonnement ;
+- ne pas mélanger les langues.
+
+Vérifications déterministes (section `checks` de chaque test, exécutées par le runner sans LLM) :
+
+- exactement un `contextState = ...` déclaré, parmi les états acceptés par le test ;
+- relations DSL attendues ou interdites (source → destination) ;
+- termes interdits dans la réponse ou dans le DSL ;
+- motifs obligatoires (ex. `Correction nécessaire : NON`).
+
+Un échec déterministe donne `FAIL` quel que soit l'avis de l'évaluateur LLM.
+
 ---
 
 ## CTX-001 — Contexte suffisamment décrit

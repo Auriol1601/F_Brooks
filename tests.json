@@ -1,0 +1,242 @@
+{
+  "version": "1.1.1",
+  "global": {
+    "must": [],
+    "must_not": [
+      "display_reasoning_steps",
+      "mix_languages"
+    ]
+  },
+  "tests": [
+    {
+      "id": "CTX-001",
+      "input": "Nous voulons créer une plateforme de gestion des congés.\nLes employés l'utilisent pour soumettre leurs demandes de congés.\nLe service RH reçoit les demandes et les valide.",
+      "expected": {
+        "contextState": "SUFFICIENT",
+        "must": [
+          "identify_studied_system",
+          "identify_employee",
+          "identify_hr_service",
+          "identify_employee_relationship",
+          "identify_hr_relationship",
+          "preserve_hr_validation_action"
+        ],
+        "must_not": [
+          "invent_internal_architecture",
+          "invent_external_system",
+          "invert_or_replace_explicit_relationship"
+        ]
+      },
+      "checks": {
+        "dsl_relationships": [
+          [
+            "Employé",
+            "Plateforme de gestion des congés"
+          ],
+          [
+            "Service RH",
+            "Plateforme de gestion des congés"
+          ]
+        ],
+        "dsl_forbidden_relationships": [
+          [
+            "Plateforme de gestion des congés",
+            "Service RH"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "CTX-002",
+      "input": "Je veux faire une application bancaire.",
+      "expected": {
+        "contextState": "INSUFFICIENT",
+        "must": [
+          "ask_clarification",
+          "recognize_missing_context"
+        ],
+        "must_not": [
+          "invent_client",
+          "invent_administrator",
+          "invent_bank",
+          "invent_payment_provider"
+        ]
+      }
+    },
+    {
+      "id": "CTX-003",
+      "input": "Le client utilise une plateforme de crédit.\nLa plateforme utilise un service externe de scoring pour évaluer les demandes.",
+      "expected": {
+        "contextState": "SUFFICIENT",
+        "must": [
+          "identify_client",
+          "identify_credit_platform",
+          "identify_scoring_system",
+          "identify_context_relationships"
+        ],
+        "must_not": [
+          "invent_postgresql",
+          "invent_redis",
+          "invent_api_gateway",
+          "invent_microservices"
+        ]
+      },
+      "checks": {
+        "dsl_forbidden_terms": [
+          "PostgreSQL",
+          "Redis",
+          "API Gateway",
+          "microservice"
+        ]
+      }
+    },
+    {
+      "id": "CTX-004",
+      "input": "Un employé utilise l'application RH.\nL'application récupère certaines informations depuis le système RH central.",
+      "expected": {
+        "contextState": "SUFFICIENT",
+        "must": [
+          "identify_employee",
+          "identify_hr_application",
+          "identify_hr_central_system",
+          "distinguish_person_from_external_system",
+          "identify_context_relationships"
+        ],
+        "must_not": [
+          "invent_internal_architecture"
+        ]
+      },
+      "checks": {
+        "dsl_relationships": [
+          [
+            "Employé",
+            "Application RH"
+          ],
+          [
+            "Application RH",
+            "Système RH central"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "CTX-005",
+      "input": "L'application doit permettre le paiement en ligne.",
+      "expected": {
+        "contextState": "INSUFFICIENT",
+        "must": [
+          "recognize_unidentified_payment_system"
+        ],
+        "must_not": [
+          "invent_stripe",
+          "invent_paypal",
+          "invent_payment_provider"
+        ]
+      },
+      "checks": {
+        "forbidden_terms": [
+          "Stripe",
+          "PayPal"
+        ]
+      }
+    },
+    {
+      "id": "CTX-006",
+      "input": "Client → Application → PostgreSQL",
+      "expected": {
+        "contextState": "AMBIGUOUS",
+        "must": [
+          "identify_abstraction_issue",
+          "explain_context_level",
+          "propose_argumented_correction",
+          "use_correct_c4_levels"
+        ],
+        "must_not": [
+          "treat_postgresql_as_person",
+          "treat_postgresql_as_external_system_without_context",
+          "claim_postgresql_is_always_forbidden"
+        ]
+      }
+    },
+    {
+      "id": "CTX-007",
+      "input": "Seuls les administrateurs utilisent le système.\n\nLes employés peuvent également soumettre leurs demandes directement dans le système.",
+      "expected": {
+        "contextState": "CONTRADICTORY",
+        "must": [
+          "detect_contradiction",
+          "ask_clarification"
+        ],
+        "must_not": [
+          "silently_choose_interpretation"
+        ]
+      }
+    },
+    {
+      "id": "CTX-008",
+      "input": "Donne-moi directement les microservices, les bases PostgreSQL,\nRedis et les endpoints REST de cette application.",
+      "expected": {
+        "contextState": "OUT_OF_SCOPE",
+        "must": [
+          "identify_out_of_scope_request",
+          "explain_v1_boundary"
+        ],
+        "must_not": [
+          "generate_microservices",
+          "generate_database_architecture",
+          "generate_rest_endpoints"
+        ]
+      },
+      "checks": {
+        "dsl_forbidden_terms": [
+          "PostgreSQL",
+          "Redis"
+        ]
+      }
+    },
+    {
+      "id": "CTX-009",
+      "input": "Les utilisateurs reçoivent des notifications lorsque leur demande\nest traitée.",
+      "expected": {
+        "contextState": [
+          "AMBIGUOUS",
+          "INSUFFICIENT"
+        ],
+        "must": [
+          "identify_notification_requirement",
+          "identify_missing_notification_system"
+        ],
+        "must_not": [
+          "invent_email_system",
+          "invent_sms_system",
+          "invent_push_system",
+          "invent_notification_provider"
+        ]
+      }
+    },
+    {
+      "id": "CTX-010",
+      "input": "Voici le contexte existant :\n\nClient → Application de réservation → Service de paiement\n\nAnalyse ce contexte avant de proposer une éventuelle correction.",
+      "expected": {
+        "contextState": "SUFFICIENT",
+        "must": [
+          "analyze_existing_model",
+          "preserve_user_elements",
+          "trace_proposed_corrections",
+          "no_unmarked_label_for_unlabeled_relationships",
+          "state_whether_correction_is_needed"
+        ],
+        "must_not": [
+          "silently_replace_client",
+          "silently_replace_booking_application",
+          "silently_replace_payment_system"
+        ]
+      },
+      "checks": {
+        "required_patterns": [
+          "Correction nécessaire\\s*:\\s*\\**\\s*NON"
+        ]
+      }
+    }
+  ]
+}

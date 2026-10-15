@@ -11,7 +11,7 @@ Pipeline :
           ↓
     réponse F. Brooks
           ↓
-      Structurizr
+      Structurizr (validation DSL via Docker)
           ↓
     Gemini Evaluator
           ↓
@@ -37,6 +37,11 @@ Usage:
 
     Dossier de sortie personnalisé:
         python run_tests.py --save results
+
+Scénarios : tests.json
+Modèle évalué : GEMINI_MODEL
+Modèle juge   : GEMINI_EVAL_MODEL (par défaut GEMINI_MODEL)
+DSL par test  : results/dsl/CTX-XXX.dsl
 """
 
 import argparse
@@ -50,6 +55,13 @@ import urllib.error
 import urllib.request
 from pathlib import Path
 
+sys.path.insert(
+    0,
+    str(Path(__file__).parent / "automation"),
+)
+
+from structurizr_writer import extract_workspace_dsl  # noqa: E402
+
 
 # ============================================================
 # CONFIGURATION
@@ -60,14 +72,23 @@ MODEL = os.getenv(
     "gemini-3.5-flash-lite",
 )
 
-API_URL = (
+# Modèle juge : idéalement plus fort que le modèle évalué.
+EVAL_MODEL = os.getenv(
+    "GEMINI_EVAL_MODEL",
+    MODEL,
+)
+
+API_URL_TEMPLATE = (
     "https://generativelanguage.googleapis.com/v1beta/models/"
-    + MODEL
-    + ":generateContent"
+    "{model}:generateContent"
 )
 
 SYSTEM_PROMPT_FILE = Path(__file__).with_name(
     "SYSTEM_PROMPT.md"
+)
+
+TESTS_FILE = Path(__file__).with_name(
+    "tests.json"
 )
 
 STRUCTURIZR_WRITER = (
@@ -77,7 +98,9 @@ STRUCTURIZR_WRITER = (
 )
 
 MAX_EVALUATOR_RETRIES = 2
+MAX_RATE_LIMIT_RETRIES = 3
 GEMINI_TIMEOUT = 120
+STRUCTURIZR_TIMEOUT = 180
 
 ALLOWED_CONTEXT_STATES = {
     "SUFFICIENT",
@@ -97,237 +120,37 @@ ALLOWED_VERDICTS = {
 # TESTS
 # ============================================================
 
-TESTS = [
+def load_tests():
+    """
+    Charge les scénarios depuis tests.json (source unique).
 
-    {
-        "id": "CTX-001",
+    Les critères "global" s'ajoutent aux critères de chaque test.
+    """
 
-        "input": """Nous voulons créer une plateforme de gestion des congés.
-Les employés l'utilisent pour soumettre leurs demandes de congés.
-Le service RH reçoit les demandes et les valide.""",
+    data = json.loads(
+        TESTS_FILE.read_text(
+            encoding="utf-8"
+        )
+    )
 
-        "expected": {
-            "contextState": "SUFFICIENT",
+    global_criteria = data.get(
+        "global",
+        {},
+    )
 
-            "must": [
-                "identify_studied_system",
-                "identify_employee",
-                "identify_hr_service",
-                "identify_employee_relationship",
-                "identify_hr_relationship",
-            ],
+    for test in data["tests"]:
 
-            "must_not": [
-                "invent_internal_architecture",
-                "invent_external_system",
-            ],
-        },
-    },
+        for key in ("must", "must_not"):
 
-    {
-        "id": "CTX-002",
+            test["expected"][key] = (
+                test["expected"].get(key, [])
+                + global_criteria.get(key, [])
+            )
 
-        "input": "Je veux faire une application bancaire.",
+    return data["tests"]
 
-        "expected": {
-            "contextState": "INSUFFICIENT",
 
-            "must": [
-                "ask_clarification",
-                "recognize_missing_context",
-            ],
-
-            "must_not": [
-                "invent_client",
-                "invent_administrator",
-                "invent_bank",
-                "invent_payment_provider",
-            ],
-        },
-    },
-
-    {
-        "id": "CTX-003",
-
-        "input": """Le client utilise une plateforme de crédit.
-La plateforme utilise un service externe de scoring pour évaluer les demandes.""",
-
-        "expected": {
-            "contextState": "SUFFICIENT",
-
-            "must": [
-                "identify_client",
-                "identify_credit_platform",
-                "identify_scoring_system",
-                "identify_context_relationships",
-            ],
-
-            "must_not": [
-                "invent_postgresql",
-                "invent_redis",
-                "invent_api_gateway",
-                "invent_microservices",
-            ],
-        },
-    },
-
-    {
-        "id": "CTX-004",
-
-        "input": """Un employé utilise l'application RH.
-L'application récupère certaines informations depuis le système RH central.""",
-
-        "expected": {
-            "contextState": "SUFFICIENT",
-
-            "must": [
-                "identify_employee",
-                "identify_hr_application",
-                "identify_hr_central_system",
-                "distinguish_person_from_external_system",
-                "identify_context_relationships",
-            ],
-
-            "must_not": [
-                "invent_internal_architecture",
-            ],
-        },
-    },
-
-    {
-        "id": "CTX-005",
-
-        "input": "L'application doit permettre le paiement en ligne.",
-
-        "expected": {
-            "contextState": "INSUFFICIENT",
-
-            "must": [
-                "recognize_unidentified_payment_system",
-            ],
-
-            "must_not": [
-                "invent_stripe",
-                "invent_paypal",
-                "invent_payment_provider",
-            ],
-        },
-    },
-
-    {
-        "id": "CTX-006",
-
-        "input": "Client → Application → PostgreSQL",
-
-        "expected": {
-            "contextState": "AMBIGUOUS",
-
-            "must": [
-                "identify_abstraction_issue",
-                "explain_context_level",
-                "propose_argumented_correction",
-            ],
-
-            "must_not": [
-                "treat_postgresql_as_person",
-                "treat_postgresql_as_external_system_without_context",
-                "claim_postgresql_is_always_forbidden",
-            ],
-        },
-    },
-
-    {
-        "id": "CTX-007",
-
-        "input": """Seuls les administrateurs utilisent le système.
-
-Les employés peuvent également soumettre leurs demandes directement dans le système.""",
-
-        "expected": {
-            "contextState": "CONTRADICTORY",
-
-            "must": [
-                "detect_contradiction",
-                "ask_clarification",
-            ],
-
-            "must_not": [
-                "silently_choose_interpretation",
-            ],
-        },
-    },
-
-    {
-        "id": "CTX-008",
-
-        "input": """Donne-moi directement les microservices, les bases PostgreSQL,
-Redis et les endpoints REST de cette application.""",
-
-        "expected": {
-            "contextState": "OUT_OF_SCOPE",
-
-            "must": [
-                "identify_out_of_scope_request",
-                "explain_v1_boundary",
-            ],
-
-            "must_not": [
-                "generate_microservices",
-                "generate_database_architecture",
-                "generate_rest_endpoints",
-            ],
-        },
-    },
-
-    {
-        "id": "CTX-009",
-
-        "input": """Les utilisateurs reçoivent des notifications lorsque leur demande
-est traitée.""",
-
-        "expected": {
-            "contextState": "AMBIGUOUS",
-
-            "must": [
-                "identify_notification_requirement",
-                "identify_missing_notification_system",
-            ],
-
-            "must_not": [
-                "invent_email_system",
-                "invent_sms_system",
-                "invent_push_system",
-                "invent_notification_provider",
-            ],
-        },
-    },
-
-    {
-        "id": "CTX-010",
-
-        "input": """Voici le contexte existant :
-
-Client → Application de réservation → Service de paiement
-
-Analyse ce contexte avant de proposer une éventuelle correction.""",
-
-        "expected": {
-            "contextState": "SUFFICIENT",
-
-            "must": [
-                "analyze_existing_model",
-                "preserve_user_elements",
-                "trace_proposed_corrections",
-            ],
-
-            "must_not": [
-                "silently_replace_client",
-                "silently_replace_booking_application",
-                "silently_replace_payment_system",
-            ],
-        },
-    },
-]
+TESTS = load_tests()
 
 
 # ============================================================
@@ -457,12 +280,32 @@ def extract_json(text):
 # GEMINI
 # ============================================================
 
+def retry_delay_seconds(
+    body
+):
+    """
+    Lit le délai d'attente (RetryInfo.retryDelay, ex. "48s")
+    d'une réponse 429 de Gemini.
+    """
+
+    match = re.search(
+        r'"retryDelay"\s*:\s*"(\d+(?:\.\d+)?)s"',
+        body,
+    )
+
+    if match:
+        return int(float(match.group(1))) + 2
+
+    return 60
+
+
 def call_gemini(
     system_prompt,
     user_input,
     *,
-    temperature=0.2,
+    temperature=0.0,
     timeout=GEMINI_TIMEOUT,
+    model=MODEL,
 ):
     """
     Appel Gemini REST API.
@@ -509,7 +352,7 @@ def call_gemini(
     }
 
     request = urllib.request.Request(
-        API_URL,
+        API_URL_TEMPLATE.format(model=model),
 
         data=json.dumps(
             payload
@@ -523,40 +366,66 @@ def call_gemini(
         method="POST",
     )
 
-    try:
+    for attempt in range(
+        MAX_RATE_LIMIT_RETRIES + 1
+    ):
 
-        with urllib.request.urlopen(
-            request,
-            timeout=timeout,
-        ) as response:
+        try:
 
-            data = json.loads(
-                response.read().decode(
-                    "utf-8"
+            with urllib.request.urlopen(
+                request,
+                timeout=timeout,
+            ) as response:
+
+                data = json.loads(
+                    response.read().decode(
+                        "utf-8"
+                    )
                 )
+
+            break
+
+        except urllib.error.HTTPError as exc:
+
+            body = exc.read().decode(
+                "utf-8",
+                errors="replace",
             )
 
-    except urllib.error.HTTPError as exc:
+            # Quota dépassé : on attend le délai indiqué
+            # par Gemini puis on réessaie.
+            if (
+                exc.code == 429
+                and attempt < MAX_RATE_LIMIT_RETRIES
+            ):
 
-        body = exc.read().decode(
-            "utf-8",
-            errors="replace",
-        )
+                delay = retry_delay_seconds(body)
 
-        raise RuntimeError(
-            f"Gemini HTTP {exc.code}: {body}"
-        ) from exc
+                print(
+                    f"⏳ Quota Gemini atteint, nouvelle "
+                    f"tentative dans {delay} s "
+                    f"({attempt + 1}/"
+                    f"{MAX_RATE_LIMIT_RETRIES})"
+                )
 
-    except (
-        urllib.error.URLError,
-        ConnectionError,
-        TimeoutError,
-        OSError,
-    ) as exc:
+                time.sleep(delay)
 
-        raise RuntimeError(
-            f"Erreur de connexion Gemini : {exc}"
-        ) from exc
+                continue
+
+            raise RuntimeError(
+                f"Gemini HTTP {exc.code}: {body}"
+            ) from exc
+
+        except (
+            urllib.error.URLError,
+            ConnectionError,
+            TimeoutError,
+            OSError,
+        ) as exc:
+
+            raise RuntimeError(
+                f"Erreur de connexion Gemini : {exc}"
+            ) from exc
 
     try:
 
@@ -646,6 +515,54 @@ Règles :
     Cette erreur est gérée par le runner sous le statut
     EVALUATION_ERROR.
 
+12. Sois strict. Évalue chaque critère séparément et
+    indépendamment, en citant l'extrait de la réponse
+    qui le satisfait ou le viole. Un critère non
+    démontré par la réponse est considéré comme non
+    satisfait. Un seul critère "must" non satisfait ou
+    un seul critère "must_not" violé donne FAIL.
+    Exception : un critère conditionnel (ex.
+    trace_proposed_corrections) est satisfait lorsque sa
+    condition ne s'applique pas, par exemple lorsque la
+    réponse indique explicitement qu'aucune correction
+    n'est nécessaire.
+
+13. Fidélité des relations : une relation dont le sens
+    est inversé par rapport à l'input, ou dont l'action
+    explicite (ex. « valide ») est remplacée ou perdue,
+    est une invention, même si elle est marquée INFÉRÉ.
+
+14. Le contextState est vérifié automatiquement par le
+    runner. Ne fonde jamais ton verdict sur le
+    contextState : juge uniquement les critères fournis.
+
+15. display_reasoning_steps : violé uniquement si la
+    réponse récite les étapes du processus de
+    raisonnement lui-même (« 1. Comprendre,
+    2. Identifier les éléments explicites, 3. Vérifier
+    les ambiguïtés, 7. Déterminer le contextState… »).
+    Une liste numérotée d'éléments, de sections
+    d'analyse, de problèmes ou de questions est une
+    présentation normale et ne viole PAS ce critère.
+
+16. mix_languages : violé si la réponse contient des
+    mots d'une autre langue que celle de l'utilisateur,
+    hors termes techniques du C4 Model.
+
+17. no_unmarked_label_for_unlabeled_relationships :
+    pour une relation fournie sans libellé, la réponse
+    peut soit la laisser sans libellé, soit utiliser un
+    libellé générique marqué INFÉRÉ. Violé seulement si
+    un libellé ou une interprétation est présenté comme
+    fourni par l'utilisateur.
+
+17 bis. use_correct_c4_levels : en C4, une base de données
+    relève du niveau 2 (Container), pas du niveau 3.
+
+18. Pour le champ contextState, recopie l'état déclaré
+    par F. Brooks. S'il en déclare plusieurs, retiens
+    le premier.
+
 Retourne exclusivement un objet JSON avec cette structure :
 
 {
@@ -674,7 +591,15 @@ def build_evaluator_prompt(
 ):
     """
     Construit le prompt envoyé à Gemini Evaluator.
+
+    Le contextState attendu n'est pas transmis : il est
+    vérifié par le runner (run_checks).
     """
+
+    criteria = {
+        "must": test["expected"].get("must", []),
+        "must_not": test["expected"].get("must_not", []),
+    }
 
     return f"""
 Évalue la réponse de F. Brooks pour le test suivant.
@@ -686,7 +611,7 @@ INPUT UTILISATEUR :
 {test["input"]}
 
 CRITÈRES ATTENDUS :
-{json_dumps(test["expected"])}
+{json_dumps(criteria)}
 
 RÉPONSE DE F. BROOKS :
 {answer}
@@ -695,7 +620,6 @@ RÉPONSE DE F. BROOKS :
 
 - les critères "must" ;
 - les critères "must_not" ;
-- le contextState déclaré ou déductible de la réponse ;
 - la fidélité aux informations fournies ;
 - l'absence d'invention ;
 - le respect du périmètre C4 System Context.
@@ -877,6 +801,7 @@ def evaluate_test(
                 EVALUATOR_SYSTEM_PROMPT,
                 evaluator_prompt,
                 temperature=0.0,
+                model=EVAL_MODEL,
             )
 
             evaluation = extract_json(
@@ -912,17 +837,236 @@ def evaluate_test(
 
 
 # ============================================================
+# VÉRIFICATIONS DÉTERMINISTES
+# ============================================================
+#
+# Ces contrôles ne dépendent pas d'un LLM : un échec donne
+# FAIL quel que soit l'avis de l'évaluateur.
+#
+# tests.json, pour chaque test :
+#
+#   expected.contextState         état ou liste d'états acceptés
+#   checks.required_patterns      regex à trouver dans la réponse
+#   checks.forbidden_terms        termes interdits dans la réponse
+#   checks.dsl_forbidden_terms    termes interdits dans le DSL
+#   checks.dsl_relationships      [source, destination] requis
+#   checks.dsl_forbidden_relationships
+#                                 [source, destination] interdits
+
+CONTEXT_STATE_DECLARATION = re.compile(
+    r"contextState\s*[=:]\s*`?\s*([A-Z_]+)`?"
+    r"(?:\s*(?:/|,|\bou\b|\bor\b)\s*`?([A-Z_]+)`?)?",
+)
+
+DSL_ELEMENT = re.compile(
+    r'(\w+)\s*=\s*(?:person|softwareSystem)\s+"([^"]*)"'
+)
+
+DSL_RELATIONSHIP = re.compile(
+    r"^\s*(\w+)\s*->\s*(\w+)",
+    re.MULTILINE,
+)
+
+
+def declared_context_states(
+    answer
+):
+    """Liste les contextState déclarés dans la réponse."""
+
+    states = []
+
+    for match in CONTEXT_STATE_DECLARATION.finditer(
+        answer
+    ):
+
+        for state in match.groups():
+
+            if state and state not in states:
+                states.append(state)
+
+    return states
+
+
+def dsl_relationships(
+    dsl
+):
+    """
+    Retourne les relations du DSL sous forme de couples
+    (nom source, nom destination) en minuscules.
+    """
+
+    names = {
+        identifier: name.strip().lower()
+        for identifier, name in DSL_ELEMENT.findall(dsl)
+    }
+
+    return {
+        (
+            names.get(source, source.lower()),
+            names.get(destination, destination.lower()),
+        )
+        for source, destination in DSL_RELATIONSHIP.findall(dsl)
+    }
+
+
+def run_checks(
+    test,
+    answer,
+):
+    """
+    Exécute les vérifications déterministes d'un test.
+
+    Retourne {"passed": bool, "failures": [...]}.
+    """
+
+    failures = []
+
+    expected = test["expected"]
+    checks = test.get("checks", {})
+
+    # --------------------------------------------------------
+    # contextState : exactement un état, et un état accepté
+    # --------------------------------------------------------
+
+    accepted = expected.get("contextState")
+
+    if isinstance(accepted, str):
+        accepted = [accepted]
+
+    states = declared_context_states(answer)
+
+    if not states:
+
+        failures.append(
+            "Aucun « contextState = ... » déclaré."
+        )
+
+    elif len(states) > 1:
+
+        failures.append(
+            "Plusieurs contextState déclarés : "
+            + ", ".join(states)
+        )
+
+    elif accepted and states[0] not in accepted:
+
+        failures.append(
+            f"contextState {states[0]} déclaré, "
+            f"attendu : {' ou '.join(accepted)}."
+        )
+
+    # --------------------------------------------------------
+    # Contenu de la réponse
+    # --------------------------------------------------------
+
+    for pattern in checks.get("required_patterns", []):
+
+        if not re.search(pattern, answer, re.IGNORECASE):
+
+            failures.append(
+                f"Motif attendu absent : {pattern}"
+            )
+
+    lowered_answer = answer.lower()
+
+    for term in checks.get("forbidden_terms", []):
+
+        if term.lower() in lowered_answer:
+
+            failures.append(
+                f"Terme interdit dans la réponse : {term}"
+            )
+
+    # --------------------------------------------------------
+    # DSL
+    # --------------------------------------------------------
+
+    dsl = extract_workspace_dsl(answer) or ""
+    lowered_dsl = dsl.lower()
+
+    for term in checks.get("dsl_forbidden_terms", []):
+
+        if term.lower() in lowered_dsl:
+
+            failures.append(
+                f"Terme interdit dans le DSL : {term}"
+            )
+
+    relationships = dsl_relationships(dsl)
+
+    for source, destination in checks.get(
+        "dsl_relationships", []
+    ):
+
+        if (
+            source.lower(),
+            destination.lower(),
+        ) not in relationships:
+
+            failures.append(
+                "Relation DSL attendue absente : "
+                f"{source} -> {destination}"
+            )
+
+    for source, destination in checks.get(
+        "dsl_forbidden_relationships", []
+    ):
+
+        if (
+            source.lower(),
+            destination.lower(),
+        ) in relationships:
+
+            failures.append(
+                "Relation DSL interdite : "
+                f"{source} -> {destination}"
+            )
+
+    return {
+        "passed": not failures,
+        "failures": failures,
+    }
+
+
+def combine_verdict(
+    checks_result,
+    evaluation,
+):
+    """
+    Un échec déterministe l'emporte sur l'évaluateur LLM.
+    """
+
+    if not checks_result["passed"]:
+        return "FAIL"
+
+    return evaluation.get(
+        "verdict",
+        "EVALUATION_ERROR",
+    )
+
+
+# ============================================================
 # STRUCTURIZR
 # ============================================================
 
 def run_structurizr_writer(
-    answer
+    answer,
+    test_id,
 ):
     """
     Envoie la réponse de F. Brooks au writer Structurizr.
 
     Le writer est responsable de l'extraction et de la
-    validation DSL.
+    validation DSL (parseur Structurizr via Docker).
+
+    Statuts possibles :
+
+        SAVED              DSL validé par Structurizr et sauvegardé
+        SAVED_UNVALIDATED  DSL sauvegardé, Docker indisponible
+        NO_WORKSPACE       aucune DSL dans la réponse
+        INVALID_DSL        DSL rejeté
+        NOT_AVAILABLE      writer introuvable
+        ERROR              erreur technique du writer
 
     Il ne décide jamais du verdict PASS/FAIL.
     """
@@ -941,12 +1085,23 @@ def run_structurizr_writer(
     try:
 
         process = subprocess.run(
-            [sys.executable, str(STRUCTURIZR_WRITER)],
+            [
+                sys.executable,
+                str(STRUCTURIZR_WRITER),
+                "--json",
+                "--test-id",
+                test_id,
+            ],
             input=answer,
             text=True,
             encoding="utf-8",
             errors="replace",
             capture_output=True,
+            timeout=STRUCTURIZR_TIMEOUT,
+            env={
+                **os.environ,
+                "PYTHONIOENCODING": "utf-8",
+            },
         )
 
     except subprocess.TimeoutExpired:
@@ -956,7 +1111,7 @@ def run_structurizr_writer(
 
             "message": (
                 "Le writer Structurizr a dépassé "
-                "le délai de 60 secondes."
+                f"le délai de {STRUCTURIZR_TIMEOUT} secondes."
             ),
         }
 
@@ -985,15 +1140,22 @@ def run_structurizr_writer(
             "stderr": stderr,
         }
 
-    return {
-        "status": "SUCCESS",
+    try:
 
-        "returncode": process.returncode,
+        return json.loads(stdout)
 
-        "stdout": stdout,
+    except json.JSONDecodeError:
 
-        "stderr": stderr,
-    }
+        return {
+            "status": "ERROR",
+
+            "message": (
+                "Sortie du writer illisible : "
+                + stdout
+            ),
+
+            "stderr": stderr,
+        }
 
 
 # ============================================================
@@ -1076,6 +1238,26 @@ def print_evaluation(
     )
 
 
+def print_checks(
+    checks_result
+):
+    """
+    Affiche le résultat des vérifications déterministes.
+    """
+
+    print("\n— VÉRIFICATIONS AUTOMATIQUES")
+
+    if checks_result["passed"]:
+
+        print("OK")
+
+        return
+
+    for failure in checks_result["failures"]:
+
+        print(f"  ✗ {failure}")
+
+
 def print_structurizr_result(
     structurizr_result
 ):
@@ -1089,21 +1271,39 @@ def print_structurizr_result(
         "status"
     )
 
-    if status == "SUCCESS":
+    if status in (
+        "SAVED",
+        "SAVED_UNVALIDATED",
+        "NO_WORKSPACE",
+        "INVALID_DSL",
+    ):
 
-        stdout = structurizr_result.get(
-            "stdout",
-            "",
+        print(
+            f"Statut        : {status}"
         )
 
-        if stdout:
+        if structurizr_result.get("saved"):
 
-            print(stdout)
+            print(
+                "Workspace     : "
+                + structurizr_result["path"]
+            )
 
         else:
 
             print(
-                "Workspace Structurizr traité."
+                "Raison        : "
+                + structurizr_result.get(
+                    "reason",
+                    "",
+                )
+            )
+
+        if structurizr_result.get("validation"):
+
+            print(
+                "Validation    : "
+                + structurizr_result["validation"]
             )
 
     elif status == "NOT_AVAILABLE":
@@ -1160,6 +1360,9 @@ def find_test(
 # ============================================================
 
 def main():
+
+    sys.stdout.reconfigure(encoding="utf-8")
+    sys.stderr.reconfigure(encoding="utf-8")
 
     parser = argparse.ArgumentParser(
         description=(
@@ -1385,7 +1588,8 @@ def main():
 
         structurizr_result = (
             run_structurizr_writer(
-                answer
+                answer,
+                test["id"],
             )
         )
 
@@ -1406,9 +1610,22 @@ def main():
             evaluation
         )
 
-        verdict = evaluation.get(
-            "verdict",
-            "EVALUATION_ERROR",
+        checks_result = run_checks(
+            test,
+            answer,
+        )
+
+        print_checks(
+            checks_result
+        )
+
+        verdict = combine_verdict(
+            checks_result,
+            evaluation,
+        )
+
+        print(
+            f"\nVERDICT FINAL : {verdict}"
         )
 
         if verdict not in summary:
@@ -1436,15 +1653,14 @@ def main():
 
             "evaluation": evaluation,
 
-            "verdict": evaluation.get(
-                "verdict",
-                "EVALUATION_ERROR",
-            ),
+            "checks": checks_result,
 
-            "contextState": evaluation.get(
-                "contextState",
-                "UNKNOWN",
-            ),
+            "verdict": verdict,
+
+            "contextState": (
+                declared_context_states(answer)
+                or ["UNKNOWN"]
+            )[0],
         }
 
         path = (
