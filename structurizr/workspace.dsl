@@ -1,25 +1,18 @@
-workspace "Application RH" {
+workspace "Application de réservation" {
 
     model {
-        employe = person "Employé"
-        systemeRHCentral = softwareSystem "Système RH central"
+        client = person "Client"
+        appReservation = softwareSystem "Application de réservation"
+        servicePaiement = softwareSystem "Service de paiement"
+        serviceNotification = softwareSystem "Service de notification"
 
-        appRH = softwareSystem "Application RH" {
-            appWeb = container "Application web"
-            db = container "Base de données"
-        }
-
-        employe -> appWeb "Utilise"
-        appWeb -> db "Lit et écrit"
-        appWeb -> systemeRHCentral "Récupère certaines informations"
+        client -> appReservation "Utilise"
+        appReservation -> servicePaiement "Utilise"
+        appReservation -> serviceNotification "Utilise"
     }
 
     views {
-        systemContext appRH "SystemContext" {
-            include *
-            autoLayout
-        }
-        container appRH "Containers" {
+        systemContext appReservation "SystemContext" {
             include *
             autoLayout
         }

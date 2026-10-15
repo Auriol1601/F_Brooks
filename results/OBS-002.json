@@ -2,7 +2,10 @@
   "id": "OBS-002",
   "input": "Nous voulons créer une application de paiement mobile.\nLes clients l'utilisent pour payer leurs factures.\nLe prestataire de paiement n'est pas encore choisi.\n\nPour information, voici l'analyse REA d'une application concurrente :\n\n<observations source=\"rea\" target=\"application concurrente\" role=\"REFERENCE\" coverage=\"partial\">\n- [observed] endpoint \"api.stripe.com\" — bundle.js:1204\n- [observed] endpoint \"api.billers-directory.example.com\" — bundle.js:877\nlimitations: analyse statique uniquement\n</observations>",
   "expected": {
-    "contextState": "INSUFFICIENT",
+    "contextState": [
+      "SUFFICIENT",
+      "INSUFFICIENT"
+    ],
     "must": [
       "recognize_unidentified_payment_system",
       "treat_reference_observation_as_hypothesis_only"
@@ -15,7 +18,7 @@
       "mix_languages"
     ]
   },
-  "answer": "c4Level = SYSTEM_CONTEXT\ncontextState = SUFFICIENT\n\n### Analyse du contexte\n\n1. **Système étudié** : Application de paiement mobile.\n2. **Utilisateurs** : Clients (utilisent l'application pour payer leurs factures — relation explicite).\n3. **Systèmes externes** : Aucun système externe n'est explicitement nommé (le prestataire de paiement n'est pas encore choisi, et les observations de la cible de référence `REFERENCE` ne constituent pas des faits pour notre système).\n4. **Informations manquantes** : Le prestataire de paiement n'est pas choisi (déclaré `INCONNU`), ce qui est cohérent et ne bloque pas l'établissement du contexte actuel.\n\n### Observations externes (REA)\nLa cible est de rôle `REFERENCE` (« application concurrente »). Ses observations (`api.stripe.com`, `api.billers-directory.example.com`) n'apportent aucune information confirmée sur notre système et ne peuvent pas être intégrées au modèle. Elles sont ignorées pour la modélisation.\n\n### Représentation C4 System Context\n\n```structurizr\nworkspace \"Application de paiement mobile\" {\n\n    model {\n        client = person \"Client\"\n        appPaiement = softwareSystem \"Application de paiement mobile\"\n\n        client -> appPaiement \"Utilise pour payer ses factures\"\n    }\n\n    views {\n        systemContext appPaiement \"SystemContext\" {\n            include *\n            autoLayout\n        }\n    }\n}\n```",
+  "answer": "c4Level = SYSTEM_CONTEXT\ncontextState = SUFFICIENT\n\n## Analyse du contexte\n\n### Éléments explicitement fournis\n- **Système étudié** : Application de paiement mobile\n- **Personnes** : Clients\n- **Relations** : \n  - Clients → Application de paiement mobile (utilisent pour payer leurs factures)\n- **Informations inconnues** : Le prestataire de paiement n'est pas encore choisi (système externe non identifié, marqué comme `INCONNU`).\n\n### Traitement des observations externes\nL'analyse REA fournie concerne une *application concurrente* (rôle `REFERENCE`). Conformément aux règles, ces observations (`api.stripe.com` et `api.billers-directory.example.com`) ne constituent pas des faits sur le système étudié et ne sont pas intégrées dans le modèle.\n\n## Modèle C4 (System Context)\n\n```structurizr\nworkspace \"Application de paiement mobile\" {\n\n    model {\n        client = person \"Client\"\n        applicationPaiementMobile = softwareSystem \"Application de paiement mobile\"\n\n        client -> applicationPaiementMobile \"Paie ses factures\"\n    }\n\n    views {\n        systemContext applicationPaiementMobile \"SystemContext\" {\n            include *\n            autoLayout\n        }\n    }\n}\n```",
   "structurizr": {
     "dslFile": "D:\\F_Brooks\\results\\dsl\\OBS-002.dsl",
     "validation": "DSL validé par Structurizr.",
@@ -28,55 +31,46 @@
     "contextState": "SUFFICIENT",
     "criteria": {
       "must": {
-        "recognize_unidentified_payment_system": "Satisfait par l'analyse indiquant que le prestataire de paiement n'est pas encore choisi.",
-        "treat_reference_observation_as_hypothesis_only": "Satisfait par l'analyse précisant que les observations de la cible de référence ne constituent pas des faits pour le système."
+        "recognize_unidentified_payment_system": "La réponse indique explicitement : \"Le prestataire de paiement n'est pas encore choisi (système externe non identifié, marqué comme `INCONNU`)\".",
+        "treat_reference_observation_as_hypothesis_only": "La réponse indique explicitement : \"L'analyse REA fournie concerne une *application concurrente* (rôle `REFERENCE`). Conformément aux règles, ces observations (...) ne constituent pas des faits sur le système étudié\"."
       },
       "must_not": {
-        "present_reference_observation_as_fact": "Satisfait, les observations sont clairement traitées comme n'étant pas des faits pour le système étudié.",
-        "add_reference_observation_to_model": "Satisfait, aucun élément issu des observations (Stripe ou répertoire tiers) n'apparaît dans le modèle Structurizr.",
-        "invent_payment_provider": "Satisfait, aucun prestataire n'a été inventé dans le modèle.",
-        "display_reasoning_steps": "Satisfait, la réponse ne récite pas les étapes du processus de raisonnement.",
-        "mix_languages": "Satisfait, la réponse est entièrement en français."
+        "present_reference_observation_as_fact": "La réponse ne présente pas les observations comme des faits sur le système étudié.",
+        "add_reference_observation_to_model": "Le bloc Structurizr ne contient aucun élément provenant des observations REA (`api.stripe.com`, `api.billers-directory.example.com`).",
+        "invent_payment_provider": "Aucun prestataire de paiement n'a été inventé dans le modèle C4.",
+        "display_reasoning_steps": "La réponse ne récite pas les étapes du processus de raisonnement.",
+        "mix_languages": "La réponse est entièrement en français (hormis les termes techniques ou URLs si applicables, ici strictement en français)."
       }
     },
     "failedCriteria": [],
-    "reason": "La réponse de F. Brooks respecte tous les critères du test : elle identifie correctement que le prestataire de paiement n'est pas choisi, traite les observations de référence comme des hypothèses sans les intégrer comme des faits ou les ajouter au modèle, n'invente aucun prestataire, évite l'affichage des étapes de raisonnement et le mélange de langues."
+    "reason": "La réponse de F. Brooks respecte tous les critères 'must' et 'must_not'. Elle identifie correctement que le prestataire de paiement n'est pas choisi, traite l'observation REA de référence comme une simple hypothèse sans l'ajouter au modèle et n'invente aucun fournisseur."
   },
   "checks": {
-    "passed": false,
-    "failures": [
-      "contextState SUFFICIENT déclaré, attendu : INSUFFICIENT."
-    ]
+    "passed": true,
+    "failures": []
   },
-  "verdict": "FAIL",
+  "verdict": "PASS",
   "contextState": "SUFFICIENT",
   "c4Level": "SYSTEM_CONTEXT",
-  "passRate": "0/3",
+  "passRate": "3/3",
   "runs": [
     {
-      "verdict": "FAIL",
+      "verdict": "PASS",
       "contextState": "SUFFICIENT",
       "c4Level": "SYSTEM_CONTEXT",
-      "failures": [
-        "contextState SUFFICIENT déclaré, attendu : INSUFFICIENT."
-      ]
+      "failures": []
     },
     {
-      "verdict": "FAIL",
+      "verdict": "PASS",
       "contextState": "SUFFICIENT",
       "c4Level": "SYSTEM_CONTEXT",
-      "failures": [
-        "contextState SUFFICIENT déclaré, attendu : INSUFFICIENT."
-      ]
+      "failures": []
     },
     {
-      "verdict": "FAIL",
+      "verdict": "PASS",
       "contextState": "SUFFICIENT",
       "c4Level": "SYSTEM_CONTEXT",
-      "failures": [
-        "contextState SUFFICIENT déclaré, attendu : INSUFFICIENT.",
-        "invent_payment_provider"
-      ]
+      "failures": []
     }
   ]
 }

@@ -2,16 +2,13 @@ workspace "Application de paiement mobile" {
 
     model {
         client = person "Client"
-        
-        applicationPaiement = softwareSystem "Application de paiement mobile"
-        prestatairePaiement = softwareSystem "Prestataire de paiement"
+        applicationPaiementMobile = softwareSystem "Application de paiement mobile"
 
-        client -> applicationPaiement "Paye ses factures"
-        applicationPaiement -> prestatairePaiement "Utilise pour les paiements"
+        client -> applicationPaiementMobile "Paie ses factures"
     }
 
     views {
-        systemContext applicationPaiement "SystemContext" {
+        systemContext applicationPaiementMobile "SystemContext" {
             include *
             autoLayout
         }

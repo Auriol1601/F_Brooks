@@ -2,19 +2,17 @@ workspace "Application de réservation" {
 
     model {
         client = person "Client"
-        applicationReservation = softwareSystem "Application de réservation"
+        appReservation = softwareSystem "Application de réservation"
         servicePaiement = softwareSystem "Service de paiement"
         serviceNotification = softwareSystem "Service de notification"
-        serviceCartographie = softwareSystem "Service de cartographie"
 
-        client -> applicationReservation "Utilise"
-        applicationReservation -> servicePaiement "Utilise"
-        applicationReservation -> serviceNotification "Utilise"
-        applicationReservation -> serviceCartographie "Utilise"
+        client -> appReservation "Utilise"
+        appReservation -> servicePaiement "Utilise"
+        appReservation -> serviceNotification "Utilise"
     }
 
     views {
-        systemContext applicationReservation "SystemContext" {
+        systemContext appReservation "SystemContext" {
             include *
             autoLayout
         }

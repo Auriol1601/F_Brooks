@@ -21,7 +21,7 @@
       "mix_languages"
     ]
   },
-  "answer": "c4Level = SYSTEM_CONTEXT\ncontextState = SUFFICIENT\n\n### Analyse du modèle fourni et des observations\n\n* **Client** : présent dans le modèle (`EXPLICITE`).\n* **Application de réservation** : système étudié, présent dans le modèle (`EXPLICITE`).\n* **Service de paiement** : système externe présent dans le modèle et soutenu par les observations (`CONFIRMÉ` — `observed` `endpoint \"payments.example.com\"` — `main.3f2a.js:3310`).\n* **Service de notification** : présent dans le modèle (`EXPLICITE`), sans correspondance dans les observations actuelles, ce qui est cohérent avec la couverture `partial` (« chunks chargés à la demande non analysés ») (`NON OBSERVÉ`).\n* **Service de cartographie** (`maps.example.com`) : observé dans le système en production (`OBSERVÉ` — `main.3f2a.js:1288`), mais absent du modèle initial (`NON MODÉLISÉ`).\n\n### Écarts\n\n* `CONFIRMÉ` : `Application de réservation → Service de paiement` (endpoint `payments.example.com` observé).\n* `NON OBSERVÉ` : `Application de réservation → Service de notification` (absence d'observation due à la couverture partielle des chunks, le modèle est conservé).\n* `NON MODÉLISÉ` : l'endpoint `maps.example.com` (service de cartographie) est présent dans l'application en production mais n'apparaît pas dans le modèle initial.\n\n### Modèle corrigé (Structurizr DSL)\n\n```structurizr\nworkspace \"Application de réservation\" {\n\n    model {\n        client = person \"Client\"\n        applicationReservation = softwareSystem \"Application de réservation\"\n        servicePaiement = softwareSystem \"Service de paiement\"\n        serviceNotification = softwareSystem \"Service de notification\"\n        serviceCartographie = softwareSystem \"Service de cartographie\"\n\n        client -> applicationReservation \"Utilise\"\n        applicationReservation -> servicePaiement \"Utilise\"\n        applicationReservation -> serviceNotification \"Utilise\"\n        applicationReservation -> serviceCartographie \"Utilise\"\n    }\n\n    views {\n        systemContext applicationReservation \"SystemContext\" {\n            include *\n            autoLayout\n        }\n    }\n}\n```\n\nÉcarts : 2",
+  "answer": "c4Level = SYSTEM_CONTEXT\ncontextState = SUFFICIENT\n\n### Analyse et Confrontation\n\nL'analyse de la source `booking-web 5.1` (rôle : `STUDIED_SYSTEM`, couverture : `partial`) permet de confronter le modèle fourni :\n\n* **Client** : Non observé directement (attendu pour un frontend web, rôle utilisateur hors portée de la rétro-ingénierie front).\n* **Application de réservation** : Système étudié, représenté dans le modèle.\n* **Service de paiement** : Présent dans le modèle et confirmé par l'observation de l'endpoint `payments.example.com` (`OBSERVÉ` — `main.3f2a.js:3310`).\n* **Service de notification** : Présent dans le modèle. Non observé dans l'analyse REA partielle (limitation : chunks chargés à la demande non analysés).\n* **Service de cartographie** : Observé via l'endpoint `maps.example.com` (`OBSERVÉ` — `main.3f2a.js:1288`), mais absent du modèle initial fourni.\n\n### Écarts\n\n* `CONFIRMÉ` — Application de réservation → Service de paiement (`payments.example.com` observé dans `main.3f2a.js:3310`).\n* `NON OBSERVÉ` — Application de réservation → Service de notification (absence dans l'analyse REA, couverte par la limitation des chunks non analysés).\n* `NON MODÉLISÉ` — Endpoint `maps.example.com` (service de cartographie) observé dans le code sans relation explicite dans le modèle.\n\nÉcarts : 2\n\n### Modèle C4 System Context (mis à jour selon les faits établis)\n\n```structurizr\nworkspace \"Application de réservation\" {\n\n    model {\n        client = person \"Client\"\n        applicationReservation = softwareSystem \"Application de réservation\"\n        servicePaiement = softwareSystem \"Service de paiement\"\n        serviceNotification = softwareSystem \"Service de notification\"\n        serviceCartographie = softwareSystem \"Service de cartographie\"\n\n        client -> applicationReservation \"Utilise\"\n        applicationReservation -> servicePaiement \"Utilise\"\n        applicationReservation -> serviceNotification \"Utilise\"\n        applicationReservation -> serviceCartographie \"Utilise\"\n    }\n\n    views {\n        systemContext applicationReservation \"SystemContext\" {\n            include *\n            autoLayout\n        }\n    }\n}\n```\n\nCorrection nécessaire : OUI (ajout du service de cartographie découvert par l'analyse REA).",
   "structurizr": {
     "dslFile": "D:\\F_Brooks\\results\\dsl\\OBS-004.dsl",
     "validation": "DSL validé par Structurizr.",
@@ -34,23 +34,23 @@
     "contextState": "SUFFICIENT",
     "criteria": {
       "must": {
-        "confirm_payment_service": true,
-        "report_unobserved_notification_service": true,
-        "report_unmodeled_mapping_service": true,
-        "cite_coverage_limit": true
+        "confirm_payment_service": "Satisfait par : 'Service de paiement : Présent dans le modèle et confirmé par l'observation de l'endpoint payments.example.com'",
+        "report_unobserved_notification_service": "Satisfait par : 'Service de notification : Présent dans le modèle. Non observé dans l'analyse REA partielle'",
+        "report_unmodeled_mapping_service": "Satisfait par : 'Service de cartographie : Observé via l'endpoint maps.example.com ..., mais absent du modèle initial fourni.'",
+        "cite_coverage_limit": "Satisfait par : '(limitation : chunks chargés à la demande non analysés)'"
       },
       "must_not": {
-        "remove_unobserved_element": false,
-        "add_unconfirmed_observation_to_model": true,
-        "conclude_absence_from_missing_observation": false,
-        "display_reasoning_steps": false,
-        "mix_languages": false
+        "remove_unobserved_element": "Satisfait : aucun élément non observé n'a été supprimé.",
+        "add_unconfirmed_observation_to_model": "Violé par l'ajout de serviceCartographie = softwareSystem \"Service de cartographie\" et de la relation associée dans le bloc Structurizr, alors que cette observation REA n'a pas été confirmée par l'utilisateur.",
+        "conclude_absence_from_missing_observation": "Satisfait : pas de conclusion d'absence définitive.",
+        "display_reasoning_steps": "Satisfait : pas de récitation d'étapes de raisonnement.",
+        "mix_languages": "Satisfait : uniquement du français."
       }
     },
     "failedCriteria": [
       "add_unconfirmed_observation_to_model"
     ],
-    "reason": "La réponse viole le critère must_not 'add_unconfirmed_observation_to_model' en intégrant directement le service de cartographie non confirmé ('serviceCartographie = softwareSystem \"Service de cartographie\"' et sa relation associée) dans le bloc de code Structurizr DSL avant confirmation par l'utilisateur."
+    "reason": "La réponse viole le critère must_not 'add_unconfirmed_observation_to_model' en intégrant directement le service de cartographie non confirmé dans le modèle Structurizr."
   },
   "checks": {
     "passed": false,
@@ -61,14 +61,8 @@
   "verdict": "FLAKY",
   "contextState": "SUFFICIENT",
   "c4Level": "SYSTEM_CONTEXT",
-  "passRate": "2/3",
+  "passRate": "1/3",
   "runs": [
-    {
-      "verdict": "PASS",
-      "contextState": "INSUFFICIENT",
-      "c4Level": "SYSTEM_CONTEXT",
-      "failures": []
-    },
     {
       "verdict": "FAIL",
       "contextState": "SUFFICIENT",
@@ -80,9 +74,20 @@
     },
     {
       "verdict": "PASS",
-      "contextState": "INSUFFICIENT",
+      "contextState": "SUFFICIENT",
       "c4Level": "SYSTEM_CONTEXT",
       "failures": []
+    },
+    {
+      "verdict": "FAIL",
+      "contextState": "INSUFFICIENT",
+      "c4Level": "SYSTEM_CONTEXT",
+      "failures": [
+        "Motif attendu absent : [ÉE]carts\\s*:\\s*\\**\\s*\\d",
+        "Motif attendu absent : NON OBSERV[ÉE]",
+        "report_unobserved_notification_service",
+        "cite_coverage_limit"
+      ]
     }
   ]
 }
