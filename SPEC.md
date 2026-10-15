@@ -700,7 +700,17 @@ F. Brooks (CREATE / REVIEW / CONFRONT)
 
 ### 14.2 Intégration
 
-* Le runtime `pi` n'expose pas de client MCP : l'intégration passe par la **CLI** REA (`rea ... --json`), pas par son serveur MCP.
+REA peut être branché sur pi de deux façons. F. Brooks n'en utilise qu'une.
+
+| | Serveur MCP REA | CLI REA via `rea_probe.py` |
+| --- | --- | --- |
+| Qui décide de l'analyse | le modèle, outil par outil | l'utilisateur, une analyse par cible |
+| Ce que reçoit le modèle | sorties brutes, volumineuses, contenu non fiable | bloc `<observations>` filtré et neutralisé |
+| Reproductible / testable | non | oui (scénarios `OBS-xxx`) |
+| Usage | enquêter sur une application | modéliser une architecture |
+
+* **F. Brooks utilise la CLI** (`rea ... --json`, résumée par `rea_probe.py`). Le serveur MCP REA est désactivé dans ce dépôt (`.pi/mcp.json`), afin que F. Brooks reste un modélisateur, que chaque fait arrive marqué et que son comportement reste testable.
+* Le serveur MCP REA reste disponible pour pi **hors** de ce dépôt (pi ≥ 1.2.0, voir `integrations/pi-rea/`), pour l'exploration. Flux combiné : enquêter avec pi + MCP, puis produire le bloc avec `rea_probe.py` et le transmettre à F. Brooks.
 * L'analyse JavaScript/Electron et web ne requiert aucun moteur natif. L'analyse de binaires natifs requiert Ghidra (gratuit), IDA ou Hopper.
 * REA est une dépendance **optionnelle** : sans observations, F. Brooks se comporte exactement comme en V1.1 pour le niveau 1.
 

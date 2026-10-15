@@ -171,13 +171,20 @@ Familles de scénarios : `CTX-xxx` (System Context), `CNT-xxx` (Container), `OBS
 
 ### 4. (Optionnel) Analyser une application existante avec REA
 
-REA est gratuit (licence MIT). pi n'étant pas client MCP, F. Brooks passe par la CLI :
+REA est gratuit (licence MIT). Il peut être branché sur pi en serveur MCP (exploration libre par le modèle, voir [integrations/pi-rea](integrations/pi-rea/README.md)) ou utilisé en CLI. **F. Brooks passe par la CLI** : il reçoit un résumé filtré, toujours au même format, et son comportement reste testable. Le MCP REA est désactivé dans ce dépôt (`.pi/mcp.json`).
 
 ```bash
 npm install -g --ignore-scripts rea-agents
 ```
 
-Puis, pour une application JavaScript/Electron (dossier ou `.asar`) :
+| | MCP (pi hors de ce dépôt) | CLI (`rea_probe.py`, F. Brooks) |
+| --- | --- | --- |
+| Qui décide de l'analyse | le modèle | vous |
+| Ce que reçoit le modèle | sorties brutes, volumineuses | résumé C4 filtré |
+| Reproductible / testable | non | oui |
+| Usage | enquêter sur une application | modéliser une architecture |
+
+Pour une application JavaScript/Electron (dossier ou `.asar`) :
 
 ```bash
 python automation/rea_probe.py "C:/chemin/vers/app.asar" --role STUDIED_SYSTEM
