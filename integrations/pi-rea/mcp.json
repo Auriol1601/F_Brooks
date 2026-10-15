@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "rea": {
+      "type": "stdio",
+      "command": "C:\\Program Files\\nodejs\\node.exe",
+      "args": [
+        "C:\\Users\\Biley Max\\AppData\\Roaming\\npm\\node_modules\\rea-agents\\scripts\\rea.mjs",
+        "mcp"
+      ]
+    }
+  }
+}
