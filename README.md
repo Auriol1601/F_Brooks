@@ -56,6 +56,23 @@ Le contexte représente le système comme une boîte noire et permet notamment d
 * les systèmes logiciels externes ;
 * les interactions principales.
 
+### Modélisation C4 - Niveau 2
+
+Une fois le System Context établi (`SUFFICIENT`), F. Brooks peut décomposer le système étudié en **conteneurs** (applications, API, bases de données…) lorsque l'utilisateur le demande.
+
+Il n'utilise que les conteneurs fournis ou confirmés et déclare `c4Level = CONTAINER`. Un système externe reste hors du système étudié ; les composants internes (niveau 3) restent hors périmètre.
+
+### Observations d'un système existant (REA)
+
+F. Brooks peut exploiter une analyse [REA](https://github.com/morluto/rea) d'une application existante (JavaScript/Electron) :
+
+* chaque fait observé est marqué `OBSERVÉ`, avec sa preuve ;
+* le **rôle de la cible** borne ce qu'elle prouve : `STUDIED_SYSTEM` (version existante du système étudié), `EXTERNAL_SYSTEM` (système avec lequel il interagit), `REFERENCE` (application concurrente : pistes uniquement) ;
+* une observation n'entre dans le modèle qu'après confirmation ;
+* l'absence d'observation ne prouve pas l'absence d'un élément.
+
+En mode **CONFRONT**, F. Brooks compare un modèle aux observations et classe les écarts : `CONFIRMÉ`, `NON OBSERVÉ`, `NON MODÉLISÉ`, `INCOMPATIBLE`.
+
 ### Analyse de cohérence
 
 F. Brooks ne cherche pas systématiquement à produire un diagramme.
@@ -149,6 +166,28 @@ Les scénarios sont définis dans `tests.json`. Pour chaque réponse contenant u
 3. copié dans `structurizr/workspace.dsl` s'il est valide.
 
 Statuts Structurizr possibles dans `results/CTX-XXX.json` : `SAVED`, `SAVED_UNVALIDATED` (Docker indisponible), `NO_WORKSPACE`, `INVALID_DSL`. Ils n'influencent pas le verdict PASS/FAIL.
+
+Familles de scénarios : `CTX-xxx` (System Context), `CNT-xxx` (Container), `OBS-xxx` (observations REA et mode CONFRONT). Les scénarios `OBS` embarquent des observations figées et ne nécessitent pas REA.
+
+### 4. (Optionnel) Analyser une application existante avec REA
+
+REA est gratuit (licence MIT). pi n'étant pas client MCP, F. Brooks passe par la CLI :
+
+```bash
+npm install -g --ignore-scripts rea-agents
+```
+
+Puis, pour une application JavaScript/Electron (dossier ou `.asar`) :
+
+```bash
+python automation/rea_probe.py "C:/chemin/vers/app.asar" --role STUDIED_SYSTEM
+```
+
+Le script lance REA, garde uniquement les faits utiles aux niveaux C4 1 et 2 (processus, endpoints, stockages, IPC) et produit un bloc `<observations>` à joindre à la demande faite à F. Brooks. Le bloc et son résumé sont enregistrés dans `results/rea/`.
+
+Rôles : `STUDIED_SYSTEM`, `EXTERNAL_SYSTEM`, `REFERENCE`. Sans `--role`, F. Brooks demandera le rôle de la cible. Une sortie REA existante peut être réutilisée avec `--evidence sortie.json`.
+
+Tests du module : `python -m unittest discover -s automation -p "test_*.py"`.
 
 ---
 
@@ -430,9 +469,17 @@ Un échec de communication avec le modèle ne doit pas être confondu avec un é
 
 ### Évolution C4
 
-* [ ] Intégrer le C4 Niveau 2 : **Container**
-* [ ] Permettre une progression naturelle du contexte vers les conteneurs
+* [x] Intégrer le C4 Niveau 2 : **Container**
+* [x] Permettre une progression naturelle du contexte vers les conteneurs
 * [ ] Étendre progressivement la visualisation aux niveaux C4 suivants
+
+### Observations REA
+
+* [x] Certitude `OBSERVÉ` et rôle de la cible
+* [x] Mode CONFRONT : modèle vs observations
+* [x] `automation/rea_probe.py` : analyse JavaScript/Electron → bloc `<observations>`
+* [ ] Analyse de sites web et de binaires natifs
+* [ ] Reconstitution du System Context à partir d'observations (phase 3)
 
 ### À plus long terme
 
