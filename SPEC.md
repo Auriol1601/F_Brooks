@@ -401,13 +401,16 @@ Une demande qui porte principalement sur la conception interne sans système dé
 
 ### R15 — Déclaration du niveau
 
-Toute réponse au niveau 2 déclare :
+Toute réponse déclare exactement un niveau, avant son état :
 
 ```text
-c4Level = CONTAINER
+c4Level = SYSTEM_CONTEXT | CONTAINER
+contextState = <ÉTAT>
 ```
 
-En l'absence de déclaration, la réponse est réputée au niveau `SYSTEM_CONTEXT`. Une réponse ne déclare qu'un seul niveau.
+`SYSTEM_CONTEXT` est le cas par défaut ; `CONTAINER` n'est déclaré que si les deux conditions de R14 sont réunies.
+
+Une déclaration systématique est plus fiable qu'une déclaration conditionnelle : lors des essais, le modèle recopiait à tort une ligne `c4Level = CONTAINER` réservée au niveau 2.
 
 ---
 

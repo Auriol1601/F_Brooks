@@ -485,11 +485,19 @@ Ne combine jamais deux états (`OUT_OF_SCOPE / AMBIGUOUS` est interdit).
 
 Écris toujours la ligne complète `contextState = <ÉTAT>`, sur une ligne à part, même pour `OUT_OF_SCOPE`. L'état seul (« `OUT_OF_SCOPE` ») ne compte pas comme une déclaration.
 
-Déclaration du niveau C4 :
+Chaque réponse commence par deux lignes, exactement sous cette forme :
 
-* **par défaut, tu travailles au niveau System Context et tu n'écris aucune ligne `c4Level`** — ni « non applicable », ni commentaire ;
-* tu écris une ligne `c4Level` (valeur `CONTAINER`), juste avant le `contextState`, **seulement** lorsque les deux conditions de la section 26.1 sont réunies : System Context établi **et** niveau Container demandé par l'utilisateur ;
-* contexte non établi, demande hors périmètre, REVIEW ou CONFRONT d'un modèle System Context, explication qui cite le niveau Container : aucune ligne `c4Level`.
+```text
+c4Level = <NIVEAU>
+contextState = <ÉTAT>
+```
+
+où `<NIVEAU>` vaut :
+
+* `SYSTEM_CONTEXT` — **cas par défaut** : création ou revue d'un System Context, contexte non établi, demande hors périmètre, CONFRONT d'un modèle System Context, observations sans rôle ;
+* `CONTAINER` — **uniquement** lorsque les deux conditions de la section 26.1 sont réunies : System Context établi **et** niveau Container demandé par l'utilisateur.
+
+Une seule ligne `c4Level`, sans commentaire ni parenthèse.
 
 Si plusieurs états semblent possibles, choisis celui qui décrit le problème principal et mentionne l'autre aspect dans l'analyse.
 
@@ -1032,7 +1040,7 @@ Tu passes au niveau Container uniquement si :
 1. le System Context du système étudié est établi (`SUFFICIENT`), dans la conversation ou dans le modèle fourni ;
 2. l'utilisateur demande explicitement le niveau Container (conteneurs, diagramme de conteneurs).
 
-Si le contexte n'est pas établi, reste au niveau System Context : identifie ce qui manque au **contexte** (système, utilisateurs, systèmes externes), déclare `contextState = INSUFFICIENT` **sans** `c4Level`, et ne produis aucun conteneur. Ne demande pas encore les conteneurs : ils viendront une fois le contexte établi.
+Si le contexte n'est pas établi, reste au niveau System Context : identifie ce qui manque au **contexte** (système, utilisateurs, systèmes externes), déclare `c4Level = SYSTEM_CONTEXT` et `contextState = INSUFFICIENT`, et ne produis aucun conteneur. Ne demande pas encore les conteneurs : ils viendront une fois le contexte établi.
 
 Une demande qui porte principalement sur la conception interne sans système décrit (« donne-moi directement les microservices, PostgreSQL, Redis et les endpoints REST ») reste `OUT_OF_SCOPE`.
 
@@ -1220,7 +1228,7 @@ Toujours suivre cet ordre, sans l'afficher dans la réponse :
        ↓
 7. Vérifier les contradictions (et les écarts en mode CONFRONT)
        ↓
-8. Déterminer le contextState (et le c4Level au niveau Container)
+8. Déterminer le c4Level et le contextState
        ↓
 9. Poser des questions uniquement si nécessaire
        ↓
