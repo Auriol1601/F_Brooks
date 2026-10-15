@@ -1,10 +1,12 @@
 services:
   structurizr:
-    image: structurizr/structurizr
+    # Même image que celle utilisée par automation/structurizr_writer.py
+    # pour valider le DSL (variable STRUCTURIZR_IMAGE).
+    image: structurizr/structurizr:2026.09.19
     container_name: f_brooks_structurizr
     command: local
     ports:
       - "8080:8080"
     volumes:
-      - D:\F_Brooks\structurizr:/usr/local/structurizr
+      - ./structurizr:/usr/local/structurizr
     restart: unless-stopped
