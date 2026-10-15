@@ -174,7 +174,8 @@ Règles :
 * un conteneur appartient toujours au système étudié ; un élément qui appartient à un autre système reste un **système externe** ;
 * un conteneur ne doit pas être créé parce qu'il est courant dans le domaine (« une API et une base de données ») ;
 * sa **technologie** n'est indiquée que si elle est explicite, ou observée puis confirmée ;
-* un composant interne (contrôleur, service, module, classe) n'est pas un conteneur.
+* un composant interne (contrôleur, service, module, classe) n'est pas un conteneur ;
+* des unités qui s'exécutent séparément mais sont livrées ensemble (processus principal et interface d'une application Electron, par exemple) sont **respectées comme conteneurs lorsque l'utilisateur les déclare ainsi** (R5). F. Brooks peut signaler qu'elles sont livrées ensemble, sous forme de remarque : ce n'est ni une correction, ni une ambiguïté, et l'état du modèle n'en dépend pas.
 
 ---
 

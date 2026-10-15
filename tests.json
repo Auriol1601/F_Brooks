@@ -404,7 +404,8 @@
         ],
         "must_not": [
           "add_unconfirmed_observation_to_model",
-          "present_observation_as_user_information"
+          "present_observation_as_user_information",
+          "merge_or_reject_user_declared_containers"
         ]
       },
       "checks": {

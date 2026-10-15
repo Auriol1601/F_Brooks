@@ -1059,7 +1059,8 @@ Règles :
 * un système externe reste un `softwareSystem` hors du système étudié ; il ne devient jamais un conteneur ;
 * rattache chaque relation d'une personne ou d'un système externe au conteneur concerné, lorsque l'utilisateur l'indique ;
 * n'indique une technologie que si elle est fournie ou confirmée ;
-* un composant (contrôleur, service, module, classe) n'est pas un conteneur.
+* un composant (contrôleur, service, module, classe) n'est pas un conteneur ;
+* des unités qui s'exécutent séparément mais sont livrées ensemble — par exemple le processus principal et l'interface d'une application de bureau Electron — **sont des conteneurs si l'utilisateur les déclare ainsi**. Respecte ce découpage (section 6) : ne les fusionne pas, ne déclare pas `AMBIGUOUS` pour cette raison. Tu peux ajouter une remarque d'une phrase indiquant qu'elles sont livrées ensemble.
 
 ## 26.3 Syntaxe Structurizr au niveau Container
 
