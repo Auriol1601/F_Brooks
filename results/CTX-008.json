@@ -15,7 +15,7 @@
       "mix_languages"
     ]
   },
-  "answer": "`contextState = OUT_OF_SCOPE`\n\nLa demande porte sur des éléments d'architecture interne (microservices, bases de données PostgreSQL, Redis et endpoints REST), qui relèvent des niveaux Container, Component ou Code du C4 Model.\n\nLe niveau **C4 — System Context** (Niveau 1) traite le système logiciel comme une boîte noire et se limite exclusivement à l'identification des personnes, du système étudié, des systèmes externes et de leurs relations. Les détails techniques internes ne font pas partie de ce périmètre.",
+  "answer": "La demande d'architecture interne (microservices, bases de données PostgreSQL, Redis et endpoints REST) relève de niveaux d'abstraction plus fins (C4 — Container, Component ou Code) ou d'une conception technique détaillée. Le niveau d'abstraction par défaut géré par F. Brooks est le **C4 — System Context**, qui traite le système étudié comme une boîte noire et se limite aux personnes, au système étudié et aux systèmes externes.\n\ncontextState = OUT_OF_SCOPE",
   "structurizr": {
     "status": "NO_WORKSPACE",
     "saved": false,
@@ -26,24 +26,25 @@
     "contextState": "OUT_OF_SCOPE",
     "criteria": {
       "must": {
-        "identify_out_of_scope_request": "La réponse indique explicitement que la demande est hors périmètre : `contextState = OUT_OF_SCOPE` et « La demande porte sur des éléments d'architecture interne... qui relèvent des niveaux Container, Component ou Code du C4 Model ».",
-        "explain_v1_boundary": "La réponse explique la limite du niveau C4 — System Context : « Le niveau C4 — System Context (Niveau 1) traite le système logiciel comme une boîte noire et se limite exclusivement à l'identification des personnes, du système étudié, des systèmes externes et de leurs relations. Les détails techniques internes ne font pas partie de ce périmètre. »"
+        "identify_out_of_scope_request": "La réponse identifie explicitement que la demande relève de niveaux d'abstraction plus fins : 'La demande d'architecture interne (...) relève de niveaux d'abstraction plus fins'.",
+        "explain_v1_boundary": "La réponse explique la limite du niveau par défaut géré par F. Brooks : 'Le niveau d'abstraction par défaut géré par F. Brooks est le C4 — System Context, qui traite le système étudié comme une boîte noire'."
       },
       "must_not": {
-        "generate_microservices": "Aucun microservice n'a été généré dans la réponse.",
-        "generate_database_architecture": "Aucune architecture de base de données (PostgreSQL, Redis) n'a été générée.",
-        "generate_rest_endpoints": "Aucun endpoint REST n'a été généré.",
+        "generate_microservices": "Aucun microservice n'est généré dans la réponse.",
+        "generate_database_architecture": "Aucune architecture de base de données (PostgreSQL, Redis) n'est générée dans la réponse.",
+        "generate_rest_endpoints": "Aucun endpoint REST n'est généré dans la réponse.",
         "display_reasoning_steps": "La réponse ne récite pas les étapes du processus de raisonnement.",
-        "mix_languages": "La réponse est entièrement rédigée en français."
+        "mix_languages": "La réponse est entièrement en français sans mélange de langues."
       }
     },
     "failedCriteria": [],
-    "reason": "La réponse de F. Brooks identifie correctement que la demande est hors périmètre, explique la limite du niveau C4 System Context (Niveau 1) et respecte toutes les interdictions en ne générant aucun élément technique demandé."
+    "reason": "La réponse de F. Brooks identifie correctement que la demande est hors périmètre (niveau C4 Container/Component vs System Context) et explique la limite du niveau d'abstraction géré, tout en respectant l'ensemble des interdictions (pas de génération de microservices, de bases de données ou d'endpoints REST)."
   },
   "checks": {
     "passed": true,
     "failures": []
   },
   "verdict": "PASS",
-  "contextState": "OUT_OF_SCOPE"
+  "contextState": "OUT_OF_SCOPE",
+  "c4Level": "SYSTEM_CONTEXT"
 }

@@ -1,0 +1,49 @@
+{
+  "id": "CNT-003",
+  "input": "Contexte établi (C4 System Context, contextState = SUFFICIENT) :\n- Client → Plateforme de crédit : utilise\n- Plateforme de crédit → Service externe de scoring : utilise pour évaluer les demandes\n\nPasse au niveau Container.",
+  "expected": {
+    "contextState": "INSUFFICIENT",
+    "c4Level": "CONTAINER",
+    "must": [
+      "recognize_missing_containers",
+      "ask_clarification"
+    ],
+    "must_not": [
+      "invent_container",
+      "invent_technology",
+      "display_reasoning_steps",
+      "mix_languages"
+    ]
+  },
+  "answer": "c4Level = CONTAINER\ncontextState = INSUFFICIENT\n\nAu niveau Container, il est nécessaire de détailler la structure interne du système étudié (la **Plateforme de crédit**) en conteneurs (applications, services, bases de données déployables séparément).\n\nLes conteneurs de la Plateforme de crédit n'ont pas encore été fournis. \n\nQuels sont les conteneurs (applications, API, bases de données) qui composent la Plateforme de crédit ?",
+  "structurizr": {
+    "status": "NO_WORKSPACE",
+    "saved": false,
+    "reason": "Aucun workspace Structurizr détecté."
+  },
+  "evaluation": {
+    "verdict": "PASS",
+    "contextState": "INSUFFICIENT",
+    "criteria": {
+      "must": {
+        "recognize_missing_containers": "Satisfait : la réponse indique clairement que \"Les conteneurs de la Plateforme de crédit n'ont pas encore été fournis.\"",
+        "ask_clarification": "Satisfait : la réponse pose la question \"Quels sont les conteneurs (applications, API, bases de données) qui composent la Plateforme de crédit ?\""
+      },
+      "must_not": {
+        "invent_container": "Satisfait : aucun conteneur n'a été inventé.",
+        "invent_technology": "Satisfait : aucune technologie n'a été inventée.",
+        "display_reasoning_steps": "Satisfait : la réponse ne récite pas les étapes du processus de raisonnement.",
+        "mix_languages": "Satisfait : la réponse est entièrement en français."
+      }
+    },
+    "failedCriteria": [],
+    "reason": "La réponse de F. Brooks respecte tous les critères 'must' (reconnaissance des conteneurs manquants et demande de clarification) et ne viole aucun critère 'must_not' (pas d'invention de conteneur ou de technologie, pas d'affichage des étapes de raisonnement, pas de mélange de langues)."
+  },
+  "checks": {
+    "passed": true,
+    "failures": []
+  },
+  "verdict": "PASS",
+  "contextState": "INSUFFICIENT",
+  "c4Level": "CONTAINER"
+}

@@ -1,0 +1,53 @@
+{
+  "id": "CNT-005",
+  "input": "Contexte établi (C4 System Context, contextState = SUFFICIENT) :\n- Employé → Application RH : utilise\n- Application RH → Système RH central : récupère certaines informations\n\nPasse au niveau Container.\nL'application RH comprend une application web et une base de données.\nL'employé utilise l'application web. L'application web lit et écrit dans la base de données et récupère certaines informations depuis le système RH central.",
+  "expected": {
+    "contextState": "SUFFICIENT",
+    "c4Level": "CONTAINER",
+    "must": [
+      "keep_external_system_outside_studied_system",
+      "identify_given_containers",
+      "identify_container_relationships"
+    ],
+    "must_not": [
+      "turn_external_system_into_container",
+      "invent_container",
+      "display_reasoning_steps",
+      "mix_languages"
+    ]
+  },
+  "answer": "c4Level = CONTAINER\ncontextState = SUFFICIENT\n\n### Analyse\n\n* **Niveau demandé** : C4 — Container (conditions réunies : contexte établi et demande explicite).\n* **Système étudié** : Application RH.\n* **Conteneurs identifiés** :\n  * Application web (`container \"Application web\"`, utilisée par l'Employé).\n  * Base de données (`container \"Base de données\"`).\n* **Systèmes externes & personnes conservés** :\n  * Employé (personne).\n  * Système RH central (système externe).\n* **Relations** :\n  * Employé → Application web : utilise\n  * Application web → Base de données : lit et écrit\n  * Application web → Système RH central : récupère certaines informations\n\n---\n\n### Représentation C4 (Structurizr DSL)\n\n```structurizr\nworkspace \"Application RH\" {\n\n    model {\n        employe = person \"Employé\"\n        systemeRHCentral = softwareSystem \"Système RH central\"\n\n        applicationRH = softwareSystem \"Application RH\" {\n            applicationWeb = container \"Application web\"\n            baseDeDonnees = container \"Base de données\"\n        }\n\n        employe -> applicationWeb \"Utilise\"\n        applicationWeb -> baseDeDonnees \"Lit et écrit\"\n        applicationWeb -> systemeRHCentral \"Récupère certaines informations\"\n    }\n\n    views {\n        systemContext applicationRH \"SystemContext\" {\n            include *\n            autoLayout\n        }\n        container applicationRH \"Containers\" {\n            include *\n            autoLayout\n        }\n    }\n}\n```",
+  "structurizr": {
+    "dslFile": "D:\\F_Brooks\\results\\dsl\\CNT-005.dsl",
+    "validation": "DSL validé par Structurizr.",
+    "status": "SAVED",
+    "saved": true,
+    "path": "D:\\F_Brooks\\structurizr\\workspace.dsl"
+  },
+  "evaluation": {
+    "verdict": "PASS",
+    "contextState": "SUFFICIENT",
+    "criteria": {
+      "must": {
+        "keep_external_system_outside_studied_system": "Le Système RH central reste bien à l'extérieur du système étudié 'Application RH' dans le modèle Structurizr.",
+        "identify_given_containers": "L'application web et la base de données fournies dans l'input sont correctement identifiées comme conteneurs.",
+        "identify_container_relationships": "Les relations entre l'employé, l'application web, la base de données et le système RH central sont correctement retranscrites."
+      },
+      "must_not": {
+        "turn_external_system_into_container": "Le système externe (Système RH central) n'a pas été transformé en conteneur.",
+        "invent_container": "Aucun conteneur supplémentaire non fourni n'a été inventé.",
+        "display_reasoning_steps": "La réponse ne récite pas les étapes du processus de raisonnement.",
+        "mix_languages": "La réponse est entièrement en français sans mélange de langues non autorisé."
+      }
+    },
+    "failedCriteria": [],
+    "reason": "La réponse de F. Brooks respecte tous les critères du test pour le passage au niveau Container, en identifiant correctement les conteneurs et leurs relations tout en maintenant les systèmes externes hors du système étudié."
+  },
+  "checks": {
+    "passed": true,
+    "failures": []
+  },
+  "verdict": "PASS",
+  "contextState": "SUFFICIENT",
+  "c4Level": "CONTAINER"
+}

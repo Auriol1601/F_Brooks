@@ -3,6 +3,7 @@
   "input": "Client → Application → PostgreSQL",
   "expected": {
     "contextState": "AMBIGUOUS",
+    "c4Level": "SYSTEM_CONTEXT",
     "must": [
       "identify_abstraction_issue",
       "explain_context_level",
@@ -17,39 +18,38 @@
       "mix_languages"
     ]
   },
-  "answer": "contextState = AMBIGUOUS\n\n## Analyse du contexte\n\nLe modèle fourni mélange deux niveaux d'abstraction du C4 Model :\n* **Application** se situe au niveau **System Context** (Niveau 1) ou **Container** (Niveau 2).\n* **PostgreSQL** est un système de stockage (base de données), ce qui correspond au niveau **Container** (Niveau 2) du C4 Model.\n\nLe niveau **System Context** s'intéresse uniquement aux personnes, au système étudié et aux systèmes logiciels externes, vus comme des boîtes noires. Il ne descend pas au niveau des bases de données ou des composants internes.\n\n## Corrections proposées\n\n1. **PostgreSQL** doit être retiré du niveau System Context, car une base de données relève de l'architecture interne (Niveau 2 — Container).\n2. L'élément **Application** représente le système étudié, et **Client** représente la personne qui l'utilise.\n\n## Modèle corrigé (System Context)\n\n```structurizr\nworkspace \"Application Client\" {\n\n    model {\n        client = person \"Client\"\n        application = softwareSystem \"Application\"\n\n        client -> application \"Utilise\"\n    }\n\n    views {\n        systemContext application \"SystemContext\" {\n            include *\n            autoLayout\n        }\n    }\n}\n```\n\nCorrection nécessaire : OUI",
+  "answer": "contextState = AMBIGUOUS\n\n## Analyse du contexte\n\nLe modèle fourni met en relation trois éléments :\n- `Client` (personne)\n- `Application` (système)\n- `PostgreSQL` (technologie de base de données)\n\n### Problème d'abstraction\n\nLe modèle mélange plusieurs niveaux d'abstraction du C4 Model :\n1. **System Context (Niveau 1)** : `Client` et `Application` se situent à ce niveau (représentation d'une personne et d'un système logiciel sous forme de boîte noire).\n2. **Container (Niveau 2)** ou niveau inférieur : `PostgreSQL` représente une base de données, qui est un composant interne ou un conteneur du système, et non un système externe ou un utilisateur.\n\nAu niveau System Context (niveau par défaut), les détails d'architecture interne comme les bases de données n'apparaissent pas. \n\n## Clarification nécessaire\n\nPour déterminer le modèle approprié :\n- S'agit-il d'une description au niveau **System Context** (auquel cas `PostgreSQL` doit être retiré, car l'application est vue comme une boîte noire) ?\n- Ou s'agit-il d'une description au niveau **Container** (auquel cas l'application étudiée contient `PostgreSQL` comme conteneur de données) ?\n\nVeuillez préciser le niveau attendu ou la nature exacte de `PostgreSQL` dans votre architecture.",
   "structurizr": {
-    "dslFile": "D:\\F_Brooks\\results\\dsl\\CTX-006.dsl",
-    "validation": "DSL validé par Structurizr.",
-    "status": "SAVED",
-    "saved": true,
-    "path": "D:\\F_Brooks\\structurizr\\workspace.dsl"
+    "status": "NO_WORKSPACE",
+    "saved": false,
+    "reason": "Aucun workspace Structurizr détecté."
   },
   "evaluation": {
     "verdict": "PASS",
     "contextState": "AMBIGUOUS",
     "criteria": {
       "must": {
-        "identify_abstraction_issue": "Le modèle fourni mélange deux niveaux d'abstraction du C4 Model",
-        "explain_context_level": "Le niveau System Context s'intéresse uniquement aux personnes, au système étudié et aux systèmes logiciels externes",
-        "propose_argumented_correction": "PostgreSQL doit être retiré du niveau System Context, car une base de données relève de l'architecture interne",
-        "use_correct_c4_levels": "PostgreSQL est un système de stockage (base de données), ce qui correspond au niveau Container (Niveau 2)"
+        "identify_abstraction_issue": "Le modèle mélange plusieurs niveaux d'abstraction du C4 Model",
+        "explain_context_level": "Le modèle mélange plusieurs niveaux d'abstraction du C4 Model : 1. System Context (Niveau 1)...",
+        "propose_argumented_correction": "S'agit-il d'une description au niveau System Context ... Ou s'agit-il d'une description au niveau Container ...",
+        "use_correct_c4_levels": "Au niveau System Context (niveau par défaut), les détails d'architecture interne comme les bases de données n'apparaissent pas."
       },
       "must_not": {
-        "treat_postgresql_as_person": "Pas de traitement de PostgreSQL comme une personne",
-        "treat_postgresql_as_external_system_without_context": "Pas de traitement de PostgreSQL comme un système externe sans contexte",
-        "claim_postgresql_is_always_forbidden": "Pas d'affirmation que PostgreSQL est toujours interdit",
-        "display_reasoning_steps": "Pas de récitation des étapes du processus de raisonnement",
-        "mix_languages": "Pas de mélange de langues"
+        "treat_postgresql_as_person": "Aucune mention de PostgreSQL en tant que personne.",
+        "treat_postgresql_as_external_system_without_context": "PostgreSQL est identifié comme une technologie de base de données / conteneur, pas comme un système externe sans contexte.",
+        "claim_postgresql_is_always_forbidden": "Aucune affirmation selon laquelle PostgreSQL est toujours interdit.",
+        "display_reasoning_steps": "La réponse ne récite pas les étapes du processus de raisonnement.",
+        "mix_languages": "La réponse est entièrement en français."
       }
     },
     "failedCriteria": [],
-    "reason": "La réponse de F. Brooks remplit tous les critères must et ne viole aucun must_not. L'identification du problème d'abstraction, l'explication du niveau context, la proposition argumentée et l'utilisation correcte des niveaux C4 sont clairement traitées."
+    "reason": "La réponse respecte tous les critères 'must' (identification du problème d'abstraction, explication du niveau contextuel, proposition d'une correction argumentée, utilisation correcte des niveaux C4) et ne viole aucun critère 'must_not'."
   },
   "checks": {
     "passed": true,
     "failures": []
   },
   "verdict": "PASS",
-  "contextState": "AMBIGUOUS"
+  "contextState": "AMBIGUOUS",
+  "c4Level": "SYSTEM_CONTEXT"
 }

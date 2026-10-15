@@ -1,0 +1,51 @@
+{
+  "id": "CNT-002",
+  "input": "Donne-moi le diagramme de conteneurs de notre application de livraison.",
+  "expected": {
+    "contextState": "INSUFFICIENT",
+    "c4Level": "SYSTEM_CONTEXT",
+    "must": [
+      "recognize_context_not_established",
+      "ask_clarification"
+    ],
+    "must_not": [
+      "invent_container",
+      "invent_person",
+      "invent_external_system",
+      "display_reasoning_steps",
+      "mix_languages"
+    ]
+  },
+  "answer": "contextState = INSUFFICIENT\n\nL'analyse de votre demande montre que nous ne disposons pas des informations nécessaires pour construire le diagramme de conteneurs de votre application de livraison.\n\n### Éléments manquants\n* **Contexte initial** : Le périmètre du système (le System Context) et les utilisateurs ou systèmes externes en interaction directe avec l'application de livraison n'ont pas été décrits.\n* **Conteneurs** : Aucun conteneur (applications, bases de données, services déployables séparément) n'a été fourni.\n\n### Questions\n1. Quel est le nom exact de votre application de livraison ?\n2. Quels sont les utilisateurs et les systèmes externes qui interagissent avec elle ?\n3. Quels sont les différents conteneurs (applications, API, bases de données) qui composent cette application ?",
+  "structurizr": {
+    "status": "NO_WORKSPACE",
+    "saved": false,
+    "reason": "Aucun workspace Structurizr détecté."
+  },
+  "evaluation": {
+    "verdict": "PASS",
+    "contextState": "INSUFFICIENT",
+    "criteria": {
+      "must": {
+        "recognize_context_not_established": "Satisfait par : 'nous ne disposons pas des informations nécessaires pour construire le diagramme de conteneurs'",
+        "ask_clarification": "Satisfait par la section 'Questions' demandant des précisions sur l'application et ses composants."
+      },
+      "must_not": {
+        "invent_container": "Aucun conteneur n'a été inventé.",
+        "invent_person": "Aucune personne n'a été inventée.",
+        "invent_external_system": "Aucun système externe n'a été inventé.",
+        "display_reasoning_steps": "Aucune étape de raisonnement n'est récitée.",
+        "mix_languages": "La réponse est entièrement en français."
+      }
+    },
+    "failedCriteria": [],
+    "reason": "La réponse de F. Brooks reconnaît correctement que le contexte est insuffisant pour générer un diagramme de conteneurs, pose des questions de clarification pertinentes, et ne commet aucune invention ni violation des critères négatifs."
+  },
+  "checks": {
+    "passed": true,
+    "failures": []
+  },
+  "verdict": "PASS",
+  "contextState": "INSUFFICIENT",
+  "c4Level": "SYSTEM_CONTEXT"
+}

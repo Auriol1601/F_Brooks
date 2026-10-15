@@ -19,7 +19,7 @@
       "mix_languages"
     ]
   },
-  "answer": "contextState = INSUFFICIENT\n\n### Analyse du contexte\n\n1. **Système étudié :**\n   * Le système qui gère et traite les demandes n'est ni nommé ni identifié explicitement (`INCONNU`).\n\n2. **Personnes / Utilisateurs :**\n   * Des « utilisateurs » sont mentionnés (`EXPLICITE`), mais leur rôle exact ou la nature de leur interaction avec le système n'est pas précisée, hormis le fait qu'ils reçoivent des notifications.\n\n3. **Systèmes externes :**\n   * Aucun système externe de notification n'est mentionné. Le mécanisme d'envoi des notifications n'est pas spécifié (`INCONNU`).\n\n4. **Relations :**\n   * Le texte indique qu'une action est effectuée vers les utilisateurs (« reçoivent des notifications »), mais la source exacte (le système émetteur) et le déclencheur ne sont pas clairement établis.\n\n5. **Informations manquantes :**\n   * L'identité et le nom du système logiciel étudié.\n   * La nature précise du rôle des utilisateurs.\n   * L'origine de la demande (qui initie la demande traitée par le système ?).\n\n---\n\n### Questions nécessaires\n\nPour pouvoir modéliser correctement ce contexte au niveau System Context, veuillez préciser :\n\n1. Quel est le nom ou la nature du système logiciel étudié qui traite les demandes ?\n2. Qui sont les utilisateurs qui initient ou soumettent ces demandes ?",
+  "answer": "contextState = INSUFFICIENT\n\nL'analyse de votre description met en évidence des informations manquantes essentielles pour modéliser le système selon le C4 Model (Niveau 1 — System Context) :\n\n1. **Le système étudié** n'est pas identifié (quel est le système qui traite les demandes et émet les notifications ?).\n2. **Les utilisateurs** sont mentionnés de manière générique (« Les utilisateurs »), sans précision sur leur rôle exact.\n3. **Le canal ou le système externe d'envoi des notifications** n'est pas précisé (par exemple, un service de messagerie externe).\n4. **Les systèmes externes** impliqués dans le traitement ne sont pas décrits.\n\nPour progresser, veuillez préciser :\n- Quel est le nom du système étudié ?\n- Quel est le rôle précis des utilisateurs qui soumettent les demandes ?",
   "structurizr": {
     "status": "NO_WORKSPACE",
     "saved": false,
@@ -30,25 +30,26 @@
     "contextState": "INSUFFICIENT",
     "criteria": {
       "must": {
-        "identify_notification_requirement": "Satisfait par la mention dans l'analyse : « Des « utilisateurs » sont mentionnés (EXPLICITE), mais leur rôle exact ou la nature de leur interaction avec le système n'est pas précisée, hormis le fait qu'ils reçoivent des notifications. »",
-        "identify_missing_notification_system": "Satisfait par la mention dans l'analyse : « Aucun système externe de notification n'est mentionné. Le mécanisme d'envoi des notifications n'est pas spécifié. »"
+        "identify_notification_requirement": "Satisfait par la mention de l'exigence de notification dans l'introduction et au point 3 (« le canal ou le système externe d'envoi des notifications n'est pas précisé »).",
+        "identify_missing_notification_system": "Satisfait par l'identification explicite que le système externe ou le canal d'envoi des notifications manque (« Le canal ou le système externe d'envoi des notifications n'est pas précisé »)."
       },
       "must_not": {
-        "invent_email_system": "Non violé (aucune mention d'un système d'e-mail).",
-        "invent_sms_system": "Non violé (aucune mention d'un système SMS).",
-        "invent_push_system": "Non violé (aucune mention de notifications push).",
-        "invent_notification_provider": "Non violé (aucun fournisseur de notification inventé).",
-        "display_reasoning_steps": "Non violé (pas de récitation des étapes du processus de raisonnement, simple structure d'analyse et de questions).",
-        "mix_languages": "Non violé (entièrement en français)."
+        "invent_email_system": "Non violé : aucun système d'e-mail spécifique n'est inventé (mention d'un « service de messagerie externe » uniquement à titre d'exemple d'incertitude).",
+        "invent_sms_system": "Non violé : aucun système SMS n'est inventé.",
+        "invent_push_system": "Non violé : aucun système push n'est inventé.",
+        "invent_notification_provider": "Non violé : aucun fournisseur de notification n'est inventé.",
+        "display_reasoning_steps": "Non violé : la réponse ne récite pas les étapes du processus de raisonnement interne.",
+        "mix_languages": "Non violé : la réponse est entièrement en français."
       }
     },
     "failedCriteria": [],
-    "reason": "La réponse de F. Brooks identifie correctement l'exigence de notification ainsi que le manque de précision sur le système de notification, tout en respectant strictement l'interdiction d'inventer des canaux ou des systèmes spécifiques."
+    "reason": "La réponse de F. Brooks identifie correctement l'exigence de notification ainsi que l'absence de précision concernant le système ou canal de notification, tout en respectant l'interdiction d'inventer des systèmes concrets (e-mail, SMS, etc.). Le format JSON requis est respecté."
   },
   "checks": {
     "passed": true,
     "failures": []
   },
   "verdict": "PASS",
-  "contextState": "INSUFFICIENT"
+  "contextState": "INSUFFICIENT",
+  "c4Level": "SYSTEM_CONTEXT"
 }

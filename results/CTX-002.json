@@ -16,7 +16,7 @@
       "mix_languages"
     ]
   },
-  "answer": "contextState = INSUFFICIENT\n\nL'analyse de votre demande ne permet pas d'identifier les éléments nécessaires à la construction d'un contexte de niveau C4 (System Context). \n\n### Informations manquantes :\n* **Le système étudié** : le nom ou la nature précise de l'application bancaire n'est pas défini.\n* **Les utilisateurs directs** : aucune personne ou rôle n'est mentionné (par exemple : client, conseiller, administrateur).\n* **Les systèmes externes** : aucun système tiers n'est explicitement identifié (par exemple : système de paiement, cœur de bancaire).\n* **Les interactions** : aucune relation entre des acteurs et le système n'est décrite.\n\n### Questions nécessaires :\n1. Quel est le nom ou le rôle précis de l'application bancaire que vous souhaitez modéliser ?\n2. Quels sont les utilisateurs ou rôles qui interagissent directement avec elle ?\n3. Interagit-elle avec d'autres systèmes logiciels externes ? Si oui, lesquels ?",
+  "answer": "contextState = INSUFFICIENT\n\nL'analyse de votre demande ne permet pas d'établir un System Context complet.\n\n### Éléments manquants\n* **Le système étudié** : « une application bancaire » désigne un domaine fonctionnel, mais aucun nom précis de système n'a été fourni.\n* **Les utilisateurs directs** : aucune personne n'a été identifiée (par exemple, client, conseiller, administrateur).\n* **Les systèmes externes** : aucun système tiers ou externe n'est mentionné (par exemple, système de paiement, core banking).\n\n### Questions\n1. Quel est le nom précis du système étudié ?\n2. Quels sont les utilisateurs ou rôles qui interagissent directement avec ce système ?",
   "structurizr": {
     "status": "NO_WORKSPACE",
     "saved": false,
@@ -27,25 +27,26 @@
     "contextState": "INSUFFICIENT",
     "criteria": {
       "must": {
-        "ask_clarification": "La réponse pose des questions explicites à la fin : '1. Quel est le nom ou le rôle précis...', '2. Quels sont les utilisateurs ou rôles...', '3. Interagit-elle avec d'autres systèmes...' satisfaisant le critère de demande de clarification.",
-        "recognize_missing_context": "La réponse indique clairement : 'L\\'analyse de votre demande ne permet pas d\\'identifier les éléments nécessaires à la construction d\\'un contexte de niveau C4' et liste les informations manquantes."
+        "ask_clarification": "La réponse pose des questions claires à la fin (« 1. Quel est le nom précis du système étudié ? 2. Quels sont les utilisateurs ou rôles... »).",
+        "recognize_missing_context": "La réponse identifie explicitement le manque de contexte (« L'analyse de votre demande ne permet pas d'établir un System Context complet. »)."
       },
       "must_not": {
-        "invent_client": "Aucun client n'est inventé ou affirmé comme faisant partie du système modélisé (le mot 'client' n'apparaît même pas).",
-        "invent_administrator": "Aucun administrateur n'est inventé (le mot n'est pas présent).",
+        "invent_client": "Aucun client n'est inventé ou introduit comme entité du système.",
+        "invent_administrator": "Aucun administrateur n'est inventé ou introduit.",
         "invent_bank": "Aucune banque spécifique n'est inventée.",
         "invent_payment_provider": "Aucun fournisseur de paiement n'est inventé.",
-        "display_reasoning_steps": "La réponse ne récite pas les étapes internes de raisonnement du prompt.",
-        "mix_languages": "La réponse est entièrement rédigée en français."
+        "display_reasoning_steps": "La réponse ne récite pas les étapes du processus de raisonnement interne.",
+        "mix_languages": "La réponse est entièrement rédigée en français, sans mélange de langues."
       }
     },
     "failedCriteria": [],
-    "reason": "La réponse de F. Brooks respecte tous les critères 'must' (reconnaissance du contexte manquant et demande de clarification) et n'enfreint aucun critère 'must_not' (pas d'inventions, pas de mélange de langues, pas de récitation d'étapes de raisonnement)."
+    "reason": "La réponse respecte tous les critères 'must' (demande de clarification et reconnaissance du contexte insuffisant) et ne viole aucun critère 'must_not'."
   },
   "checks": {
     "passed": true,
     "failures": []
   },
   "verdict": "PASS",
-  "contextState": "INSUFFICIENT"
+  "contextState": "INSUFFICIENT",
+  "c4Level": "SYSTEM_CONTEXT"
 }

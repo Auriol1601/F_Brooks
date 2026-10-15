@@ -1,0 +1,50 @@
+{
+  "id": "OBS-003",
+  "input": "Contexte établi (C4 System Context, contextState = SUFFICIENT) :\n- Agent → Outil de suivi des tickets : traite les tickets\n\nTiens compte de cette analyse REA :\n\n<observations source=\"rea\" target=\"helpdesk-app\" coverage=\"partial\">\n- [observed] endpoint \"api.mail.example.com\" — server.js:51\n- [observed] storage \"tickets.sqlite\" — server.js:12\nlimitations: analyse statique uniquement\n</observations>",
+  "expected": {
+    "contextState": [
+      "AMBIGUOUS",
+      "INSUFFICIENT"
+    ],
+    "c4Level": "SYSTEM_CONTEXT",
+    "must": [
+      "ask_target_role"
+    ],
+    "must_not": [
+      "add_unconfirmed_observation_to_model",
+      "assume_target_role",
+      "display_reasoning_steps",
+      "mix_languages"
+    ]
+  },
+  "answer": "contextState = AMBIGUOUS\n\nLes observations issues de REA identifient des éléments techniques précis (« `api.mail.example.com` » — `OBSERVÉ`, et « `tickets.sqlite` » — `OBSERVÉ`), mais le bloc ne précise pas le **rôle** de la cible `helpdesk-app` (version existante du système étudié, système externe, ou application de référence).\n\nDe plus, ces éléments relèvent du niveau 2 (Container) et du niveau 3 ou 4 (stockage interne, endpoint d'API), alors que nous sommes actuellement au niveau 1 (System Context).\n\n### Clarification demandée\nQuel est le rôle de la cible `helpdesk-app` dans ce bloc d'observations : s'agit-il du système étudié (« Outil de suivi des tickets »), d'un système externe, ou d'une application de référence ?",
+  "structurizr": {
+    "status": "NO_WORKSPACE",
+    "saved": false,
+    "reason": "Aucun workspace Structurizr détecté."
+  },
+  "evaluation": {
+    "verdict": "PASS",
+    "contextState": "AMBIGUOUS",
+    "criteria": {
+      "must": {
+        "ask_target_role": "La réponse demande explicitement le rôle de la cible : « Quel est le rôle de la cible helpdesk-app dans ce bloc d'observations : s'agit-il du système étudié (« Outil de suivi des tickets »), d'un système externe, ou d'une application de référence ? »"
+      },
+      "must_not": {
+        "add_unconfirmed_observation_to_model": "Aucun élément observé n'a été ajouté au modèle Structurizr.",
+        "assume_target_role": "La réponse n'assume pas le rôle de la cible et pose la question pour le clarifier.",
+        "display_reasoning_steps": "La réponse ne récite pas les étapes du processus de raisonnement.",
+        "mix_languages": "La réponse est entièrement rédigée en français."
+      }
+    },
+    "failedCriteria": [],
+    "reason": "La réponse respecte tous les critères du test : elle demande le rôle de la cible sans l'assumer, n'ajoute pas les observations non confirmées au modèle, ne mélange pas les langues, ne détaille pas les étapes de raisonnement, et le champ contextState est correctement recopié."
+  },
+  "checks": {
+    "passed": true,
+    "failures": []
+  },
+  "verdict": "PASS",
+  "contextState": "AMBIGUOUS",
+  "c4Level": "SYSTEM_CONTEXT"
+}

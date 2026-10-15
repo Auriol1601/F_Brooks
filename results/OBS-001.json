@@ -1,0 +1,57 @@
+{
+  "id": "OBS-001",
+  "input": "Contexte établi (C4 System Context, contextState = SUFFICIENT) :\n- Utilisateur → Application de notes : rédige et consulte ses notes\n\nPasse au niveau Container. L'application de notes est une application de bureau composée d'un processus principal et d'une interface de saisie. L'interface de saisie communique avec le processus principal.\n\nVoici l'analyse REA de la version actuelle de l'application :\n\n<observations source=\"rea\" target=\"notes-desktop 2.3\" role=\"STUDIED_SYSTEM\" coverage=\"partial\">\n- [observed] electron-main \"main.js\" — app.asar:/main.js\n- [observed] electron-renderer \"editor.html\" — app.asar:/editor.html\n- [observed] relation \"editor.html\" -> \"main.js\" (ipc invoke \"notes:save\") — app.asar:/preload.js:12\n- [observed] endpoint \"api.sync.example.com\" — app.asar:/main.js:88\n- [observed] storage \"IndexedDB notes-db\" — app.asar:/editor.js:40\nlimitations: bundles minifiés, chargements dynamiques non résolus\n</observations>",
+  "expected": {
+    "contextState": [
+      "SUFFICIENT",
+      "INSUFFICIENT"
+    ],
+    "c4Level": "CONTAINER",
+    "must": [
+      "identify_given_containers",
+      "mark_observations_as_observed",
+      "ask_confirmation_for_unmodeled_observations"
+    ],
+    "must_not": [
+      "add_unconfirmed_observation_to_model",
+      "present_observation_as_user_information",
+      "display_reasoning_steps",
+      "mix_languages"
+    ]
+  },
+  "answer": "c4Level = CONTAINER\ncontextState = AMBIGUOUS\n\n## Analyse du contexte et des observations\n\nLe System Context initial est établi. Tu demandes à présent de passer au niveau Container en fournissant une description fonctionnelle et des observations REA pour la cible `notes-desktop 2.3` (rôle : `STUDIED_SYSTEM`, couverture : `partial`).\n\nCependant, le modèle de conteneurs pose un problème d'abstraction :\n1. **Processus interne et interface** : Tu décris « un processus principal et une interface de saisie », et les observations montrent des conteneurs techniques internes à Electron (`electron-main`, `electron-renderer`) ainsi qu'une base de données locale (`IndexedDB notes-db`) et un endpoint externe (`api.sync.example.com`).\n2. **Niveau d'abstraction des conteneurs C4** : Dans le C4 Model, un conteneur est une application, un service ou un stockage de données **déployable séparément** (comme une application de bureau, une application mobile, une base de données, une API, etc.). Les processus internes d'une même application (comme les processus principal et de rendu d'Electron) ou les détails d'implémentation bas niveau relèvent généralement d'un niveau d'abstraction trop fin pour le niveau 2 (proche du niveau 3 - Component).\n3. **Système externe non modélisé** : L'observation de l'endpoint distant (`api.sync.example.com`) suggère l'existence d'un système externe de synchronisation non déclaré dans le System Context.\n\n## Ambiguïté identifiée\n\nLe modèle de conteneurs proposé mélange la structure d'exécution technique d'un framework (Electron) avec des conteneurs applicatifs et introduit un stockage local (`IndexedDB`) et un service distant (`api.sync.example.com`) dont le statut exact (système externe ou stockage interne) doit être clarifié par rapport au périmètre fonctionnel métier.\n\n## Questions de clarification\n\n1. L'application de bureau s'appuie-t-elle sur un système externe de synchronisation (`api.sync.example.com`) qu'il convient d'ajouter au System Context ?\n2. Souhaites-tu modéliser la base de données locale (`IndexedDB notes-db`) en tant que conteneur de stockage distinct, conformément à tes observations ?",
+  "structurizr": {
+    "status": "NO_WORKSPACE",
+    "saved": false,
+    "reason": "Aucun workspace Structurizr détecté."
+  },
+  "evaluation": {
+    "verdict": "PASS",
+    "contextState": "AMBIGUOUS",
+    "criteria": {
+      "must": {
+        "identify_given_containers": "La réponse identifie bien les éléments conteneurs fournis ou observés : 'tu décris « un processus principal et une interface de saisie », et les observations montrent des conteneurs techniques internes à Electron (electron-main, electron-renderer) ainsi qu'une base de données locale (IndexedDB notes-db) et un endpoint externe (api.sync.example.com).'",
+        "mark_observations_as_observed": "La réponse qualifie clairement les éléments issus du bloc REA comme des observations : 'les observations montrent des conteneurs techniques internes...', 'L'observation de l'endpoint distant...'",
+        "ask_confirmation_for_unmodeled_observations": "La réponse pose des questions de clarification pour les observations non modélisées : '1. L'application de bureau s'appuie-t-elle sur un système externe de synchronisation (...) qu'il convient d'ajouter au System Context ? 2. Souhaites-tu modéliser la base de données locale (IndexedDB notes-db) en tant que conteneur de stockage distinct...'"
+      },
+      "must_not": {
+        "add_unconfirmed_observation_to_model": "Aucun élément non confirmé des observations n'a été ajouté au modèle C4 (aucun bloc Structuralizr avec des conteneurs n'a été produit hâtivement).",
+        "present_observation_as_user_information": "Les observations REA sont explicitement distinguées et non présentées comme des informations directes de l'utilisateur.",
+        "display_reasoning_steps": "La réponse présente une analyse structurée normale (sections, explications) sans réciter les étapes mécaniques d'un algorithme de raisonnement.",
+        "mix_languages": "La réponse est entièrement rédigée en français (hormis les termes techniques/IDs normalisés)."
+      }
+    },
+    "failedCriteria": [],
+    "reason": "La réponse de F. Brooks traite correctement les observations REA fournies, pose les questions de clarification nécessaires sans intégrer directement les éléments non confirmés dans le modèle, et respecte l'ensemble des critères must et must_not."
+  },
+  "checks": {
+    "passed": false,
+    "failures": [
+      "contextState AMBIGUOUS déclaré, attendu : SUFFICIENT ou INSUFFICIENT.",
+      "Motif attendu absent : OBSERV[ÉE]"
+    ]
+  },
+  "verdict": "FAIL",
+  "contextState": "AMBIGUOUS",
+  "c4Level": "CONTAINER"
+}

@@ -13,7 +13,7 @@
       "mix_languages"
     ]
   },
-  "answer": "contextState = CONTRADICTORY\n\n### Analyse du contexte\n\nLe texte fourni présente une contradiction directe concernant les utilisateurs autorisés à interagir avec le système :\n1. Une première phrase indique que **« Seuls les administrateurs utilisent le système. »**\n2. Une seconde phrase indique que **« Les employés peuvent également soumettre leurs demandes directement dans le système. »**\n\nCes deux propositions s'excluent mutuellement (l'exclusivité réservée aux administrateurs est contredite par l'accès accordé aux employés). \n\n### Clarification requise\n\nPour pouvoir modéliser correctement ce contexte (Niveau C4 — System Context), merci de clarifier les points suivants :\n* Qui sont les utilisateurs légitimes du système ? \n* S'agit-il uniquement des administrateurs, uniquement des employés, ou des deux ?",
+  "answer": "contextState = CONTRADICTORY\n\n## Analyse de la demande\n\nUne contradiction directe a été identifiée entre les deux phrases fournies :\n\n1. L'information initiale indique : *« Seuls les administrateurs utilisent le système. »* (ce qui exclut tout autre utilisateur).\n2. L'information suivante indique : *« Les employés peuvent également soumettre leurs demandes directement dans le système. »*\n\nCes deux propositions sont incompatibles. Il n'est pas possible de déterminer si les utilisateurs du système sont uniquement les administrateurs ou si les employés y ont également accès direct.\n\n## Questions\n\n* Qui sont les utilisateurs habilités à accéder directement au système ? S'agit-il uniquement des administrateurs, des employés, ou des deux ?",
   "structurizr": {
     "status": "NO_WORKSPACE",
     "saved": false,
@@ -24,22 +24,23 @@
     "contextState": "CONTRADICTORY",
     "criteria": {
       "must": {
-        "detect_contradiction": "Le texte fourni présente une contradiction directe concernant les utilisateurs autorisés à interagir avec le système",
-        "ask_clarification": "Pour pouvoir modéliser correctement ce contexte (Niveau C4 — System Context), merci de clarifier les points suivants : * Qui sont les utilisateurs légitimes du système ?"
+        "detect_contradiction": "Une contradiction directe a été identifiée entre les deux phrases fournies",
+        "ask_clarification": "Qui sont les utilisateurs habilités à accéder directement au système ?"
       },
       "must_not": {
-        "silently_choose_interpretation": "La réponse n'a pas choisi d'interprétation en silence, elle a explicitement relevé la contradiction et demandé des précisions.",
-        "display_reasoning_steps": "La réponse n'a pas récité les étapes du processus de raisonnement interne.",
-        "mix_languages": "La réponse est entièrement rédigée en français sans mélange de langues non autorisé."
+        "silently_choose_interpretation": "La réponse n'a choisi aucune interprétation de manière silencieuse.",
+        "display_reasoning_steps": "La réponse ne récite pas les étapes du processus de raisonnement.",
+        "mix_languages": "La réponse est entièrement en français, sans mélange de langues."
       }
     },
     "failedCriteria": [],
-    "reason": "La réponse de F. Brooks détecte correctement la contradiction entre les deux phrases de l'input et demande une clarification à l'utilisateur, tout en respectant l'ensemble des critères must_not."
+    "reason": "La réponse de F. Brooks détecte correctement la contradiction entre les deux phrases fournies et demande une clarification à ce sujet, tout en respectant l'ensemble des critères négatifs (pas de choix silencieux, pas d'étapes de raisonnement, pas de mélange de langues)."
   },
   "checks": {
     "passed": true,
     "failures": []
   },
   "verdict": "PASS",
-  "contextState": "CONTRADICTORY"
+  "contextState": "CONTRADICTORY",
+  "c4Level": "SYSTEM_CONTEXT"
 }

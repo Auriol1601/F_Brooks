@@ -1,0 +1,51 @@
+{
+  "id": "OBS-007",
+  "input": "Contexte établi (C4 System Context, contextState = SUFFICIENT) :\n- Employé → Application RH : utilise\n- Application RH → Système RH central : récupère certaines informations\n\nPasse au niveau Container.\nL'application RH comprend une application web et une base de données.\nL'employé utilise l'application web. L'application web lit et écrit dans la base de données et récupère certaines informations depuis le système RH central.\n\nVoici l'analyse REA du système RH central :\n\n<observations source=\"rea\" target=\"Système RH central\" role=\"EXTERNAL_SYSTEM\" coverage=\"partial\">\n- [observed] process \"rh-api\" — server/index.js:1\n- [observed] storage \"annuaire-rh\" — server/db.js:5\nlimitations: analyse statique uniquement\n</observations>",
+  "expected": {
+    "contextState": "SUFFICIENT",
+    "c4Level": "CONTAINER",
+    "must": [
+      "identify_given_containers",
+      "keep_external_system_outside_studied_system"
+    ],
+    "must_not": [
+      "add_external_observation_as_studied_container",
+      "turn_external_system_into_container",
+      "display_reasoning_steps",
+      "mix_languages"
+    ]
+  },
+  "answer": "c4Level = CONTAINER\ncontextState = SUFFICIENT\n\n### Analyse\n\n1. **Niveau et périmètre** :\n   * Le System Context est établi (`SUFFICIENT`).\n   * La demande explicite de l'utilisateur active le **Niveau 2 — Container**.\n\n2. **Éléments du conteneur (Application RH)** :\n   * Conteneur 1 : Application web (utilisée par l'employé).\n   * Conteneur 2 : Base de données (utilisée par l'application web).\n\n3. **Éléments externes** :\n   * Système RH central (système externe, ne fait pas partie du système étudié ; les observations REA le concernant concernent sa cible et n'ajoutent aucun conteneur à l'Application RH).\n\n4. **Relations** :\n   * Employé → Application web : utilise\n   * Application web → Base de données : lit et écrit\n   * Application web → Système RH central : récupère certaines informations\n\n---\n\n### Représentation Structurizr DSL\n\n```structurizr\nworkspace \"Application RH\" {\n\n    model {\n        employe = person \"Employé\"\n        systemeRHCentral = softwareSystem \"Système RH central\"\n\n        applicationRH = softwareSystem \"Application RH\" {\n            applicationWeb = container \"Application web\"\n            baseDeDonnees = container \"Base de données\"\n        }\n\n        employe -> applicationWeb \"Utilise\"\n        applicationWeb -> baseDeDonnees \"Lit et écrit\"\n        applicationWeb -> systemeRHCentral \"Récupère certaines informations\"\n    }\n\n    views {\n        systemContext applicationRH \"SystemContext\" {\n            include *\n            autoLayout\n        }\n        container applicationRH \"Containers\" {\n            include *\n            autoLayout\n        }\n    }\n}\n```",
+  "structurizr": {
+    "dslFile": "D:\\F_Brooks\\results\\dsl\\OBS-007.dsl",
+    "validation": "DSL validé par Structurizr.",
+    "status": "SAVED",
+    "saved": true,
+    "path": "D:\\F_Brooks\\structurizr\\workspace.dsl"
+  },
+  "evaluation": {
+    "verdict": "PASS",
+    "contextState": "SUFFICIENT",
+    "criteria": {
+      "must": {
+        "identify_given_containers": "Satisfait : F. Brooks identifie explicitement l'application web et la base de données fournies dans l'input utilisateur ('applicationWeb = container \"Application web\"' et 'baseDeDonnees = container \"Base de données\"').",
+        "keep_external_system_outside_studied_system": "Satisfait : F. Brooks maintient le Système RH central en tant que softwareSystem externe hors du système étudié 'Application RH'."
+      },
+      "must_not": {
+        "add_external_observation_as_studied_container": "Satisfait : Aucune des observations REA ('rh-api', 'annuaire-rh') n'a été ajoutée comme conteneur dans le système étudié.",
+        "turn_external_system_into_container": "Satisfait : Le système RH central reste un softwareSystem et n'est pas transformé en conteneur.",
+        "display_reasoning_steps": "Satisfait : La réponse ne récite pas les étapes du processus de raisonnement méta, mais présente une liste structurée normale d'analyse.",
+        "mix_languages": "Satisfait : La réponse est rédigée exclusivement en français, hormis les termes techniques du modèle C4."
+      }
+    },
+    "failedCriteria": [],
+    "reason": "La réponse de F. Brooks respecte scrupuleusement tous les critères must et must_not du test. Les conteneurs fournis sont correctement identifiés, le système externe reste hors du périmètre des conteneurs, les observations REA sont correctement traitées sans être ajoutées au modèle, et aucune invention n'est commise."
+  },
+  "checks": {
+    "passed": true,
+    "failures": []
+  },
+  "verdict": "PASS",
+  "contextState": "SUFFICIENT",
+  "c4Level": "CONTAINER"
+}

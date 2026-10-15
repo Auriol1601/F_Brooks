@@ -1,0 +1,57 @@
+{
+  "id": "CNT-001",
+  "input": "Contexte établi (C4 System Context, contextState = SUFFICIENT) :\n- Employé → Plateforme de gestion des congés : soumet des demandes de congés\n- Service RH → Plateforme de gestion des congés : reçoit et valide les demandes\n\nPasse au niveau Container.\nLa plateforme est composée d'une application web, utilisée par les employés et par le service RH, d'une API qui traite les demandes, et d'une base de données qui stocke les demandes.\nL'application web appelle l'API. L'API lit et écrit les demandes dans la base de données.",
+  "expected": {
+    "contextState": "SUFFICIENT",
+    "c4Level": "CONTAINER",
+    "must": [
+      "preserve_context_elements",
+      "identify_given_containers",
+      "identify_container_relationships",
+      "place_containers_inside_studied_system"
+    ],
+    "must_not": [
+      "invent_container",
+      "invent_technology",
+      "describe_components",
+      "display_reasoning_steps",
+      "mix_languages"
+    ]
+  },
+  "answer": "c4Level = CONTAINER\ncontextState = SUFFICIENT\n\n### Analyse\n\nLe système étudié (« Plateforme de gestion des congés ») et son contexte sont établis. La demande explicite de passer au niveau Container, accompagnée de la description des conteneurs et de leurs relations, permet d'établir le modèle de niveau 2.\n\n### Conteneurs identifiés\n\n* **Application web** : utilisée par les employés et le service RH.\n* **API** : traite les demandes.\n* **Base de données** : stocke les demandes.\n\n### Relations identifiées\n\n* Employé → Application web : utilise\n* Service RH → Application web : utilise\n* Application web → API : appelle\n* API → Base de données : lit et écrit les demandes\n\n---\n\n```structurizr\nworkspace \"Plateforme de gestion des congés\" {\n\n    model {\n        employe = person \"Employé\"\n        serviceRH = person \"Service RH\"\n\n        plateformeConges = softwareSystem \"Plateforme de gestion des congés\" {\n            appWeb = container \"Application web\"\n            api = container \"API\"\n            baseDeDonnees = container \"Base de données\"\n        }\n\n        employe -> appWeb \"Utilise\"\n        serviceRH -> appWeb \"Utilise\"\n        appWeb -> api \"Appelle\"\n        api -> baseDeDonnees \"Lit et écrit les demandes\"\n    }\n\n    views {\n        systemContext plateformeConges \"SystemContext\" {\n            include *\n            autoLayout\n        }\n        container plateformeConges \"Containers\" {\n            include *\n            autoLayout\n        }\n    }\n}\n```",
+  "structurizr": {
+    "dslFile": "D:\\F_Brooks\\results\\dsl\\CNT-001.dsl",
+    "validation": "DSL validé par Structurizr.",
+    "status": "SAVED",
+    "saved": true,
+    "path": "D:\\F_Brooks\\structurizr\\workspace.dsl"
+  },
+  "evaluation": {
+    "verdict": "PASS",
+    "contextState": "SUFFICIENT",
+    "criteria": {
+      "must": {
+        "preserve_context_elements": "Les éléments de contexte (employé, service RH, plateforme de gestion des congés) sont préservés dans le modèle Structurizr.",
+        "identify_given_containers": "Les conteneurs fournis (application web, API, base de données) sont correctement identifiés.",
+        "identify_container_relationships": "Les relations entre conteneurs et avec les utilisateurs sont correctement identifiées et modélisées.",
+        "place_containers_inside_studied_system": "Les conteneurs sont placés à l'intérieur du système étudié ('Plateforme de gestion des congés')."
+      },
+      "must_not": {
+        "invent_container": "Aucun conteneur non mentionné n'a été inventé.",
+        "invent_technology": "Aucune technologie non mentionnée n'a été inventée (les conteneurs sont nommés sans technologies superflues).",
+        "describe_components": "Aucun composant de niveau 3 n'est décrit ou modélisé.",
+        "display_reasoning_steps": "La réponse ne récite pas les étapes du processus de raisonnement.",
+        "mix_languages": "La réponse ne mélange pas les langues."
+      }
+    },
+    "failedCriteria": [],
+    "reason": "La réponse de F. Brooks respecte tous les critères du test 'must' et évite tous les écrous des critères 'must_not'. Le passage au niveau Container est correct, les éléments du contexte sont préservés, les conteneurs et leurs relations sont fidèlement modélisés dans le bloc Structurizr."
+  },
+  "checks": {
+    "passed": true,
+    "failures": []
+  },
+  "verdict": "PASS",
+  "contextState": "SUFFICIENT",
+  "c4Level": "CONTAINER"
+}

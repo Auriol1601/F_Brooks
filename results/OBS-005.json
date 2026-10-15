@@ -1,0 +1,51 @@
+{
+  "id": "OBS-005",
+  "input": "Voici notre modèle (C4 System Context) :\n\nMagasinier → Application de gestion d'entrepôt : enregistre les mouvements de stock\nApplication de gestion d'entrepôt → Système de stock : met à jour les quantités\n\nLe Système de stock est un système externe géré par une autre équipe.\n\nConfronte ce modèle à l'analyse REA de l'application :\n\n<observations source=\"rea\" target=\"warehouse-desktop 1.8\" role=\"STUDIED_SYSTEM\" coverage=\"complete\">\n- [observed] storage \"stock.sqlite\" (table quantities) — app.asar:/db/stock.js:7, fichier embarqué dans l'application\n- [observed] relation \"Application de gestion d'entrepôt\" -> \"stock.sqlite\" (écriture des quantités) — app.asar:/db/stock.js:31\n- aucun endpoint réseau observé\nlimitations: aucune\n</observations>",
+  "expected": {
+    "contextState": "CONTRADICTORY",
+    "c4Level": "SYSTEM_CONTEXT",
+    "must": [
+      "detect_incompatible_gap",
+      "cite_both_sources",
+      "ask_clarification"
+    ],
+    "must_not": [
+      "silently_choose_interpretation",
+      "silently_replace_external_system",
+      "display_reasoning_steps",
+      "mix_languages"
+    ]
+  },
+  "answer": "contextState = CONTRADICTORY\n\n### Analyse du modèle fourni et des observations\n\n1. **Magasinier → Application de gestion d'entrepôt**\n   - *Statut du modèle* : La personne « Magasinier » utilise l'application pour enregistrer les mouvements de stock (`EXPLICITE`).\n   - *Confrontation* : Cohérent avec la nature d'une application de bureau. Aucun écart notable.\n\n2. **Application de gestion d'entrepôt → Système de stock (système externe)**\n   - *Statut du modèle* : Le modèle affirme que l'application interagit avec un « Système de stock » externe géré par une autre équipe.\n   - *Confrontation* : Les observations REA sur la cible `STUDIED_SYSTEM` (couverture `complete`) montrent exclusivement un stockage local embarqué (`stock.sqlite`, table `quantities`) sans aucun endpoint réseau. Le stockage des données est interne à l'application et ne correspond pas à un appel vers un système externe distinct.\n\n### Écarts\n\n- `INCOMPATIBLE` : Le modèle représente un appel réseau vers un « Système de stock » externe, tandis que l'analyse complète de l'application montre un stockage local embarqué (`stock.sqlite`) sans aucun trafic réseau.\n\n### Questions pour clarification\n\n1. L'application de gestion d'entrepôt stocke-t-elle les données localement dans une base embarquée sans système externe, ou existe-t-il réellement un Système de stock externe non capturé par les observations locales ?\n\nÉcarts : 1",
+  "structurizr": {
+    "status": "NO_WORKSPACE",
+    "saved": false,
+    "reason": "Aucun workspace Structurizr détecté."
+  },
+  "evaluation": {
+    "verdict": "PASS",
+    "contextState": "CONTRADICTORY",
+    "criteria": {
+      "must": {
+        "detect_incompatible_gap": "La réponse détecte et qualifie l'écart d'incompatible : 'INCOMPATIBLE : Le modèle représente un appel réseau vers un « Système de stock » externe, tandis que l'analyse complète de l'application montre un stockage local embarqué'",
+        "cite_both_sources": "La réponse cite à la fois le modèle fourni et les observations REA : 'Analyse du modèle fourni et des observations' et 'Les observations REA sur la cible `STUDIED_SYSTEM`'",
+        "ask_clarification": "La réponse pose une question de clarification : '1. L'application de gestion d'entrepôt stocke-t-elle les données localement dans une base embarquée sans système externe, ou existe-t-il réellement un Système de stock externe non capturé par les observations locales ?'"
+      },
+      "must_not": {
+        "silently_choose_interpretation": "La réponse ne choisit pas silencieusement une interprétation, elle pose la question.",
+        "silently_replace_external_system": "La réponse ne remplace pas silencieusement le système externe, elle met en évidence la contradiction.",
+        "display_reasoning_steps": "La réponse ne récite pas les étapes du processus de raisonnement.",
+        "mix_languages": "La réponse est entièrement en français, sans mélange de langues injustifié."
+      }
+    },
+    "failedCriteria": [],
+    "reason": "La réponse de F. Brooks respecte tous les critères 'must' (détection de l'écart incompatible, citation des deux sources, demande de clarification) et ne viole aucun critère 'must_not'."
+  },
+  "checks": {
+    "passed": true,
+    "failures": []
+  },
+  "verdict": "PASS",
+  "contextState": "CONTRADICTORY",
+  "c4Level": "SYSTEM_CONTEXT"
+}

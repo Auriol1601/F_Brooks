@@ -18,7 +18,7 @@
       "mix_languages"
     ]
   },
-  "answer": "contextState = SUFFICIENT\n\n### Analyse du contexte\n\n* **Système étudié :** Plateforme de crédit (`EXPLICITE`)\n* **Utilisateur :** Client (`EXPLICITE`)\n* **Système externe :** Service externe de scoring (`EXPLICITE`)\n* **Relations :**\n  * Client → Plateforme de crédit : utilise (`EXPLICITE`)\n  * Plateforme de crédit → Service externe de scoring : utilise pour évaluer les demandes (`EXPLICITE`)\n\n---\n\n### Représentation C4 (System Context)\n\n```structurizr\nworkspace \"Plateforme de crédit\" {\n\n    model {\n        client = person \"Client\"\n        plateformeCredit = softwareSystem \"Plateforme de crédit\"\n        serviceScoring = softwareSystem \"Service externe de scoring\"\n\n        client -> plateformeCredit \"Utilise\"\n        plateformeCredit -> serviceScoring \"Utilise pour évaluer les demandes\"\n    }\n\n    views {\n        systemContext plateformeCredit \"SystemContext\" {\n            include *\n            autoLayout\n        }\n    }\n}\n```",
+  "answer": "contextState = SUFFICIENT\n\n### Analyse du contexte\n\n* **Client** : personne qui utilise la plateforme de crédit (EXPLICITE).\n* **Plateforme de crédit** : système étudié (EXPLICITE).\n* **Service externe de scoring** : système externe utilisé par la plateforme de crédit (EXPLICITE / INFÉRÉ).\n* **Relations** :\n  * Client → Plateforme de crédit (EXPLICITE)\n  * Plateforme de crédit → Service externe de scoring : utilise pour évaluer les demandes (EXPLICITE)\n\n---\n\n### Modèle C4 (System Context)\n\n```structurizr\nworkspace \"Plateforme de crédit\" {\n\n    model {\n        client = person \"Client\"\n        plateformeCredit = softwareSystem \"Plateforme de crédit\"\n        serviceScoring = softwareSystem \"Service externe de scoring\"\n\n        client -> plateformeCredit \"Utilise\"\n        plateformeCredit -> serviceScoring \"Utilise pour évaluer les demandes\"\n    }\n\n    views {\n        systemContext plateformeCredit \"SystemContext\" {\n            include *\n            autoLayout\n        }\n    }\n}\n```",
   "structurizr": {
     "dslFile": "D:\\F_Brooks\\results\\dsl\\CTX-003.dsl",
     "validation": "DSL validé par Structurizr.",
@@ -31,27 +31,28 @@
     "contextState": "SUFFICIENT",
     "criteria": {
       "must": {
-        "identify_client": "Satisfait par l'identification du client dans l'analyse et le modèle C4.",
-        "identify_credit_platform": "Satisfait par l'identification de la plateforme de crédit.",
-        "identify_scoring_system": "Satisfait par l'identification du service externe de scoring.",
-        "identify_context_relationships": "Satisfait par l'identification des relations entre le client, la plateforme et le service de scoring."
+        "identify_client": "Satisfait par l'identification du client dans l'analyse et le modèle ('Client = person \"Client\"').",
+        "identify_credit_platform": "Satisfait par l'identification de la plateforme de crédit ('plateformeCredit = softwareSystem \"Plateforme de crédit\"').",
+        "identify_scoring_system": "Satisfait par l'identification du service de scoring ('serviceScoring = softwareSystem \"Service externe de scoring\"').",
+        "identify_context_relationships": "Satisfait par les relations du contexte ('client -> plateformeCredit \"Utilise\"', 'plateformeCredit -> serviceScoring \"Utilise pour évaluer les demandes\"')."
       },
       "must_not": {
-        "invent_postgresql": "Non violé, PostgreSQL n'est pas mentionné.",
-        "invent_redis": "Non violé, Redis n'est pas mentionné.",
-        "invent_api_gateway": "Non violé, API Gateway n'est pas mentionné.",
-        "invent_microservices": "Non violé, microservices n'est pas mentionné.",
-        "display_reasoning_steps": "Non violé, pas de récitation des étapes de raisonnement.",
-        "mix_languages": "Non violé, la réponse est entièrement en français."
+        "invent_postgresql": "Non violé (aucune base PostgreSQL inventée).",
+        "invent_redis": "Non violé (aucun Redis inventé).",
+        "invent_api_gateway": "Non violé (aucune API Gateway inventée).",
+        "invent_microservices": "Non violé (aucun microservice inventé).",
+        "display_reasoning_steps": "Non violé (pas de récitation des étapes du processus de raisonnement).",
+        "mix_languages": "Non violé (uniquement du français utilisé, hors termes Structurizr)."
       }
     },
     "failedCriteria": [],
-    "reason": "La réponse de F. Brooks identifie correctement tous les éléments et relations requis sans inventer d'éléments interdits, tout en respectant les consignes de format et de langue."
+    "reason": "La réponse de F. Brooks identifie correctement tous les éléments requis du contexte (client, plateforme de crédit, service de scoring et relations) sans inventer d'éléments interdits, tout en respectant strictement le format et les critères du test."
   },
   "checks": {
     "passed": true,
     "failures": []
   },
   "verdict": "PASS",
-  "contextState": "SUFFICIENT"
+  "contextState": "SUFFICIENT",
+  "c4Level": "SYSTEM_CONTEXT"
 }

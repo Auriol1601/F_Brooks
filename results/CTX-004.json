@@ -16,7 +16,7 @@
       "mix_languages"
     ]
   },
-  "answer": "contextState = SUFFICIENT\n\n### Analyse du contexte\n\n* **Système étudié :** Application RH (`EXPLICITE`)\n* **Personnes :** Employé (`EXPLICITE`)\n* **Systèmes externes :** Système RH central (`EXPLICITE`)\n* **Relations :**\n  * Employé → Application RH : utilise (`EXPLICITE`)\n  * Application RH → Système RH central : récupère certaines informations (`EXPLICITE`)\n* **Informations manquantes / Ambiguïtés / Contradictions :** Aucune.\n\n---\n\n### Représentation C4 System Context (Structurizr DSL)\n\n```structurizr\nworkspace \"Application RH\" {\n\n    model {\n        employe = person \"Employé\"\n        appRH = softwareSystem \"Application RH\"\n        systemeRHCentral = softwareSystem \"Système RH central\"\n\n        employe -> appRH \"Utilise\"\n        appRH -> systemeRHCentral \"Récupère certaines informations\"\n    }\n\n    views {\n        systemContext appRH \"SystemContext\" {\n            include *\n            autoLayout\n        }\n    }\n}\n```",
+  "answer": "contextState = SUFFICIENT\n\n### Analyse du contexte\n\n* **Système étudié :** Application RH\n* **Personnes :** Employé (utilise l'application RH)\n* **Systèmes externes :** Système RH central (utilisé par l'application RH pour récupérer certaines informations)\n* **Relations :**\n  * `Employé → Application RH` (Utilise)\n  * `Application RH → Système RH central` (Récupère certaines informations)\n\n---\n\n```structurizr\nworkspace \"Application RH\" {\n\n    model {\n        employe = person \"Employé\"\n        appRH = softwareSystem \"Application RH\"\n        systemeRHCentral = softwareSystem \"Système RH central\"\n\n        employe -> appRH \"Utilise\"\n        appRH -> systemeRHCentral \"Récupère certaines informations\"\n    }\n\n    views {\n        systemContext appRH \"SystemContext\" {\n            include *\n            autoLayout\n        }\n    }\n}\n```",
   "structurizr": {
     "dslFile": "D:\\F_Brooks\\results\\dsl\\CTX-004.dsl",
     "validation": "DSL validé par Structurizr.",
@@ -29,25 +29,26 @@
     "contextState": "SUFFICIENT",
     "criteria": {
       "must": {
-        "identify_employee": "L'employé est identifié dans la section 'Personnes' et dans le modèle Structurizr DSL.",
-        "identify_hr_application": "L'application RH est identifiée comme système étudié et dans le modèle Structurizr DSL.",
-        "identify_hr_central_system": "Le système RH central est identifié comme système externe et dans le modèle Structurizr DSL.",
-        "distinguish_person_from_external_system": "La réponse distingue bien la personne (employé) du système externe (système RH central).",
-        "identify_context_relationships": "Les relations contextuelles (Employé -> Application RH et Application RH -> Système RH central) sont identifiées et modélisées."
+        "identify_employee": "Satisfait par l'identification de l'employé en tant que personne dans l'analyse et dans le modèle Structurizr (`employe = person \"Employé\"`).",
+        "identify_hr_application": "Satisfait par l'identification de l'application RH comme système étudié (`appRH = softwareSystem \"Application RH\"`).",
+        "identify_hr_central_system": "Satisfait par l'identification du système RH central comme système externe (`systemeRHCentral = softwareSystem \"Système RH central\"`).",
+        "distinguish_person_from_external_system": "Satisfait par la distinction claire entre la personne (Employé) et le système externe (Système RH central).",
+        "identify_context_relationships": "Satisfait par la modélisation correcte des relations dans le contexte (`employe -> appRH` et `appRH -> systemeRHCentral`)."
       },
       "must_not": {
-        "invent_internal_architecture": "Aucune architecture interne ou conteneur n'a été inventé.",
-        "display_reasoning_steps": "La réponse ne récite pas les étapes du processus de raisonnement.",
-        "mix_languages": "La réponse ne mélange pas les langues."
+        "invent_internal_architecture": "Satisfait (aucune architecture interne n'a été inventée, le niveau System Context est strictement respecté).",
+        "display_reasoning_steps": "Satisfait (la réponse ne récite pas les étapes du processus de raisonnement).",
+        "mix_languages": "Satisfait (la réponse est entièrement rédigée en français)."
       }
     },
     "failedCriteria": [],
-    "reason": "La réponse de F. Brooks respecte l'ensemble des critères 'must' et ne viole aucun critère 'must_not'."
+    "reason": "La réponse de F. Brooks respecte l'ensemble des critères 'must' et ne viole aucun critère 'must_not'. Le contexte est correctement identifié et modélisé au niveau System Context sans invention d'architecture interne."
   },
   "checks": {
     "passed": true,
     "failures": []
   },
   "verdict": "PASS",
-  "contextState": "SUFFICIENT"
+  "contextState": "SUFFICIENT",
+  "c4Level": "SYSTEM_CONTEXT"
 }

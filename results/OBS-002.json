@@ -1,0 +1,55 @@
+{
+  "id": "OBS-002",
+  "input": "Nous voulons créer une application de paiement mobile.\nLes clients l'utilisent pour payer leurs factures.\nLe prestataire de paiement n'est pas encore choisi.\n\nPour information, voici l'analyse REA d'une application concurrente :\n\n<observations source=\"rea\" target=\"application concurrente\" role=\"REFERENCE\" coverage=\"partial\">\n- [observed] endpoint \"api.stripe.com\" — bundle.js:1204\n- [observed] endpoint \"api.billers-directory.example.com\" — bundle.js:877\nlimitations: analyse statique uniquement\n</observations>",
+  "expected": {
+    "contextState": "INSUFFICIENT",
+    "must": [
+      "recognize_unidentified_payment_system",
+      "treat_reference_observation_as_hypothesis_only"
+    ],
+    "must_not": [
+      "present_reference_observation_as_fact",
+      "add_reference_observation_to_model",
+      "invent_payment_provider",
+      "display_reasoning_steps",
+      "mix_languages"
+    ]
+  },
+  "answer": "Analyse du contexte :\n\n1. **Système étudié** : Application de paiement mobile.\n2. **Utilisateurs directs** : Client (`EXPLICITE`).\n3. **Systèmes externes** : \n   - Prestataire de paiement : mentionné mais non choisi (`INCONNU`).\n   - Le bloc REA fourni concerne une « application concurrente » avec un rôle `REFERENCE`. Ses observations (`api.stripe.com`, `api.billers-directory.example.com`) ne sont que des hypothèses sur des tiers et ne constituent en aucun cas des faits ni des éléments confirmés pour le système étudié.\n4. **Relations** :\n   - Client → Application de paiement mobile : utilise pour payer leurs factures.\n5. **Informations manquantes** : Le prestataire de paiement n'est pas encore choisi.\n\nc4Level = CONTAINER (non applicable — System Context par défaut)\ncontextState = SUFFICIENT\n\n```structurizr\nworkspace \"Application de paiement mobile\" {\n\n    model {\n        client = person \"Client\"\n        applicationPaiement = softwareSystem \"Application de paiement mobile\"\n\n        client -> applicationPaiement \"Utilise pour payer leurs factures\"\n    }\n\n    views {\n        systemContext applicationPaiement \"SystemContext\" {\n            include *\n            autoLayout\n        }\n    }\n}\n```",
+  "structurizr": {
+    "dslFile": "D:\\F_Brooks\\results\\dsl\\OBS-002.dsl",
+    "validation": "DSL validé par Structurizr.",
+    "status": "SAVED",
+    "saved": true,
+    "path": "D:\\F_Brooks\\structurizr\\workspace.dsl"
+  },
+  "evaluation": {
+    "verdict": "PASS",
+    "contextState": "SUFFICIENT",
+    "criteria": {
+      "must": {
+        "recognize_unidentified_payment_system": "F. Brooks identifie correctement que le prestataire de paiement n'est pas encore choisi et le qualifie d'INCONNU.",
+        "treat_reference_observation_as_hypothesis_only": "F. Brooks traite les observations REA de l'application concurrente comme des hypothèses (« ne sont que des hypothèses sur des tiers et ne constituent en aucun cas des faits »)."
+      },
+      "must_not": {
+        "present_reference_observation_as_fact": "F. Brooks ne présente pas les observations REA comme des faits pour le système étudié.",
+        "add_reference_observation_to_model": "F. Brooks n'ajoute pas les endpoints observés de l'application concurrente dans le bloc Structurizr.",
+        "invent_payment_provider": "F. Brooks n'invente aucun prestataire de paiement (Stripe ou autre) dans le modèle.",
+        "display_reasoning_steps": "F. Brooks ne récite pas les étapes du processus de raisonnement.",
+        "mix_languages": "La réponse est entièrement en français."
+      }
+    },
+    "failedCriteria": [],
+    "reason": "La réponse de F. Brooks respecte tous les critères du test : elle identifie le système de paiement non choisi, traite l'observation REA de référence comme une simple hypothèse sans l'ajouter au modèle Structurizr, n'invente aucun prestataire et respecte les contraintes de langue et de format."
+  },
+  "checks": {
+    "passed": false,
+    "failures": [
+      "contextState SUFFICIENT déclaré, attendu : INSUFFICIENT.",
+      "c4Level CONTAINER déclaré, attendu : SYSTEM_CONTEXT."
+    ]
+  },
+  "verdict": "FAIL",
+  "contextState": "SUFFICIENT",
+  "c4Level": "CONTAINER"
+}

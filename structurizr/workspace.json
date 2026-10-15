@@ -3,52 +3,88 @@
   "description" : "Description",
   "documentation" : { },
   "id" : 1,
-  "lastModifiedDate" : "2026-10-15T14:21:18Z",
+  "lastModifiedDate" : "2026-10-15T15:15:43Z",
   "model" : {
     "people" : [ {
       "id" : "1",
-      "name" : "Client",
+      "name" : "Employé",
       "properties" : {
-        "structurizr.dsl.identifier" : "client"
+        "structurizr.dsl.identifier" : "employe"
       },
       "relationships" : [ {
         "description" : "Utilise",
-        "destinationId" : "2",
-        "id" : "4",
+        "destinationId" : "4",
+        "id" : "6",
         "sourceId" : "1",
         "tags" : "Relationship"
+      }, {
+        "description" : "Utilise",
+        "destinationId" : "3",
+        "id" : "7",
+        "linkedRelationshipId" : "6",
+        "sourceId" : "1"
       } ],
       "tags" : "Element,Person"
     } ],
     "softwareSystems" : [ {
       "documentation" : { },
       "id" : "2",
-      "name" : "Application de réservation",
+      "name" : "Système RH central",
       "properties" : {
-        "structurizr.dsl.identifier" : "applicationReservation"
+        "structurizr.dsl.identifier" : "systemeRHCentral"
       },
-      "relationships" : [ {
-        "description" : "Utilise",
-        "destinationId" : "3",
-        "id" : "5",
-        "sourceId" : "2",
-        "tags" : "Relationship"
-      } ],
       "tags" : "Element,Software System"
     }, {
+      "containers" : [ {
+        "documentation" : { },
+        "id" : "4",
+        "name" : "Application web",
+        "properties" : {
+          "structurizr.dsl.identifier" : "applicationWeb"
+        },
+        "relationships" : [ {
+          "description" : "Lit et écrit",
+          "destinationId" : "5",
+          "id" : "8",
+          "sourceId" : "4",
+          "tags" : "Relationship"
+        }, {
+          "description" : "Récupère certaines informations",
+          "destinationId" : "2",
+          "id" : "9",
+          "sourceId" : "4",
+          "tags" : "Relationship"
+        } ],
+        "tags" : "Element,Container"
+      }, {
+        "documentation" : { },
+        "id" : "5",
+        "name" : "Base de données",
+        "properties" : {
+          "structurizr.dsl.identifier" : "baseDeDonnees"
+        },
+        "tags" : "Element,Container"
+      } ],
       "documentation" : { },
       "id" : "3",
-      "name" : "Service de paiement",
+      "name" : "Application RH",
       "properties" : {
-        "structurizr.dsl.identifier" : "servicePaiement"
+        "structurizr.dsl.identifier" : "applicationRH"
       },
+      "relationships" : [ {
+        "description" : "Récupère certaines informations",
+        "destinationId" : "2",
+        "id" : "10",
+        "linkedRelationshipId" : "9",
+        "sourceId" : "3"
+      } ],
       "tags" : "Element,Software System"
     } ]
   },
-  "name" : "Application de réservation",
+  "name" : "Application RH",
   "properties" : {
-    "structurizr.inspection.error" : "6",
-    "structurizr.dsl" : "d29ya3NwYWNlICJBcHBsaWNhdGlvbiBkZSByw6lzZXJ2YXRpb24iIHsKCiAgICBtb2RlbCB7CiAgICAgICAgY2xpZW50ID0gcGVyc29uICJDbGllbnQiCiAgICAgICAgYXBwbGljYXRpb25SZXNlcnZhdGlvbiA9IHNvZnR3YXJlU3lzdGVtICJBcHBsaWNhdGlvbiBkZSByw6lzZXJ2YXRpb24iCiAgICAgICAgc2VydmljZVBhaWVtZW50ID0gc29mdHdhcmVTeXN0ZW0gIlNlcnZpY2UgZGUgcGFpZW1lbnQiCgogICAgICAgIGNsaWVudCAtPiBhcHBsaWNhdGlvblJlc2VydmF0aW9uICJVdGlsaXNlIgogICAgICAgIGFwcGxpY2F0aW9uUmVzZXJ2YXRpb24gLT4gc2VydmljZVBhaWVtZW50ICJVdGlsaXNlIgogICAgfQoKICAgIHZpZXdzIHsKICAgICAgICBzeXN0ZW1Db250ZXh0IGFwcGxpY2F0aW9uUmVzZXJ2YXRpb24gIlN5c3RlbUNvbnRleHQiIHsKICAgICAgICAgICAgaW5jbHVkZSAqCiAgICAgICAgICAgIGF1dG9MYXlvdXQKICAgICAgICB9CiAgICB9Cn0=",
+    "structurizr.inspection.error" : "15",
+    "structurizr.dsl" : "d29ya3NwYWNlICJBcHBsaWNhdGlvbiBSSCIgewoKICAgIG1vZGVsIHsKICAgICAgICBlbXBsb3llID0gcGVyc29uICJFbXBsb3nDqSIKICAgICAgICBzeXN0ZW1lUkhDZW50cmFsID0gc29mdHdhcmVTeXN0ZW0gIlN5c3TDqG1lIFJIIGNlbnRyYWwiCgogICAgICAgIGFwcGxpY2F0aW9uUkggPSBzb2Z0d2FyZVN5c3RlbSAiQXBwbGljYXRpb24gUkgiIHsKICAgICAgICAgICAgYXBwbGljYXRpb25XZWIgPSBjb250YWluZXIgIkFwcGxpY2F0aW9uIHdlYiIKICAgICAgICAgICAgYmFzZURlRG9ubmVlcyA9IGNvbnRhaW5lciAiQmFzZSBkZSBkb25uw6llcyIKICAgICAgICB9CgogICAgICAgIGVtcGxveWUgLT4gYXBwbGljYXRpb25XZWIgIlV0aWxpc2UiCiAgICAgICAgYXBwbGljYXRpb25XZWIgLT4gYmFzZURlRG9ubmVlcyAiTGl0IGV0IMOpY3JpdCIKICAgICAgICBhcHBsaWNhdGlvbldlYiAtPiBzeXN0ZW1lUkhDZW50cmFsICJSw6ljdXDDqHJlIGNlcnRhaW5lcyBpbmZvcm1hdGlvbnMiCiAgICB9CgogICAgdmlld3MgewogICAgICAgIHN5c3RlbUNvbnRleHQgYXBwbGljYXRpb25SSCAiU3lzdGVtQ29udGV4dCIgewogICAgICAgICAgICBpbmNsdWRlICoKICAgICAgICAgICAgYXV0b0xheW91dAogICAgICAgIH0KICAgICAgICBjb250YWluZXIgYXBwbGljYXRpb25SSCAiQ29udGFpbmVycyIgewogICAgICAgICAgICBpbmNsdWRlICoKICAgICAgICAgICAgYXV0b0xheW91dAogICAgICAgIH0KICAgIH0KfQ==",
     "structurizr.inspection.info" : "0",
     "structurizr.inspection.ignore" : "0",
     "structurizr.inspection.warning" : "0"
@@ -58,6 +94,44 @@
       "styles" : { },
       "terminology" : { }
     },
+    "containerViews" : [ {
+      "automaticLayout" : {
+        "edgeSeparation" : 50,
+        "nodeSeparation" : 50,
+        "rankDirection" : "LeftRight",
+        "rankSeparation" : 100,
+        "vertices" : true
+      },
+      "elements" : [ {
+        "id" : "1",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "2",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "4",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "5",
+        "x" : 0,
+        "y" : 0
+      } ],
+      "externalSoftwareSystemBoundariesVisible" : false,
+      "key" : "Containers",
+      "name" : "Container View: Application RH",
+      "order" : 2,
+      "relationships" : [ {
+        "id" : "6"
+      }, {
+        "id" : "8"
+      }, {
+        "id" : "9"
+      } ],
+      "softwareSystemId" : "3"
+    } ],
     "systemContextViews" : [ {
       "automaticLayout" : {
         "edgeSeparation" : 50,
@@ -81,14 +155,14 @@
       } ],
       "enterpriseBoundaryVisible" : true,
       "key" : "SystemContext",
-      "name" : "System Context View: Application de réservation",
+      "name" : "System Context View: Application RH",
       "order" : 1,
       "relationships" : [ {
-        "id" : "4"
+        "id" : "10"
       }, {
-        "id" : "5"
+        "id" : "7"
       } ],
-      "softwareSystemId" : "2"
+      "softwareSystemId" : "3"
     } ]
   }
 }
