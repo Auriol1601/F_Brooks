@@ -124,13 +124,31 @@ npm install -g --ignore-scripts @earendil-works/pi-coding-agent
 
 Le paramètre `--ignore-scripts` permet de désactiver les scripts de cycle de vie des dépendances lors de l'installation.
 
-### 2. Lancer Structurizr Lite
+### 2. Lancer Structurizr
 
 ```bash
-docker run -it --rm -p 8080:8080 -v ~/structurizr:/usr/local/structurizr structurizr/lite
+docker compose up -d
 ```
 
-Le répertoire monté doit contenir le workspace Structurizr à visualiser.
+Le dossier `structurizr/` du projet est monté dans le conteneur ; `structurizr/workspace.dsl` est affiché sur `http://localhost:8080`.
+
+### 3. Lancer la suite de tests
+
+```powershell
+$env:GEMINI_API_KEY="YOUR_KEY"
+# optionnel : un modèle juge distinct du modèle testé
+$env:GEMINI_EVAL_MODEL="..."
+python run_tests.py              # toute la suite
+python run_tests.py --test CTX-001
+```
+
+Les scénarios sont définis dans `tests.json`. Pour chaque réponse contenant un workspace, le DSL est :
+
+1. enregistré dans `results/dsl/CTX-XXX.dsl` ;
+2. validé par le parseur Structurizr officiel (`docker run structurizr/structurizr validate`) ;
+3. copié dans `structurizr/workspace.dsl` s'il est valide.
+
+Statuts Structurizr possibles dans `results/CTX-XXX.json` : `SAVED`, `SAVED_UNVALIDATED` (Docker indisponible), `NO_WORKSPACE`, `INVALID_DSL`. Ils n'influencent pas le verdict PASS/FAIL.
 
 ---
 
