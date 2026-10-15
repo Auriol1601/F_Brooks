@@ -1,14 +1,16 @@
-workspace {
+workspace "Application de réservation" {
 
     model {
         client = person "Client"
-        application = softwareSystem "Application"
+        applicationReservation = softwareSystem "Application de réservation"
+        servicePaiement = softwareSystem "Service de paiement"
 
-        client -> application "Utilise"
+        client -> applicationReservation "Utilise"
+        applicationReservation -> servicePaiement "Utilise"
     }
 
     views {
-        systemContext application "SystemContext" {
+        systemContext applicationReservation "SystemContext" {
             include *
             autoLayout
         }

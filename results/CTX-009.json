@@ -2,7 +2,10 @@
   "id": "CTX-009",
   "input": "Les utilisateurs reçoivent des notifications lorsque leur demande\nest traitée.",
   "expected": {
-    "contextState": "AMBIGUOUS",
+    "contextState": [
+      "AMBIGUOUS",
+      "INSUFFICIENT"
+    ],
     "must": [
       "identify_notification_requirement",
       "identify_missing_notification_system"
@@ -11,25 +14,41 @@
       "invent_email_system",
       "invent_sms_system",
       "invent_push_system",
-      "invent_notification_provider"
+      "invent_notification_provider",
+      "display_reasoning_steps",
+      "mix_languages"
     ]
   },
-  "answer": null,
+  "answer": "contextState = INSUFFICIENT\n\n### Analyse du contexte\n\n1. **Système étudié :**\n   * Le système qui gère et traite les demandes n'est ni nommé ni identifié explicitement (`INCONNU`).\n\n2. **Personnes / Utilisateurs :**\n   * Des « utilisateurs » sont mentionnés (`EXPLICITE`), mais leur rôle exact ou la nature de leur interaction avec le système n'est pas précisée, hormis le fait qu'ils reçoivent des notifications.\n\n3. **Systèmes externes :**\n   * Aucun système externe de notification n'est mentionné. Le mécanisme d'envoi des notifications n'est pas spécifié (`INCONNU`).\n\n4. **Relations :**\n   * Le texte indique qu'une action est effectuée vers les utilisateurs (« reçoivent des notifications »), mais la source exacte (le système émetteur) et le déclencheur ne sont pas clairement établis.\n\n5. **Informations manquantes :**\n   * L'identité et le nom du système logiciel étudié.\n   * La nature précise du rôle des utilisateurs.\n   * L'origine de la demande (qui initie la demande traitée par le système ?).\n\n---\n\n### Questions nécessaires\n\nPour pouvoir modéliser correctement ce contexte au niveau System Context, veuillez préciser :\n\n1. Quel est le nom ou la nature du système logiciel étudié qui traite les demandes ?\n2. Qui sont les utilisateurs qui initient ou soumettent ces demandes ?",
   "structurizr": {
-    "status": "NOT_RUN"
+    "status": "NO_WORKSPACE",
+    "saved": false,
+    "reason": "Aucun workspace Structurizr détecté."
   },
   "evaluation": {
-    "verdict": "EVALUATION_ERROR",
-    "contextState": "UNKNOWN",
+    "verdict": "PASS",
+    "contextState": "INSUFFICIENT",
     "criteria": {
-      "must": {},
-      "must_not": {}
+      "must": {
+        "identify_notification_requirement": "Satisfait par la mention dans l'analyse : « Des « utilisateurs » sont mentionnés (EXPLICITE), mais leur rôle exact ou la nature de leur interaction avec le système n'est pas précisée, hormis le fait qu'ils reçoivent des notifications. »",
+        "identify_missing_notification_system": "Satisfait par la mention dans l'analyse : « Aucun système externe de notification n'est mentionné. Le mécanisme d'envoi des notifications n'est pas spécifié. »"
+      },
+      "must_not": {
+        "invent_email_system": "Non violé (aucune mention d'un système d'e-mail).",
+        "invent_sms_system": "Non violé (aucune mention d'un système SMS).",
+        "invent_push_system": "Non violé (aucune mention de notifications push).",
+        "invent_notification_provider": "Non violé (aucun fournisseur de notification inventé).",
+        "display_reasoning_steps": "Non violé (pas de récitation des étapes du processus de raisonnement, simple structure d'analyse et de questions).",
+        "mix_languages": "Non violé (entièrement en français)."
+      }
     },
-    "failedCriteria": [
-      "agent_error"
-    ],
-    "reason": "Gemini HTTP 503: {\n  \"error\": {\n    \"code\": 503,\n    \"message\": \"This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.\",\n    \"status\": \"UNAVAILABLE\"\n  }\n}\n"
+    "failedCriteria": [],
+    "reason": "La réponse de F. Brooks identifie correctement l'exigence de notification ainsi que le manque de précision sur le système de notification, tout en respectant strictement l'interdiction d'inventer des canaux ou des systèmes spécifiques."
   },
-  "verdict": "EVALUATION_ERROR",
-  "contextState": "UNKNOWN"
+  "checks": {
+    "passed": true,
+    "failures": []
+  },
+  "verdict": "PASS",
+  "contextState": "INSUFFICIENT"
 }

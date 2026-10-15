@@ -11,33 +11,42 @@
       "identify_context_relationships"
     ],
     "must_not": [
-      "invent_internal_architecture"
+      "invent_internal_architecture",
+      "display_reasoning_steps",
+      "mix_languages"
     ]
   },
-  "answer": "1. **Compréhension & Analyse**\n   * **Éléments explicites :**\n     * `Employé` (personne utilisant l'application RH)\n     * `Application RH` (système étudié)\n     * `Système RH central` (système externe)\n     * Relation `Employé` → `Application RH` (utilise)\n     * Relation `Application RH` → `Système RH central` (récupère certaines informations)\n   * **Inférences structurelles :**\n     * `Employé` est modélisé comme une personne.\n     * `Application RH` est modélisée comme le système logiciel étudié.\n     * `Système RH central` est modélisé comme un système logiciel externe.\n   * **Informations inconnues :**\n     * Détails techniques des échanges entre l'application et le système externe (`INCONNU`).\n   * **Ambiguïtés :** Aucune.\n   * **Contradictions :** Aucune.\n   * **État du contexte (`contextState`) :** `SUFFICIENT`\n\n2. **Représentation C4 (System Context)**\n\n```structurizr\nworkspace \"Contexte - Application RH\" {\n\n    model {\n        employe = person \"Employé\"\n        appRH = softwareSystem \"Application RH\"\n        systemeRHCentral = softwareSystem \"Système RH central\"\n\n        employe -> appRH \"Utilise\"\n        appRH -> systemeRHCentral \"Récupère certaines informations\"\n    }\n\n    views {\n        systemContext appRH \"SystemContext\" {\n            include *\n            autoLayout\n        }\n    }\n}\n```",
+  "answer": "contextState = SUFFICIENT\n\n### Analyse du contexte\n\n* **Système étudié :** Application RH (`EXPLICITE`)\n* **Personnes :** Employé (`EXPLICITE`)\n* **Systèmes externes :** Système RH central (`EXPLICITE`)\n* **Relations :**\n  * Employé → Application RH : utilise (`EXPLICITE`)\n  * Application RH → Système RH central : récupère certaines informations (`EXPLICITE`)\n* **Informations manquantes / Ambiguïtés / Contradictions :** Aucune.\n\n---\n\n### Représentation C4 System Context (Structurizr DSL)\n\n```structurizr\nworkspace \"Application RH\" {\n\n    model {\n        employe = person \"Employé\"\n        appRH = softwareSystem \"Application RH\"\n        systemeRHCentral = softwareSystem \"Système RH central\"\n\n        employe -> appRH \"Utilise\"\n        appRH -> systemeRHCentral \"Récupère certaines informations\"\n    }\n\n    views {\n        systemContext appRH \"SystemContext\" {\n            include *\n            autoLayout\n        }\n    }\n}\n```",
   "structurizr": {
-    "status": "SUCCESS",
-    "returncode": 0,
-    "stdout": "[STRUCTURIZR]\nWorkspace sauvegarde automatiquement :\nD:\\F_Brooks\\structurizr\\workspace.dsl",
-    "stderr": ""
+    "dslFile": "D:\\F_Brooks\\results\\dsl\\CTX-004.dsl",
+    "validation": "DSL validé par Structurizr.",
+    "status": "SAVED",
+    "saved": true,
+    "path": "D:\\F_Brooks\\structurizr\\workspace.dsl"
   },
   "evaluation": {
     "verdict": "PASS",
     "contextState": "SUFFICIENT",
     "criteria": {
       "must": {
-        "identify_employee": true,
-        "identify_hr_application": true,
-        "identify_hr_central_system": true,
-        "distinguish_person_from_external_system": true,
-        "identify_context_relationships": true
+        "identify_employee": "L'employé est identifié dans la section 'Personnes' et dans le modèle Structurizr DSL.",
+        "identify_hr_application": "L'application RH est identifiée comme système étudié et dans le modèle Structurizr DSL.",
+        "identify_hr_central_system": "Le système RH central est identifié comme système externe et dans le modèle Structurizr DSL.",
+        "distinguish_person_from_external_system": "La réponse distingue bien la personne (employé) du système externe (système RH central).",
+        "identify_context_relationships": "Les relations contextuelles (Employé -> Application RH et Application RH -> Système RH central) sont identifiées et modélisées."
       },
       "must_not": {
-        "invent_internal_architecture": true
+        "invent_internal_architecture": "Aucune architecture interne ou conteneur n'a été inventé.",
+        "display_reasoning_steps": "La réponse ne récite pas les étapes du processus de raisonnement.",
+        "mix_languages": "La réponse ne mélange pas les langues."
       }
     },
     "failedCriteria": [],
-    "reason": "La réponse de F. Brooks identifie correctement l'employé, l'application RH et le système RH central, distingue bien la personne du système externe, modélise les relations contextuelles sans inventer d'architecture interne, et pose un contextState à SUFFICIENT de manière cohérente."
+    "reason": "La réponse de F. Brooks respecte l'ensemble des critères 'must' et ne viole aucun critère 'must_not'."
+  },
+  "checks": {
+    "passed": true,
+    "failures": []
   },
   "verdict": "PASS",
   "contextState": "SUFFICIENT"

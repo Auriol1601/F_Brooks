@@ -11,33 +11,40 @@
       "invent_client",
       "invent_administrator",
       "invent_bank",
-      "invent_payment_provider"
+      "invent_payment_provider",
+      "display_reasoning_steps",
+      "mix_languages"
     ]
   },
-  "answer": "**1. Analyse du contexte**\n\n* **Système étudié :** Application bancaire (mentionnée, mais non nommée ou décrite précisément).\n* **Personnes / Utilisateurs :** Aucun utilisateur direct n'est explicitement mentionné (on peut supposer des clients ou des conseillers, mais rien n'est établi).\n* **Systèmes externes :** Aucun système externe mentionné.\n* **Relations :** Aucune relation établie.\n* **Informations manquantes :** L'ensemble du contexte fonctionnel et des interactions est manquant.\n\n---\n\n**2. État fonctionnel du contexte**\n\n`contextState = INSUFFICIENT`\n\n---\n\n**3. Questions nécessaires**\n\nPour pouvoir modéliser correctement le contexte de cette application bancaire, veuillez préciser :\n\n1. Qui utilise principalement cette application (par exemple : les clients de la banque, les conseillers, les administrateurs) ?\n2. Avec quels autres systèmes logiciels cette application doit-elle interagir (par exemple : un système de paiement externe, un système central de la banque, un service d'authentification) ?",
+  "answer": "contextState = INSUFFICIENT\n\nL'analyse de votre demande ne permet pas d'identifier les éléments nécessaires à la construction d'un contexte de niveau C4 (System Context). \n\n### Informations manquantes :\n* **Le système étudié** : le nom ou la nature précise de l'application bancaire n'est pas défini.\n* **Les utilisateurs directs** : aucune personne ou rôle n'est mentionné (par exemple : client, conseiller, administrateur).\n* **Les systèmes externes** : aucun système tiers n'est explicitement identifié (par exemple : système de paiement, cœur de bancaire).\n* **Les interactions** : aucune relation entre des acteurs et le système n'est décrite.\n\n### Questions nécessaires :\n1. Quel est le nom ou le rôle précis de l'application bancaire que vous souhaitez modéliser ?\n2. Quels sont les utilisateurs ou rôles qui interagissent directement avec elle ?\n3. Interagit-elle avec d'autres systèmes logiciels externes ? Si oui, lesquels ?",
   "structurizr": {
-    "status": "SUCCESS",
-    "returncode": 0,
-    "stdout": "[STRUCTURIZR]\nAucun workspace Structurizr d�tect�.",
-    "stderr": ""
+    "status": "NO_WORKSPACE",
+    "saved": false,
+    "reason": "Aucun workspace Structurizr détecté."
   },
   "evaluation": {
     "verdict": "PASS",
     "contextState": "INSUFFICIENT",
     "criteria": {
       "must": {
-        "ask_clarification": true,
-        "recognize_missing_context": true
+        "ask_clarification": "La réponse pose des questions explicites à la fin : '1. Quel est le nom ou le rôle précis...', '2. Quels sont les utilisateurs ou rôles...', '3. Interagit-elle avec d'autres systèmes...' satisfaisant le critère de demande de clarification.",
+        "recognize_missing_context": "La réponse indique clairement : 'L\\'analyse de votre demande ne permet pas d\\'identifier les éléments nécessaires à la construction d\\'un contexte de niveau C4' et liste les informations manquantes."
       },
       "must_not": {
-        "invent_client": false,
-        "invent_administrator": false,
-        "invent_bank": false,
-        "invent_payment_provider": false
+        "invent_client": "Aucun client n'est inventé ou affirmé comme faisant partie du système modélisé (le mot 'client' n'apparaît même pas).",
+        "invent_administrator": "Aucun administrateur n'est inventé (le mot n'est pas présent).",
+        "invent_bank": "Aucune banque spécifique n'est inventée.",
+        "invent_payment_provider": "Aucun fournisseur de paiement n'est inventé.",
+        "display_reasoning_steps": "La réponse ne récite pas les étapes internes de raisonnement du prompt.",
+        "mix_languages": "La réponse est entièrement rédigée en français."
       }
     },
     "failedCriteria": [],
-    "reason": "La réponse de F. Brooks identifie correctement que le contexte est insuffisant (contextState = INSUFFICIENT), pose des questions de clarification pertinentes sans affirmer des faits non fournis, et ne crée pas d'entités fictives (les mentions de 'clients', 'conseillers', 'système de paiement externe', ou 'système central de la banque' sont données uniquement à titre d'exemples dans les questions posées, ce qui ne constitue pas une invention d'entités réelles dans le contexte du système)."
+    "reason": "La réponse de F. Brooks respecte tous les critères 'must' (reconnaissance du contexte manquant et demande de clarification) et n'enfreint aucun critère 'must_not' (pas d'inventions, pas de mélange de langues, pas de récitation d'étapes de raisonnement)."
+  },
+  "checks": {
+    "passed": true,
+    "failures": []
   },
   "verdict": "PASS",
   "contextState": "INSUFFICIENT"

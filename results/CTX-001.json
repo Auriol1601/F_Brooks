@@ -8,39 +8,57 @@
       "identify_employee",
       "identify_hr_service",
       "identify_employee_relationship",
-      "identify_hr_relationship"
+      "identify_hr_relationship",
+      "preserve_hr_validation_action"
     ],
     "must_not": [
       "invent_internal_architecture",
-      "invent_external_system"
+      "invent_external_system",
+      "invert_or_replace_explicit_relationship",
+      "display_reasoning_steps",
+      "mix_languages"
     ]
   },
-  "answer": "### 1. Analyse du contexte\n\n* **Système étudié :** Plateforme de gestion des congés\n* **Personnes / Acteurs directs :** \n  * Employé (`EXPLICITE`)\n  * Service RH (`EXPLICITE`)\n* **Systèmes externes :** Aucun identifié\n* **Relations :**\n  * Employé → Plateforme de gestion des congés : Soumet des demandes de congés (`EXPLICITE`)\n  * Service RH → Plateforme de gestion des congés : Reçoit et valide les demandes (`EXPLICITE`)\n\n---\n\n### 2. Éléments inconnus et ambiguïtés\n\n* **Inconnu :** Aucun élément bloquant pour un niveau System Context. Les aspects techniques d'authentification, de notification ou de stockage sont hors périmètre.\n* **Ambigüité :** Aucune.\n\n---\n\n### 3. État fonctionnel du contexte\n\n`contextState = SUFFICIENT`\n\n---\n\n### 4. Représentation C4 (Structurizr DSL)\n\n```structurizr\nworkspace \"Gestion des congés\" \"Contexte du système de gestion des congés\" {\n\n    model {\n        employe = person \"Employé\" \"Utilise la plateforme pour soumettre ses demandes de congés.\"\n        serviceRH = person \"Service RH\" \"Reçoit et valide les demandes.\"\n        \n        plateformeConges = softwareSystem \"Plateforme de gestion des congés\" \"Permet aux employés de soumettre des demandes de congés.\"\n\n        employe -> plateformeConges \"Soumet des demandes de congés\"\n        serviceRH -> plateformeConges \"Reçoit et valide les demandes\"\n    }\n\n    views {\n        systemContext plateformeConges \"SystemContext\" {\n            include *\n            auto-layout\n        }\n    }\n}\n```",
+  "answer": "contextState = SUFFICIENT\n\n### Analyse du contexte\n\n* **Système étudié :** Plateforme de gestion des congés\n* **Personnes :**\n  * `Employé` (EXPLICITE) : utilise la plateforme pour soumettre des demandes de congés.\n  * `Service RH` (EXPLICITE) : reçoit les demandes et les valide.\n* **Systèmes externes :** Aucun identifié (INCONNU).\n* **Relations :**\n  * Employé → Plateforme de gestion des congés : Soumet des demandes de congés\n  * Plateforme de gestion des congés → Service RH : Transmet les demandes de congés\n  * Service RH → Plateforme de gestion des congés : Reçoit et valide les demandes\n\n### Modèle C4 (System Context) — Structurizr DSL\n\n```structurizr\nworkspace \"Plateforme de gestion des congés\" {\n\n    model {\n        employe = person \"Employé\"\n        serviceRH = person \"Service RH\"\n        plateforme = softwareSystem \"Plateforme de gestion des congés\"\n\n        employe -> plateforme \"Soumet des demandes de congés\"\n        plateforme -> serviceRH \"Transmet les demandes de congés\"\n        serviceRH -> plateforme \"Reçoit et valide les demandes\"\n    }\n\n    views {\n        systemContext plateforme \"SystemContext\" {\n            include *\n            autoLayout\n        }\n    }\n}\n```",
   "structurizr": {
-    "status": "SUCCESS",
-    "returncode": 0,
-    "stdout": "[STRUCTURIZR]\nAucun workspace Structurizr d�tect�.",
-    "stderr": ""
+    "dslFile": "D:\\F_Brooks\\results\\dsl\\CTX-001.dsl",
+    "validation": "DSL validé par Structurizr.",
+    "status": "SAVED",
+    "saved": true,
+    "path": "D:\\F_Brooks\\structurizr\\workspace.dsl"
   },
   "evaluation": {
-    "verdict": "PASS",
+    "verdict": "FAIL",
     "contextState": "SUFFICIENT",
     "criteria": {
       "must": {
-        "identify_studied_system": "Le système étudié (Plateforme de gestion des congés) est clairement identifié.",
-        "identify_employee": "L'employé est identifié comme acteur.",
-        "identify_hr_service": "Le service RH est identifié comme acteur.",
-        "identify_employee_relationship": "La relation entre l'employé et le système (soumission des demandes) est identifiée.",
-        "identify_hr_relationship": "La relation entre le service RH et le système (réception et validation des demandes) est identifiée."
+        "identify_studied_system": "Satisfait : le système étudié est identifié comme la plateforme de gestion des congés.",
+        "identify_employee": "Satisfait : l'employé est identifié.",
+        "identify_hr_service": "Satisfait : le service RH est identifié.",
+        "identify_employee_relationship": "Satisfait : la relation de l'employé vers la plateforme est identifiée.",
+        "identify_hr_relationship": "Violé : l'input indique que le service RH reçoit les demandes et les valide (relation directe ou via la plateforme). Dans la réponse, la relation du service RH est inversée vers la plateforme (« Service RH → Plateforme de gestion des congés : Reçoit et valide les demandes »), ce qui contredit l'input où le service RH reçoit (de la plateforme ou des employés) et valide.",
+        "preserve_hr_validation_action": "Satisfait : l'action de validation par le service RH est préservée."
       },
       "must_not": {
-        "invent_internal_architecture": "Aucune architecture interne n'a été inventée.",
-        "invent_external_system": "Aucun système externe non mentionné n'a été introduit."
+        "invent_internal_architecture": "Satisfait : aucune architecture interne n'est inventée.",
+        "invent_external_system": "Satisfait : aucun système externe n'est inventé.",
+        "invert_or_replace_explicit_relationship": "Violé : la relation du service RH est inversée (« Service RH -> plateforme » au lieu de la réception des demandes par le service RH depuis la plateforme/employé).",
+        "display_reasoning_steps": "Satisfait : pas de récitation des étapes de raisonnement.",
+        "mix_languages": "Satisfait : pas de mélange de langues."
       }
     },
-    "failedCriteria": [],
-    "reason": "La réponse de F. Brooks identifie parfaitement tous les éléments requis du contexte système (système étudié, acteurs et relations) à partir des informations fournies, sans inventer d'architecture interne ni de système externe, et pose correctement le contextState à SUFFICIENT."
+    "failedCriteria": [
+      "identify_hr_relationship",
+      "invert_or_replace_explicit_relationship"
+    ],
+    "reason": "La réponse échoue car elle inverse la relation du service RH en écrivant 'Service RH -> Plateforme de gestion des congés : Reçoit et valide les demandes', ce qui contredit le sens des flux exprimés dans l'input utilisateur."
   },
-  "verdict": "PASS",
+  "checks": {
+    "passed": false,
+    "failures": [
+      "Relation DSL interdite : Plateforme de gestion des congés -> Service RH"
+    ]
+  },
+  "verdict": "FAIL",
   "contextState": "SUFFICIENT"
 }
