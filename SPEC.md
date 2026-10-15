@@ -511,9 +511,13 @@ Modèle corrigé uniquement après confirmation
 | Écart | Signification | Effet |
 | --- | --- | --- |
 | **CONFIRMÉ** | élément du modèle soutenu par une observation | aucun ; la preuve peut être citée |
-| **NON OBSERVÉ** | élément du modèle sans observation correspondante | signalé avec la limite de couverture ; **jamais supprimé** (R13) |
+| **NON OBSERVÉ** | élément du modèle sans observation correspondante, la couverture ne permettant pas de conclure | signalé avec la limite de couverture ; **jamais supprimé** (R13) |
 | **NON MODÉLISÉ** | observation sans élément correspondant dans le modèle | question de confirmation ; pas d'ajout au DSL (R11) |
 | **INCOMPATIBLE** | le modèle affirme X, l'observation montre non-X (sens d'une relation, nature d'un élément) | contradiction citée ; `CONTRADICTORY` si elle affecte le modèle |
+
+Avec une couverture `complete`, une absence **explicitement observée** (par exemple « aucun endpoint réseau ») qui contredit le modèle est un écart `INCOMPATIBLE`, pas `NON OBSERVÉ`.
+
+Si le rôle de la cible est absent, aucune confrontation n'a lieu : F. Brooks demande le rôle (`AMBIGUOUS`).
 
 #### État
 
