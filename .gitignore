@@ -1,1 +1,8 @@
--e "tests_results/*.json\n.DS_Store\nnode_modules/" 
+__pycache__/
+*.pyc
+.lh/
+structurizr/.structurizr/
+tests_results/
+.DS_Store
+node_modules/
+repo_rea/
