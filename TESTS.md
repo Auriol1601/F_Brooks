@@ -19,13 +19,21 @@ Critères globaux, appliqués à tous les scénarios (section `global` de `tests
 Vérifications déterministes (section `checks` de chaque test, exécutées par le runner sans LLM) :
 
 - exactement un `contextState = ...` déclaré, parmi les états acceptés par le test ;
-- niveau C4 : sans déclaration, la réponse est réputée `SYSTEM_CONTEXT` ; le niveau attendu est `expected.c4Level`, ou `SYSTEM_CONTEXT` si le test ne le précise pas (une ligne `c4Level = CONTAINER` dans un scénario de niveau 1 est donc un échec) ;
+- exactement un `c4Level = ...` déclaré, égal à `expected.c4Level`, ou à `SYSTEM_CONTEXT` si le test ne le précise pas ;
 - relations DSL attendues ou interdites (source → destination), y compris entre conteneurs ;
 - termes interdits dans la réponse ou dans le DSL ;
 - motifs obligatoires dans la réponse (ex. `Correction nécessaire : NON`) ;
 - motifs obligatoires ou interdits dans le DSL (`dsl_required_patterns`, `dsl_forbidden_patterns`, ex. aucun `= container` quand le contexte n'est pas établi).
 
 Un échec déterministe donne `FAIL` quel que soit l'avis de l'évaluateur LLM.
+
+Le modèle varie d'un passage à l'autre, même à `temperature = 0`. Pour juger un changement de prompt, exécuter plusieurs passages :
+
+```powershell
+python run_tests.py --repeat 3
+```
+
+Verdict agrégé par scénario : `PASS` (tous les passages), `FLAKY` (certains seulement), `FAIL` (aucun). Le résultat conserve le détail du premier passage en échec et un résumé de chaque passage (`runs`, `passRate`).
 
 Familles de scénarios :
 

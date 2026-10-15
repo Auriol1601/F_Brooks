@@ -38,6 +38,9 @@ Usage:
     Dossier de sortie personnalisé:
         python run_tests.py --save results
 
+    Plusieurs passages par test (PASS / FLAKY / FAIL):
+        python run_tests.py --repeat 3
+
 Scénarios : tests.json
 Modèle évalué : GEMINI_MODEL
 Modèle juge   : GEMINI_EVAL_MODEL (par défaut GEMINI_MODEL)
@@ -881,8 +884,9 @@ def evaluate_test(
 # tests.json, pour chaque test :
 #
 #   expected.contextState         état ou liste d'états acceptés
-#   expected.c4Level              niveau C4 attendu (SYSTEM_CONTEXT
-#                                 par défaut si non déclaré)
+#   expected.c4Level              niveau C4 attendu, déclaré par
+#                                 « c4Level = ... » (SYSTEM_CONTEXT
+#                                 si le test ne précise rien)
 #   checks.required_patterns      regex à trouver dans la réponse
 #   checks.forbidden_terms        termes interdits dans la réponse
 #   checks.dsl_forbidden_terms    termes interdits dans le DSL
@@ -935,11 +939,7 @@ def declared_context_states(
 def declared_c4_levels(
     answer
 ):
-    """
-    Liste les niveaux C4 déclarés dans la réponse.
-
-    Sans déclaration, la réponse est au niveau SYSTEM_CONTEXT.
-    """
+    """Liste les niveaux C4 déclarés dans la réponse."""
 
     levels = []
 
@@ -948,7 +948,7 @@ def declared_c4_levels(
         if level not in levels:
             levels.append(level)
 
-    return levels or [DEFAULT_C4_LEVEL]
+    return levels
 
 
 def dsl_relationships(
@@ -1020,15 +1020,21 @@ def run_checks(
         )
 
     # --------------------------------------------------------
-    # c4Level : un seul niveau, celui attendu par le test
-    # (SYSTEM_CONTEXT si le test ne précise rien)
+    # c4Level : exactement un niveau déclaré, celui attendu
+    # par le test (SYSTEM_CONTEXT si le test ne précise rien)
     # --------------------------------------------------------
 
     expected_level = expected.get("c4Level", DEFAULT_C4_LEVEL)
 
     levels = declared_c4_levels(answer)
 
-    if len(levels) > 1:
+    if not levels:
+
+        failures.append(
+            "Aucun « c4Level = ... » déclaré."
+        )
+
+    elif len(levels) > 1:
 
         failures.append(
             "Plusieurs c4Level déclarés : "
@@ -1459,6 +1465,186 @@ def find_test(
 
 
 # ============================================================
+# EXÉCUTION D'UN PASSAGE
+# ============================================================
+
+def run_once(
+    test,
+    system_prompt,
+):
+    """
+    Exécute un passage d'un test : F. Brooks, Structurizr,
+    évaluateur, vérifications déterministes.
+
+    Retourne le résultat complet du passage.
+    """
+
+    print(
+        "\nRÉPONSE GEMINI:\n"
+    )
+
+    try:
+
+        answer = call_gemini(
+            system_prompt,
+            test["input"],
+        )
+
+    except Exception as exc:
+
+        print(
+            f"ERREUR F. BROOKS : {exc}",
+            file=sys.stderr,
+        )
+
+        return {
+            "id": test["id"],
+
+            "input": test["input"],
+
+            "expected": test["expected"],
+
+            "answer": None,
+
+            "structurizr": {
+                "status": "NOT_RUN",
+            },
+
+            "evaluation": evaluation_error(
+                str(exc),
+                ["agent_error"],
+            ),
+
+            "verdict": "EVALUATION_ERROR",
+
+            "contextState": "UNKNOWN",
+
+            "c4Level": "UNKNOWN",
+        }
+
+    print(answer)
+
+    structurizr_result = run_structurizr_writer(
+        answer,
+        test["id"],
+    )
+
+    print_structurizr_result(
+        structurizr_result
+    )
+
+    evaluation = evaluate_test(
+        test,
+        answer,
+    )
+
+    print_evaluation(
+        evaluation
+    )
+
+    checks_result = run_checks(
+        test,
+        answer,
+    )
+
+    print_checks(
+        checks_result
+    )
+
+    verdict = combine_verdict(
+        checks_result,
+        evaluation,
+    )
+
+    if verdict not in ALLOWED_VERDICTS:
+        verdict = "EVALUATION_ERROR"
+
+    print(
+        f"\nVERDICT DU PASSAGE : {verdict}"
+    )
+
+    return {
+        "id": test["id"],
+
+        "input": test["input"],
+
+        "expected": test["expected"],
+
+        "answer": answer,
+
+        "structurizr": structurizr_result,
+
+        "evaluation": evaluation,
+
+        "checks": checks_result,
+
+        "verdict": verdict,
+
+        "contextState": (
+            declared_context_states(answer)
+            or ["UNKNOWN"]
+        )[0],
+
+        "c4Level": (
+            declared_c4_levels(answer)
+            or ["UNKNOWN"]
+        )[0],
+    }
+
+
+def aggregate_verdict(
+    verdicts
+):
+    """
+    Verdict d'un test exécuté plusieurs fois.
+
+        PASS              tous les passages PASS
+        FAIL              aucun passage PASS
+        FLAKY             certains passages PASS, d'autres FAIL
+        EVALUATION_ERROR  aucun passage exploitable
+    """
+
+    exploitable = [
+        verdict
+        for verdict in verdicts
+        if verdict != "EVALUATION_ERROR"
+    ]
+
+    if not exploitable:
+        return "EVALUATION_ERROR"
+
+    passed = exploitable.count("PASS")
+
+    if passed == len(exploitable):
+        return "PASS"
+
+    if passed == 0:
+        return "FAIL"
+
+    return "FLAKY"
+
+
+def run_summary(
+    run
+):
+    """Résumé d'un passage conservé dans le résultat agrégé."""
+
+    failures = list(
+        run.get("checks", {}).get("failures", [])
+    ) + list(
+        run.get("evaluation", {}).get("failedCriteria", [])
+    )
+
+    return {
+        "verdict": run["verdict"],
+        "contextState": run["contextState"],
+        "c4Level": run["c4Level"],
+        "failures": failures,
+    }
+
+
+
+# ============================================================
 # MAIN
 # ============================================================
 
@@ -1489,7 +1675,22 @@ def main():
         ),
     )
 
+    parser.add_argument(
+        "--repeat",
+        type=int,
+        default=1,
+        help=(
+            "Nombre de passages par test (défaut: 1). "
+            "PASS si tous les passages réussissent, FLAKY "
+            "si seulement certains, FAIL si aucun."
+        ),
+    )
+
     args = parser.parse_args()
+
+    if args.repeat < 1:
+
+        parser.error("--repeat doit valoir au moins 1.")
 
     # --------------------------------------------------------
     # Vérifications préalables
@@ -1585,6 +1786,7 @@ def main():
 
     summary = {
         "PASS": 0,
+        "FLAKY": 0,
         "FAIL": 0,
         "EVALUATION_ERROR": 0,
     }
@@ -1616,157 +1818,75 @@ def main():
             test["input"]
         )
 
-        print(
-            "\nRÉPONSE GEMINI:\n"
-        )
+        runs = []
 
-        # ----------------------------------------------------
-        # F. Brooks
-        # ----------------------------------------------------
+        for attempt in range(
+            1,
+            args.repeat + 1,
+        ):
 
-        try:
+            if args.repeat > 1:
 
-            answer = call_gemini(
-                system_prompt,
-                test["input"],
+                print(
+                    f"\n--- Passage {attempt}/{args.repeat}"
+                )
+
+            runs.append(
+                run_once(
+                    test,
+                    system_prompt,
+                )
             )
 
-        except Exception as exc:
+        verdicts = [
+            run["verdict"]
+            for run in runs
+        ]
 
-            print(
-                f"ERREUR F. BROOKS : {exc}",
-                file=sys.stderr,
-            )
-
-            evaluation = evaluation_error(
-                str(exc),
-                ["agent_error"],
-            )
-
-            result = {
-                "id": test["id"],
-
-                "input": test["input"],
-
-                "expected": test["expected"],
-
-                "answer": None,
-
-                "structurizr": {
-                    "status": "NOT_RUN",
-                },
-
-                "evaluation": evaluation,
-
-                "verdict": "EVALUATION_ERROR",
-
-                "contextState": "UNKNOWN",
-            }
-
-            path = (
-                output_dir
-                / f"{test['id']}.json"
-            )
-
-            path.write_text(
-                json_dumps(result),
-                encoding="utf-8",
-            )
-
-            print(
-                f"Résultat sauvegardé: {path}"
-            )
-
-            summary[
-                "EVALUATION_ERROR"
-            ] += 1
-
-            continue
-
-        print(answer)
-
-        # ----------------------------------------------------
-        # Structurizr
-        # ----------------------------------------------------
-
-        structurizr_result = (
-            run_structurizr_writer(
-                answer,
-                test["id"],
-            )
+        verdict = aggregate_verdict(
+            verdicts
         )
-
-        print_structurizr_result(
-            structurizr_result
-        )
-
-        # ----------------------------------------------------
-        # Évaluation
-        # ----------------------------------------------------
-
-        evaluation = evaluate_test(
-            test,
-            answer,
-        )
-
-        print_evaluation(
-            evaluation
-        )
-
-        checks_result = run_checks(
-            test,
-            answer,
-        )
-
-        print_checks(
-            checks_result
-        )
-
-        verdict = combine_verdict(
-            checks_result,
-            evaluation,
-        )
-
-        print(
-            f"\nVERDICT FINAL : {verdict}"
-        )
-
-        if verdict not in summary:
-
-            verdict = "EVALUATION_ERROR"
 
         summary[
             verdict
         ] += 1
 
-        # ----------------------------------------------------
-        # Résultat final
-        # ----------------------------------------------------
+        # Le passage conservé en détail est le premier échec,
+        # sinon le dernier passage.
+        kept = next(
+            (
+                run
+                for run in runs
+                if run["verdict"] != "PASS"
+            ),
+            runs[-1],
+        )
 
-        result = {
-            "id": test["id"],
+        result = dict(kept)
 
-            "input": test["input"],
+        result["verdict"] = verdict
 
-            "expected": test["expected"],
+        if args.repeat > 1:
 
-            "answer": answer,
+            result["passRate"] = (
+                f"{verdicts.count('PASS')}/{len(runs)}"
+            )
 
-            "structurizr": structurizr_result,
+            result["runs"] = [
+                run_summary(run)
+                for run in runs
+            ]
 
-            "evaluation": evaluation,
+            print(
+                f"\nVERDICT FINAL : {verdict} "
+                f"({result['passRate']} PASS)"
+            )
 
-            "checks": checks_result,
+        else:
 
-            "verdict": verdict,
-
-            "contextState": (
-                declared_context_states(answer)
-                or ["UNKNOWN"]
-            )[0],
-
-            "c4Level": declared_c4_levels(answer)[0],
-        }
+            print(
+                f"\nVERDICT FINAL : {verdict}"
+            )
 
         path = (
             output_dir
@@ -1801,6 +1921,10 @@ def main():
 
     print(
         f"PASS              : {summary['PASS']}"
+    )
+
+    print(
+        f"FLAKY             : {summary['FLAKY']}"
     )
 
     print(
@@ -1842,6 +1966,15 @@ def main():
         print(
             "\n⚠ La suite contient "
             "des FAIL fonctionnels."
+        )
+
+    elif summary[
+        "FLAKY"
+    ] > 0:
+
+        print(
+            "\n⚠ Comportement instable : certains "
+            "tests ne réussissent pas à chaque passage."
         )
 
     else:
