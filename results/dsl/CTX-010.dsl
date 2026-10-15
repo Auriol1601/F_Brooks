@@ -1,12 +1,12 @@
-workspace "Système de réservation" {
+workspace "Application de réservation" {
 
     model {
         client = person "Client"
         applicationReservation = softwareSystem "Application de réservation"
         servicePaiement = softwareSystem "Service de paiement"
 
-        client -> applicationReservation "Utilise pour effectuer des réservations"
-        applicationReservation -> servicePaiement "Utilise pour traiter les paiements"
+        client -> applicationReservation "Utilise"
+        applicationReservation -> servicePaiement "Utilise"
     }
 
     views {

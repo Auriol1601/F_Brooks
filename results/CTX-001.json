@@ -19,7 +19,7 @@
       "mix_languages"
     ]
   },
-  "answer": "contextState = SUFFICIENT\n\n### Analyse du contexte\n\n1. **Système étudié** : Plateforme de gestion des congés.\n2. **Utilisateurs / Acteurs** :\n   * `Employé` — utilise la plateforme pour soumettre ses demandes de congés (EXPLICITE).\n   * `Service RH` — reçoit et valide les demandes dans la plateforme (EXPLICITE).\n3. **Systèmes externes** : Aucun n'est mentionné.\n\n---\n\n### Représentation C4 (System Context)\n\n```structurizr\nworkspace \"Plateforme de gestion des congés\" {\n\n    model {\n        employe = person \"Employé\"\n        serviceRH = person \"Service RH\"\n        plateforme = softwareSystem \"Plateforme de gestion des congés\"\n\n        employe -> plateforme \"Soumet des demandes de congés\"\n        serviceRH -> plateforme \"Reçoit et valide les demandes\"\n    }\n\n    views {\n        systemContext plateforme \"SystemContext\" {\n            include *\n            autoLayout\n        }\n    }\n}\n```",
+  "answer": "c4Level = SYSTEM_CONTEXT\ncontextState = SUFFICIENT\n\n### Analyse du contexte\n\n* **Système étudié** : `Plateforme de gestion des congés` (système implicite nommé par son rôle métier dans l'énoncé).\n* **Personnes / Acteurs** :\n  * `Employé` — utilise la plateforme pour soumettre des demandes de congés (`EXPLICITE`).\n  * `Service RH` — reçoit les demandes et les valide (`EXPLICITE`).\n* **Relations** :\n  * Employé → Plateforme de gestion des congés : Soumet des demandes de congés\n  * Service RH → Plateforme de gestion des congés : Reçoit et valide les demandes\n\n---\n\n### Modèle C4 — System Context (Structurizr DSL)\n\n```structurizr\nworkspace \"Plateforme de gestion des congés\" {\n\n    model {\n        employe = person \"Employé\"\n        serviceRH = person \"Service RH\"\n        plateformeConges = softwareSystem \"Plateforme de gestion des congés\"\n\n        employe -> plateformeConges \"Soumet des demandes de congés\"\n        serviceRH -> plateformeConges \"Reçoit et valide les demandes\"\n    }\n\n    views {\n        systemContext plateformeConges \"SystemContext\" {\n            include *\n            autoLayout\n        }\n    }\n}\n```",
   "structurizr": {
     "dslFile": "D:\\F_Brooks\\results\\dsl\\CTX-001.dsl",
     "validation": "DSL validé par Structurizr.",
@@ -32,23 +32,23 @@
     "contextState": "SUFFICIENT",
     "criteria": {
       "must": {
-        "identify_studied_system": "1. **Système étudié** : Plateforme de gestion des congés.",
-        "identify_employee": "employe = person \"Employé\"",
-        "identify_hr_service": "serviceRH = person \"Service RH\"",
-        "identify_employee_relationship": "employe -> plateforme \"Soumet des demandes de congés\"",
-        "identify_hr_relationship": "serviceRH -> plateforme \"Reçoit et valide les demandes\"",
-        "preserve_hr_validation_action": "serviceRH -> plateforme \"Reçoit et valide les demandes\""
+        "identify_studied_system": "Le système étudié est identifié comme `Plateforme de gestion des congés`.",
+        "identify_employee": "L'employé est identifié comme acteur `employe = person \"Employé\"`.",
+        "identify_hr_service": "Le service RH est identifié comme acteur `serviceRH = person \"Service RH\"`.",
+        "identify_employee_relationship": "La relation de l'employé vers la plateforme est identifiée : `employe -> plateformeConges \"Soumet des demandes de congés\"`.",
+        "identify_hr_relationship": "La relation du service RH vers la plateforme est identifiée : `serviceRH -> plateformeConges \"Reçoit et valide les demandes\"`.",
+        "preserve_hr_validation_action": "L'action de validation du service RH est préservée : `\"Reçoit et valide les demandes\"`."
       },
       "must_not": {
-        "invent_internal_architecture": "Aucun conteneur inventé dans le bloc Structurizr.",
-        "invent_external_system": "Aucun système externe inventé.",
-        "invert_or_replace_explicit_relationship": "Les relations et actions explicites sont préservées fidèlement.",
-        "display_reasoning_steps": "La réponse ne récite pas les étapes du processus de raisonnement.",
-        "mix_languages": "La réponse utilise uniquement le français."
+        "invent_internal_architecture": "Aucune architecture interne n'est inventée.",
+        "invent_external_system": "Aucun système externe n'est inventé.",
+        "invert_or_replace_explicit_relationship": "Aucune relation explicite n'est inversée ou remplacée.",
+        "display_reasoning_steps": "Aucune étape de raisonnement n'est récitée.",
+        "mix_languages": "Aucun mélange de langues n'est présent."
       }
     },
     "failedCriteria": [],
-    "reason": "La réponse de F. Brooks identifie correctement le système étudié, les acteurs, leurs relations et l'action de validation du service RH sans inventer d'architecture interne ni de système externe, en respectant tous les critères must et must_not."
+    "reason": "Tous les critères 'must' sont pleinement satisfaits et aucun critère 'must_not' n'est violé. Le contexte est correctement analysé et le modèle C4 respecte strictement les informations fournies."
   },
   "checks": {
     "passed": true,
@@ -56,5 +56,26 @@
   },
   "verdict": "PASS",
   "contextState": "SUFFICIENT",
-  "c4Level": "SYSTEM_CONTEXT"
+  "c4Level": "SYSTEM_CONTEXT",
+  "passRate": "3/3",
+  "runs": [
+    {
+      "verdict": "PASS",
+      "contextState": "SUFFICIENT",
+      "c4Level": "SYSTEM_CONTEXT",
+      "failures": []
+    },
+    {
+      "verdict": "PASS",
+      "contextState": "SUFFICIENT",
+      "c4Level": "SYSTEM_CONTEXT",
+      "failures": []
+    },
+    {
+      "verdict": "PASS",
+      "contextState": "SUFFICIENT",
+      "c4Level": "SYSTEM_CONTEXT",
+      "failures": []
+    }
+  ]
 }

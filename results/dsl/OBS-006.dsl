@@ -1,4 +1,4 @@
-workspace "Lecteur d'articles" {
+workspace "Application de lecture" {
 
     model {
         lecteur = person "Lecteur"

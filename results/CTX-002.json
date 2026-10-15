@@ -16,7 +16,7 @@
       "mix_languages"
     ]
   },
-  "answer": "contextState = INSUFFICIENT\n\nL'analyse de votre demande ne permet pas d'établir un System Context complet.\n\n### Éléments manquants\n* **Le système étudié** : « une application bancaire » désigne un domaine fonctionnel, mais aucun nom précis de système n'a été fourni.\n* **Les utilisateurs directs** : aucune personne n'a été identifiée (par exemple, client, conseiller, administrateur).\n* **Les systèmes externes** : aucun système tiers ou externe n'est mentionné (par exemple, système de paiement, core banking).\n\n### Questions\n1. Quel est le nom précis du système étudié ?\n2. Quels sont les utilisateurs ou rôles qui interagissent directement avec ce système ?",
+  "answer": "c4Level = SYSTEM_CONTEXT\ncontextState = INSUFFICIENT\n\n## Analyse du contexte\n\nLa demande indique le souhait de créer « une application bancaire », mais aucun détail n'est fourni.\n\n### Éléments manquants\n- **Système étudié :** Le nom ou la portée exacte de l'application bancaire ne sont pas précisés.\n- **Utilisateurs :** Aucune personne n'est identifiée (clients, conseillers, administrateurs, etc.).\n- **Systèmes externes :** Aucun système tiers n'est mentionné (système de paiement, core banking, service d'authentification, etc.).\n- **Relations :** Aucune interaction n'est établie.\n\n---\n\n## Questions\n\nPour pouvoir établir le contexte du système au niveau 1 (System Context), veuillez préciser :\n1. Quel est le nom ou la fonction principale de l'application bancaire ?\n2. Quels sont les utilisateurs (humains) qui interagissent directement avec elle ?\n3. Interagit-elle avec d'autres systèmes externes (par exemple, un système de paiement ou un autre service bancaire) ?",
   "structurizr": {
     "status": "NO_WORKSPACE",
     "saved": false,
@@ -27,20 +27,20 @@
     "contextState": "INSUFFICIENT",
     "criteria": {
       "must": {
-        "ask_clarification": "La réponse pose des questions claires à la fin (« 1. Quel est le nom précis du système étudié ? 2. Quels sont les utilisateurs ou rôles... »).",
-        "recognize_missing_context": "La réponse identifie explicitement le manque de contexte (« L'analyse de votre demande ne permet pas d'établir un System Context complet. »)."
+        "ask_clarification": "La réponse pose des questions claires à la fin pour obtenir des précisions sur le système, les utilisateurs et les systèmes externes.",
+        "recognize_missing_context": "La réponse indique 'contextState = INSUFFICIENT' et détaille les éléments manquants dans la section d'analyse."
       },
       "must_not": {
-        "invent_client": "Aucun client n'est inventé ou introduit comme entité du système.",
-        "invent_administrator": "Aucun administrateur n'est inventé ou introduit.",
-        "invent_bank": "Aucune banque spécifique n'est inventée.",
-        "invent_payment_provider": "Aucun fournisseur de paiement n'est inventé.",
-        "display_reasoning_steps": "La réponse ne récite pas les étapes du processus de raisonnement interne.",
-        "mix_languages": "La réponse est entièrement rédigée en français, sans mélange de langues."
+        "invent_client": "Aucun client n'a été inventé dans le modèle ou affirmé comme faisant partie du système sans l'input (mentionné uniquement comme exemple d'utilisateur possible dans l'analyse).",
+        "invent_administrator": "Aucun administrateur n'a été inventé.",
+        "invent_bank": "Aucune banque spécifique n'a été inventée.",
+        "invent_payment_provider": "Aucun fournisseur de paiement n'a été inventé (mentionné uniquement à titre d'exemple dans les questions).",
+        "display_reasoning_steps": "La réponse ne récite pas les étapes du processus de raisonnement.",
+        "mix_languages": "La réponse est entièrement rédigée en français."
       }
     },
     "failedCriteria": [],
-    "reason": "La réponse respecte tous les critères 'must' (demande de clarification et reconnaissance du contexte insuffisant) et ne viole aucun critère 'must_not'."
+    "reason": "La réponse de F. Brooks identifie correctement l'insuffisance du contexte pour une demande aussi vague, pose des questions de clarification adaptées, et ne viole aucun critère négatif (pas d'inventions de composants ou d'acteurs, pas de mélange de langues, pas d'affichage des étapes de raisonnement)."
   },
   "checks": {
     "passed": true,
@@ -48,5 +48,26 @@
   },
   "verdict": "PASS",
   "contextState": "INSUFFICIENT",
-  "c4Level": "SYSTEM_CONTEXT"
+  "c4Level": "SYSTEM_CONTEXT",
+  "passRate": "3/3",
+  "runs": [
+    {
+      "verdict": "PASS",
+      "contextState": "INSUFFICIENT",
+      "c4Level": "SYSTEM_CONTEXT",
+      "failures": []
+    },
+    {
+      "verdict": "PASS",
+      "contextState": "INSUFFICIENT",
+      "c4Level": "SYSTEM_CONTEXT",
+      "failures": []
+    },
+    {
+      "verdict": "PASS",
+      "contextState": "INSUFFICIENT",
+      "c4Level": "SYSTEM_CONTEXT",
+      "failures": []
+    }
+  ]
 }

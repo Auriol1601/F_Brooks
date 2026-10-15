@@ -16,7 +16,7 @@
       "mix_languages"
     ]
   },
-  "answer": "contextState = INSUFFICIENT\n\nL'analyse de votre demande montre que nous ne disposons pas des informations nécessaires pour construire le diagramme de conteneurs de votre application de livraison.\n\n### Éléments manquants\n* **Contexte initial** : Le périmètre du système (le System Context) et les utilisateurs ou systèmes externes en interaction directe avec l'application de livraison n'ont pas été décrits.\n* **Conteneurs** : Aucun conteneur (applications, bases de données, services déployables séparément) n'a été fourni.\n\n### Questions\n1. Quel est le nom exact de votre application de livraison ?\n2. Quels sont les utilisateurs et les systèmes externes qui interagissent avec elle ?\n3. Quels sont les différents conteneurs (applications, API, bases de données) qui composent cette application ?",
+  "answer": "c4Level = CONTAINER\ncontextState = INSUFFICIENT\n\nL'analyse de votre demande montre que nous ne disposons pas des informations nécessaires pour produire un diagramme de conteneurs valide. \n\nAu niveau **Container (C4 Niveau 2)**, il est nécessaire de connaître l'architecture de haut niveau du système étudié (les applications, bases de données ou stockages déployables séparément qui le composent), ainsi que les éléments fondamentaux du System Context (utilisateurs directs et systèmes externes).\n\n### Éléments manquants\n1. **Conteneurs du système** : quels sont les conteneurs (applications web, mobiles, API, bases de données) qui composent cette application de livraison ?\n2. **Contexte système** : qui utilise cette application (ex. client, livreur, gestionnaire) et quels systèmes externes interagissent avec elle (ex. service de paiement, outil de cartographie) ?\n\n### Questions\n* Quels sont les conteneurs (applications, services, bases de données) qui composent votre application de livraison ?\n* Quels sont les utilisateurs et les systèmes externes qui interagissent directement avec elle ?",
   "structurizr": {
     "status": "NO_WORKSPACE",
     "saved": false,
@@ -27,25 +27,50 @@
     "contextState": "INSUFFICIENT",
     "criteria": {
       "must": {
-        "recognize_context_not_established": "Satisfait par : 'nous ne disposons pas des informations nécessaires pour construire le diagramme de conteneurs'",
-        "ask_clarification": "Satisfait par la section 'Questions' demandant des précisions sur l'application et ses composants."
+        "recognize_context_not_established": "L'analyse de votre demande montre que nous ne disposons pas des informations nécessaires pour produire un diagramme de conteneurs valide.",
+        "ask_clarification": "Quels sont les conteneurs (applications, services, bases de données) qui composent votre application de livraison ?"
       },
       "must_not": {
         "invent_container": "Aucun conteneur n'a été inventé.",
         "invent_person": "Aucune personne n'a été inventée.",
         "invent_external_system": "Aucun système externe n'a été inventé.",
-        "display_reasoning_steps": "Aucune étape de raisonnement n'est récitée.",
+        "display_reasoning_steps": "La réponse ne récite pas les étapes du processus de raisonnement.",
         "mix_languages": "La réponse est entièrement en français."
       }
     },
     "failedCriteria": [],
-    "reason": "La réponse de F. Brooks reconnaît correctement que le contexte est insuffisant pour générer un diagramme de conteneurs, pose des questions de clarification pertinentes, et ne commet aucune invention ni violation des critères négatifs."
+    "reason": "La réponse de F. Brooks identifie correctement l'insuffisance du contexte pour un diagramme de conteneurs, demande des clarifications pertinentes sans inventer d'éléments (conteneurs, personnes, systèmes externes), et respecte l'ensemble des critères must et must_not."
   },
   "checks": {
-    "passed": true,
-    "failures": []
+    "passed": false,
+    "failures": [
+      "c4Level CONTAINER déclaré, attendu : SYSTEM_CONTEXT."
+    ]
   },
-  "verdict": "PASS",
+  "verdict": "FLAKY",
   "contextState": "INSUFFICIENT",
-  "c4Level": "SYSTEM_CONTEXT"
+  "c4Level": "CONTAINER",
+  "passRate": "2/3",
+  "runs": [
+    {
+      "verdict": "FAIL",
+      "contextState": "INSUFFICIENT",
+      "c4Level": "CONTAINER",
+      "failures": [
+        "c4Level CONTAINER déclaré, attendu : SYSTEM_CONTEXT."
+      ]
+    },
+    {
+      "verdict": "PASS",
+      "contextState": "INSUFFICIENT",
+      "c4Level": "SYSTEM_CONTEXT",
+      "failures": []
+    },
+    {
+      "verdict": "PASS",
+      "contextState": "INSUFFICIENT",
+      "c4Level": "SYSTEM_CONTEXT",
+      "failures": []
+    }
+  ]
 }

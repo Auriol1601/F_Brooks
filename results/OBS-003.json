@@ -17,7 +17,7 @@
       "mix_languages"
     ]
   },
-  "answer": "contextState = AMBIGUOUS\n\nLes observations issues de REA identifient des éléments techniques précis (« `api.mail.example.com` » — `OBSERVÉ`, et « `tickets.sqlite` » — `OBSERVÉ`), mais le bloc ne précise pas le **rôle** de la cible `helpdesk-app` (version existante du système étudié, système externe, ou application de référence).\n\nDe plus, ces éléments relèvent du niveau 2 (Container) et du niveau 3 ou 4 (stockage interne, endpoint d'API), alors que nous sommes actuellement au niveau 1 (System Context).\n\n### Clarification demandée\nQuel est le rôle de la cible `helpdesk-app` dans ce bloc d'observations : s'agit-il du système étudié (« Outil de suivi des tickets »), d'un système externe, ou d'une application de référence ?",
+  "answer": "c4Level = SYSTEM_CONTEXT\ncontextState = AMBIGUOUS\n\n### Analyse des observations REA\n\nLa cible `helpdesk-app` fournit des observations (un endpoint mail et une base SQLite), mais **aucun attribut `role` n'est spécifié** dans le bloc `<observations>`. \n\nPar conséquent, il est impossible de déterminer la nature de ces observations : s'agit-il d'une version existante du système étudié (`STUDIED_SYSTEM`), d'un système externe (`EXTERNAL_SYSTEM`), ou d'une application de référence (`REFERENCE`) ?\n\nDe plus, ces observations (endpoint HTTP et base SQLite) décrivent des éléments techniques internes ou des dépendances de niveau Container, ce qui ne remet pas en cause le niveau System Context actuel tant que le rôle de la cible n'est pas clarifié.\n\n### Question\n\nQuel est le rôle de la cible `helpdesk-app` dans l'analyse REA ?\n1. Une version existante du système étudié (`STUDIED_SYSTEM`)\n2. Un système externe (`EXTERNAL_SYSTEM`)\n3. Une application de référence ou concurrente (`REFERENCE`)",
   "structurizr": {
     "status": "NO_WORKSPACE",
     "saved": false,
@@ -28,17 +28,17 @@
     "contextState": "AMBIGUOUS",
     "criteria": {
       "must": {
-        "ask_target_role": "La réponse demande explicitement le rôle de la cible : « Quel est le rôle de la cible helpdesk-app dans ce bloc d'observations : s'agit-il du système étudié (« Outil de suivi des tickets »), d'un système externe, ou d'une application de référence ? »"
+        "ask_target_role": "Satisfait par : 'Quel est le rôle de la cible `helpdesk-app` dans l'analyse REA ?'"
       },
       "must_not": {
-        "add_unconfirmed_observation_to_model": "Aucun élément observé n'a été ajouté au modèle Structurizr.",
-        "assume_target_role": "La réponse n'assume pas le rôle de la cible et pose la question pour le clarifier.",
-        "display_reasoning_steps": "La réponse ne récite pas les étapes du processus de raisonnement.",
-        "mix_languages": "La réponse est entièrement rédigée en français."
+        "add_unconfirmed_observation_to_model": "Satisfait : aucun élément observé (endpoint, base SQLite) n'a été ajouté au modèle Structurizr.",
+        "assume_target_role": "Satisfait : F. Brooks n'a pas supposé le rôle de la cible et demande explicitement de le clarifier.",
+        "display_reasoning_steps": "Satisfait : la réponse ne récite pas les étapes du processus de raisonnement.",
+        "mix_languages": "Satisfait : la réponse est entièrement en français (hors termes techniques C4)."
       }
     },
     "failedCriteria": [],
-    "reason": "La réponse respecte tous les critères du test : elle demande le rôle de la cible sans l'assumer, n'ajoute pas les observations non confirmées au modèle, ne mélange pas les langues, ne détaille pas les étapes de raisonnement, et le champ contextState est correctement recopié."
+    "reason": "La réponse de F. Brooks respecte tous les critères attendus. Elle identifie l'absence de rôle pour la cible dans les observations REA, pose la question nécessaire pour clarifier ce rôle (ask_target_role), et ne rajoute aucun élément non confirmé au modèle Structurizr."
   },
   "checks": {
     "passed": true,
@@ -46,5 +46,26 @@
   },
   "verdict": "PASS",
   "contextState": "AMBIGUOUS",
-  "c4Level": "SYSTEM_CONTEXT"
+  "c4Level": "SYSTEM_CONTEXT",
+  "passRate": "3/3",
+  "runs": [
+    {
+      "verdict": "PASS",
+      "contextState": "AMBIGUOUS",
+      "c4Level": "SYSTEM_CONTEXT",
+      "failures": []
+    },
+    {
+      "verdict": "PASS",
+      "contextState": "AMBIGUOUS",
+      "c4Level": "SYSTEM_CONTEXT",
+      "failures": []
+    },
+    {
+      "verdict": "PASS",
+      "contextState": "AMBIGUOUS",
+      "c4Level": "SYSTEM_CONTEXT",
+      "failures": []
+    }
+  ]
 }

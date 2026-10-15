@@ -3,14 +3,14 @@ workspace "Plateforme de gestion des congés" {
     model {
         employe = person "Employé"
         serviceRH = person "Service RH"
-        plateforme = softwareSystem "Plateforme de gestion des congés"
+        plateformeConges = softwareSystem "Plateforme de gestion des congés"
 
-        employe -> plateforme "Soumet des demandes de congés"
-        serviceRH -> plateforme "Reçoit et valide les demandes"
+        employe -> plateformeConges "Soumet des demandes de congés"
+        serviceRH -> plateformeConges "Reçoit et valide les demandes"
     }
 
     views {
-        systemContext plateforme "SystemContext" {
+        systemContext plateformeConges "SystemContext" {
             include *
             autoLayout
         }

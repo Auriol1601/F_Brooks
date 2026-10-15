@@ -13,7 +13,7 @@
       "mix_languages"
     ]
   },
-  "answer": "contextState = CONTRADICTORY\n\n## Analyse de la demande\n\nUne contradiction directe a été identifiée entre les deux phrases fournies :\n\n1. L'information initiale indique : *« Seuls les administrateurs utilisent le système. »* (ce qui exclut tout autre utilisateur).\n2. L'information suivante indique : *« Les employés peuvent également soumettre leurs demandes directement dans le système. »*\n\nCes deux propositions sont incompatibles. Il n'est pas possible de déterminer si les utilisateurs du système sont uniquement les administrateurs ou si les employés y ont également accès direct.\n\n## Questions\n\n* Qui sont les utilisateurs habilités à accéder directement au système ? S'agit-il uniquement des administrateurs, des employés, ou des deux ?",
+  "answer": "c4Level = SYSTEM_CONTEXT\ncontextState = CONTRADICTORY\n\n### Analyse\n\nLe contexte présente une contradiction directe concernant les utilisateurs autorisés à interagir avec le système :\n1. Une première affirmation indique que « Seuls les administrateurs utilisent le système. »\n2. Une seconde affirmation indique que « Les employés peuvent également soumettre leurs demandes directement dans le système. »\n\nCes deux énoncés s'excluent mutuellement (exclusivité des administrateurs vs accès direct ouvert aux employés).\n\n### Questions\n\n1. Qui utilise réellement le système : uniquement les administrateurs, uniquement les employés, ou les deux ?",
   "structurizr": {
     "status": "NO_WORKSPACE",
     "saved": false,
@@ -24,17 +24,17 @@
     "contextState": "CONTRADICTORY",
     "criteria": {
       "must": {
-        "detect_contradiction": "Une contradiction directe a été identifiée entre les deux phrases fournies",
-        "ask_clarification": "Qui sont les utilisateurs habilités à accéder directement au système ?"
+        "detect_contradiction": "Le contexte présente une contradiction directe concernant les utilisateurs autorisés à interagir avec le système : 1. Une première affirmation indique que « Seuls les administrateurs utilisent le système. » 2. Une seconde affirmation indique que « Les employés peuvent également soumettre leurs demandes directement dans le système. »",
+        "ask_clarification": "Qui utilise réellement le système : uniquement les administrateurs, uniquement les employés, ou les deux ?"
       },
       "must_not": {
-        "silently_choose_interpretation": "La réponse n'a choisi aucune interprétation de manière silencieuse.",
-        "display_reasoning_steps": "La réponse ne récite pas les étapes du processus de raisonnement.",
-        "mix_languages": "La réponse est entièrement en français, sans mélange de langues."
+        "silently_choose_interpretation": "Aucune interprétation n'a été choisie silencieusement ; la réponse demande explicitement des éclaircissements.",
+        "display_reasoning_steps": "La réponse présente une analyse structurée sans réciter les étapes internes du processus de raisonnement.",
+        "mix_languages": "La réponse est entièrement rédigée en français, sans mélange de langues (hors termes techniques C4 s'il y en avait)."
       }
     },
     "failedCriteria": [],
-    "reason": "La réponse de F. Brooks détecte correctement la contradiction entre les deux phrases fournies et demande une clarification à ce sujet, tout en respectant l'ensemble des critères négatifs (pas de choix silencieux, pas d'étapes de raisonnement, pas de mélange de langues)."
+    "reason": "La réponse de F. Brooks détecte correctement la contradiction entre les deux phrases de l'input utilisateur, pose une question de clarification pour lever l'ambiguïté, et respecte l'ensemble des critères négatifs (pas de choix silencieux d'interprétation, pas d'affichage des étapes de raisonnement, pas de mélange de langues). Le contextState déclaré est CONTRADICTORY."
   },
   "checks": {
     "passed": true,
@@ -42,5 +42,26 @@
   },
   "verdict": "PASS",
   "contextState": "CONTRADICTORY",
-  "c4Level": "SYSTEM_CONTEXT"
+  "c4Level": "SYSTEM_CONTEXT",
+  "passRate": "3/3",
+  "runs": [
+    {
+      "verdict": "PASS",
+      "contextState": "CONTRADICTORY",
+      "c4Level": "SYSTEM_CONTEXT",
+      "failures": []
+    },
+    {
+      "verdict": "PASS",
+      "contextState": "CONTRADICTORY",
+      "c4Level": "SYSTEM_CONTEXT",
+      "failures": []
+    },
+    {
+      "verdict": "PASS",
+      "contextState": "CONTRADICTORY",
+      "c4Level": "SYSTEM_CONTEXT",
+      "failures": []
+    }
+  ]
 }

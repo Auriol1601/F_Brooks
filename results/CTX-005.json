@@ -14,7 +14,7 @@
       "mix_languages"
     ]
   },
-  "answer": "```text\ncontextState = INSUFFICIENT\n```\n\nL'information fournie indique qu'« l'application doit permettre le paiement en ligne », mais plusieurs éléments essentiels manquent pour modéliser le contexte (niveau C4 — System Context) :\n\n1. **Le système étudié** : le nom de l'application n'est pas spécifié.\n2. **Les utilisateurs** : aucune personne interagissant avec l'application n'est identifiée.\n3. **Le système externe de paiement** : le fournisseur ou le service tiers de paiement en ligne n'est pas identifié (conformément à la règle de ne pas inventer ou choisir arbitrairement de fournisseur comme Stripe ou PayPal).\n\nPour progresser, veuillez préciser :\n* Quel est le nom du système étudié ?\n* Quels sont les utilisateurs (personnes) qui utilisent cette application ?\n* Quel est le système externe de paiement utilisé ?",
+  "answer": "c4Level = SYSTEM_CONTEXT\ncontextState = INSUFFICIENT\n\nL'analyse de la description fournie met en évidence les éléments suivants :\n\n- **Système étudié** : Non identifié (`INCONNU`).\n- **Utilisateurs directs** : Non identifiés (`INCONNU`).\n- **Système externe de paiement** : Implicitement requis par la mention du « paiement en ligne », mais le fournisseur ou le système spécifique n'est pas précisé (`INCONNU`).\n\n### Analyse de l'état du contexte\n\nLe contexte est actuellement `INSUFFICIENT` : il est impossible de construire un diagramme de System Context valide sans connaître au minimum le nom ou la nature du système étudié ainsi que ses utilisateurs directs.\n\n### Questions nécessaires\n\nPour pouvoir progresser et modéliser le contexte, merci de préciser :\n\n1. Quel est le nom ou la nature du système logiciel étudié ?\n2. Quels sont les utilisateurs ou rôles humains qui interagissent directement avec ce système ?",
   "structurizr": {
     "status": "NO_WORKSPACE",
     "saved": false,
@@ -25,27 +25,45 @@
     "contextState": "INSUFFICIENT",
     "criteria": {
       "must": {
-        "recognize_unidentified_payment_system": "Le système externe de paiement : le fournisseur ou le service tiers de paiement en ligne n'est pas identifié (conformément à la règle de ne pas inventer ou choisir arbitrairement de fournisseur comme Stripe ou PayPal)."
+        "recognize_unidentified_payment_system": "La réponse reconnaît explicitement le manque d'identification du système de paiement dans l'analyse : « Système externe de paiement : Implicitement requis par la mention du « paiement en ligne », mais le fournisseur ou le système spécifique n'est pas précisé (INCONNU). »"
       },
       "must_not": {
-        "invent_stripe": true,
-        "invent_paypal": true,
-        "invent_payment_provider": true,
-        "display_reasoning_steps": true,
-        "mix_languages": true
+        "invent_stripe": "La réponse n'invente pas Stripe.",
+        "invent_paypal": "La réponse n'invente pas PayPal.",
+        "invent_payment_provider": "La réponse n'invente pas de fournisseur de paiement spécifique.",
+        "display_reasoning_steps": "La réponse ne récite pas les étapes du processus de raisonnement.",
+        "mix_languages": "La réponse ne mélange pas les langues."
       }
     },
     "failedCriteria": [],
-    "reason": "La réponse identifie correctement que le système externe de paiement n'est pas spécifié, sans inventer de fournisseur (Stripe, PayPal, etc.). Elle ne contient pas d'étape de raisonnement explicite interdite et respecte la langue française."
+    "reason": "La réponse de F. Brooks respecte tous les critères attendus. Elle identifie l'absence de précision concernant le système de paiement tout en s'interdisant d'en inventer un, et ne commet aucune violation des critères négatifs."
   },
   "checks": {
-    "passed": false,
-    "failures": [
-      "Terme interdit dans la réponse : Stripe",
-      "Terme interdit dans la réponse : PayPal"
-    ]
+    "passed": true,
+    "failures": []
   },
-  "verdict": "FAIL",
+  "verdict": "PASS",
   "contextState": "INSUFFICIENT",
-  "c4Level": "SYSTEM_CONTEXT"
+  "c4Level": "SYSTEM_CONTEXT",
+  "passRate": "3/3",
+  "runs": [
+    {
+      "verdict": "PASS",
+      "contextState": "INSUFFICIENT",
+      "c4Level": "SYSTEM_CONTEXT",
+      "failures": []
+    },
+    {
+      "verdict": "PASS",
+      "contextState": "INSUFFICIENT",
+      "c4Level": "SYSTEM_CONTEXT",
+      "failures": []
+    },
+    {
+      "verdict": "PASS",
+      "contextState": "INSUFFICIENT",
+      "c4Level": "SYSTEM_CONTEXT",
+      "failures": []
+    }
+  ]
 }

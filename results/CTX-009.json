@@ -19,7 +19,7 @@
       "mix_languages"
     ]
   },
-  "answer": "contextState = INSUFFICIENT\n\nL'analyse de votre description met en évidence des informations manquantes essentielles pour modéliser le système selon le C4 Model (Niveau 1 — System Context) :\n\n1. **Le système étudié** n'est pas identifié (quel est le système qui traite les demandes et émet les notifications ?).\n2. **Les utilisateurs** sont mentionnés de manière générique (« Les utilisateurs »), sans précision sur leur rôle exact.\n3. **Le canal ou le système externe d'envoi des notifications** n'est pas précisé (par exemple, un service de messagerie externe).\n4. **Les systèmes externes** impliqués dans le traitement ne sont pas décrits.\n\nPour progresser, veuillez préciser :\n- Quel est le nom du système étudié ?\n- Quel est le rôle précis des utilisateurs qui soumettent les demandes ?",
+  "answer": "c4Level = SYSTEM_CONTEXT\ncontextState = INSUFFICIENT\n\n## Analyse\n\nL'information fournie mentionne une interaction (« reçoivent des notifications ») mais ne permet pas d'identifier :\n- le système étudié qui émet ces notifications ;\n- la nature exacte ou le nom des utilisateurs ;\n- le système ou composant à l'origine du traitement des demandes et de l'envoi des notifications.\n\n## Questions\n\n1. Quel est le nom du système logiciel étudié ?\n2. Qui sont les utilisateurs qui reçoivent ces notifications ?\n3. Quel système ou composant traite les demandes et envoie les notifications ?",
   "structurizr": {
     "status": "NO_WORKSPACE",
     "saved": false,
@@ -30,20 +30,20 @@
     "contextState": "INSUFFICIENT",
     "criteria": {
       "must": {
-        "identify_notification_requirement": "Satisfait par la mention de l'exigence de notification dans l'introduction et au point 3 (« le canal ou le système externe d'envoi des notifications n'est pas précisé »).",
-        "identify_missing_notification_system": "Satisfait par l'identification explicite que le système externe ou le canal d'envoi des notifications manque (« Le canal ou le système externe d'envoi des notifications n'est pas précisé »)."
+        "identify_notification_requirement": "La réponse identifie le besoin de notification en mentionnant l'interaction (« reçoivent des notifications »).",
+        "identify_missing_notification_system": "La réponse identifie le manque d'information concernant le système ou composant à l'origine du traitement des demandes et de l'envoi des notifications."
       },
       "must_not": {
-        "invent_email_system": "Non violé : aucun système d'e-mail spécifique n'est inventé (mention d'un « service de messagerie externe » uniquement à titre d'exemple d'incertitude).",
-        "invent_sms_system": "Non violé : aucun système SMS n'est inventé.",
-        "invent_push_system": "Non violé : aucun système push n'est inventé.",
-        "invent_notification_provider": "Non violé : aucun fournisseur de notification n'est inventé.",
-        "display_reasoning_steps": "Non violé : la réponse ne récite pas les étapes du processus de raisonnement interne.",
-        "mix_languages": "Non violé : la réponse est entièrement en français."
+        "invent_email_system": "Aucun système de messagerie électronique n'a été inventé.",
+        "invent_sms_system": "Aucun système de SMS n'a été inventé.",
+        "invent_push_system": "Aucun système de notification push n'a été inventé.",
+        "invent_notification_provider": "Aucun fournisseur de notification n'a été inventé.",
+        "display_reasoning_steps": "Aucune étape de raisonnement n'a été récité.",
+        "mix_languages": "Aucun mélange de langues n'est présent dans la réponse."
       }
     },
     "failedCriteria": [],
-    "reason": "La réponse de F. Brooks identifie correctement l'exigence de notification ainsi que l'absence de précision concernant le système ou canal de notification, tout en respectant l'interdiction d'inventer des systèmes concrets (e-mail, SMS, etc.). Le format JSON requis est respecté."
+    "reason": "La réponse de F. Brooks respecte tous les critères 'must' en identifiant l'exigence de notification et le manque de précision sur le système associé, et ne viole aucun critère 'must_not'."
   },
   "checks": {
     "passed": true,
@@ -51,5 +51,26 @@
   },
   "verdict": "PASS",
   "contextState": "INSUFFICIENT",
-  "c4Level": "SYSTEM_CONTEXT"
+  "c4Level": "SYSTEM_CONTEXT",
+  "passRate": "3/3",
+  "runs": [
+    {
+      "verdict": "PASS",
+      "contextState": "INSUFFICIENT",
+      "c4Level": "SYSTEM_CONTEXT",
+      "failures": []
+    },
+    {
+      "verdict": "PASS",
+      "contextState": "INSUFFICIENT",
+      "c4Level": "SYSTEM_CONTEXT",
+      "failures": []
+    },
+    {
+      "verdict": "PASS",
+      "contextState": "INSUFFICIENT",
+      "c4Level": "SYSTEM_CONTEXT",
+      "failures": []
+    }
+  ]
 }

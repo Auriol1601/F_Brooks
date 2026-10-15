@@ -14,7 +14,7 @@
       "mix_languages"
     ]
   },
-  "answer": "`OUT_OF_SCOPE`\n\nLa demande porte sur les contrôleurs, les services et les classes de l'API. Ces éléments relèvent du **Niveau 3 — Component** (composants internes) et du **Niveau 4 — Code** du C4 Model.\n\nLe C4 Model se limite au niveau Container (Niveau 2) pour les applications et bases de données d'un système. La conception interne des conteneurs (classes, composants, fonctions, endpoints détaillés) est strictement hors périmètre à tous les niveaux.",
+  "answer": "c4Level = SYSTEM_CONTEXT\ncontextState = OUT_OF_SCOPE\n\nLa demande portant sur les contrôleurs, les services et les classes de l'API se situe aux **niveaux 3 (Component) et 4 (Code)** du C4 Model, qui sont hors périmètre.\n\nLe niveau Container (Niveau 2) représente les applications, les bases de données et les stockages déployables séparément, tandis que les détails de l'architecture interne d'un conteneur (comme les classes ou les services internes) ne sont pas modélisés dans le C4 Model.",
   "structurizr": {
     "status": "NO_WORKSPACE",
     "saved": false,
@@ -25,26 +25,45 @@
     "contextState": "OUT_OF_SCOPE",
     "criteria": {
       "must": {
-        "identify_out_of_scope_request": "La réponse indique explicitement : \"La demande porte sur les contrôleurs, les services et les classes de l'API. Ces éléments relèvent du **Niveau 3 — Component**... est strictement hors périmètre\".",
-        "use_correct_c4_levels": "La réponse identifie correctement que les contrôleurs et services relèvent du niveau 3 (Component) et les classes du niveau 4 (Code)."
+        "identify_out_of_scope_request": "La demande portant sur les contrôleurs, les services et les classes de l'API se situe aux niveaux 3 (Component) et 4 (Code) du C4 Model, qui sont hors périmètre.",
+        "use_correct_c4_levels": "La réponse explique correctement que les contrôleurs, services et classes relèvent des niveaux 3 et 4, et que le niveau Container correspond au niveau 2."
       },
       "must_not": {
-        "generate_components": "La réponse ne génère aucun composant.",
-        "generate_classes": "La réponse ne génère aucune classe.",
-        "display_reasoning_steps": "La réponse ne récite pas les étapes du processus de raisonnement.",
-        "mix_languages": "La réponse est entièrement rédigée en français."
+        "generate_components": "Aucun composant de niveau 3 n'a été généré.",
+        "generate_classes": "Aucune classe de niveau 4 n'a été générée.",
+        "display_reasoning_steps": "La réponse ne contient pas de récitation d'étapes de raisonnement.",
+        "mix_languages": "La réponse est entièrement en français (hormis les termes C4 standards)."
       }
     },
     "failedCriteria": [],
-    "reason": "La réponse identifie correctement que la demande concernant les contrôleurs, services et classes est hors périmètre (niveau 3 et 4 du C4 Model) et respecte tous les critères attendus sans générer d'éléments interdits."
+    "reason": "La réponse identifie correctement que la demande concerne les niveaux 3 et 4, qui sont hors périmètre pour le modèle container, respecte les niveaux C4, et ne génère aucun composant ou classe."
   },
   "checks": {
-    "passed": false,
-    "failures": [
-      "Aucun « contextState = ... » déclaré."
-    ]
+    "passed": true,
+    "failures": []
   },
-  "verdict": "FAIL",
-  "contextState": "UNKNOWN",
-  "c4Level": "SYSTEM_CONTEXT"
+  "verdict": "PASS",
+  "contextState": "OUT_OF_SCOPE",
+  "c4Level": "SYSTEM_CONTEXT",
+  "passRate": "3/3",
+  "runs": [
+    {
+      "verdict": "PASS",
+      "contextState": "OUT_OF_SCOPE",
+      "c4Level": "SYSTEM_CONTEXT",
+      "failures": []
+    },
+    {
+      "verdict": "PASS",
+      "contextState": "OUT_OF_SCOPE",
+      "c4Level": "SYSTEM_CONTEXT",
+      "failures": []
+    },
+    {
+      "verdict": "PASS",
+      "contextState": "OUT_OF_SCOPE",
+      "c4Level": "SYSTEM_CONTEXT",
+      "failures": []
+    }
+  ]
 }

@@ -7,13 +7,13 @@ workspace "Plateforme de gestion des congés" {
         plateformeConges = softwareSystem "Plateforme de gestion des congés" {
             appWeb = container "Application web"
             api = container "API"
-            baseDeDonnees = container "Base de données"
+            bdd = container "Base de données"
         }
 
-        employe -> appWeb "Utilise"
-        serviceRH -> appWeb "Utilise"
+        employe -> appWeb "Soumet des demandes de congés"
+        serviceRH -> appWeb "Reçoit et valide les demandes"
         appWeb -> api "Appelle"
-        api -> baseDeDonnees "Lit et écrit les demandes"
+        api -> bdd "Lit et écrit les demandes"
     }
 
     views {

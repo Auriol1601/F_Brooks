@@ -16,7 +16,7 @@
       "mix_languages"
     ]
   },
-  "answer": "contextState = CONTRADICTORY\n\n### Analyse du modèle fourni et des observations\n\n1. **Magasinier → Application de gestion d'entrepôt**\n   - *Statut du modèle* : La personne « Magasinier » utilise l'application pour enregistrer les mouvements de stock (`EXPLICITE`).\n   - *Confrontation* : Cohérent avec la nature d'une application de bureau. Aucun écart notable.\n\n2. **Application de gestion d'entrepôt → Système de stock (système externe)**\n   - *Statut du modèle* : Le modèle affirme que l'application interagit avec un « Système de stock » externe géré par une autre équipe.\n   - *Confrontation* : Les observations REA sur la cible `STUDIED_SYSTEM` (couverture `complete`) montrent exclusivement un stockage local embarqué (`stock.sqlite`, table `quantities`) sans aucun endpoint réseau. Le stockage des données est interne à l'application et ne correspond pas à un appel vers un système externe distinct.\n\n### Écarts\n\n- `INCOMPATIBLE` : Le modèle représente un appel réseau vers un « Système de stock » externe, tandis que l'analyse complète de l'application montre un stockage local embarqué (`stock.sqlite`) sans aucun trafic réseau.\n\n### Questions pour clarification\n\n1. L'application de gestion d'entrepôt stocke-t-elle les données localement dans une base embarquée sans système externe, ou existe-t-il réellement un Système de stock externe non capturé par les observations locales ?\n\nÉcarts : 1",
+  "answer": "c4Level = SYSTEM_CONTEXT\ncontextState = CONTRADICTORY\n\nAnalyse de la confrontation :\n\n1. **Magasinier → Application de gestion d'entrepôt**\n   - *Statut* : `EXPLICITE` dans le modèle, `CONFIRMÉ` par l'utilisation de l'application (mentionnée dans l'observation REA comme cible « warehouse-desktop 1.8 »).\n\n2. **Application de gestion d'entrepôt → Système de stock** (système externe)\n   - *Modèle* : Le modèle indique que l'application de gestion d'entrepôt met à jour les quantités dans un « Système de stock » externe.\n   - *Observations REA* (`STUDIED_SYSTEM`, couverture `complete`) : L'analyse de l'application montre qu'elle utilise une base de données locale embarquée (`stock.sqlite`) via `app.asar:/db/stock.js`, avec **aucun endpoint réseau observé**.\n   - *Écart* : `INCOMPATIBLE`. Le modèle affirme que l'application interagit avec un système de stock externe distant, tandis que l'analyse observe un stockage purement local et embarqué, sans communication réseau.\n\nÉcarts :\n- `INCOMPATIBLE` : Le modèle décrit une interaction réseau avec un système externe (« Système de stock »), alors que l'analyse exhaustive (`complete`) de l'application montre un stockage embarqué local (`stock.sqlite`) et l'absence totale d'endpoints réseau.\n\nClarification nécessaire :\nLe système de stock est-il réellement un système externe distant comme l'indique le modèle initial, ou bien la gestion des quantités est-elle entièrement locale (auquel cas « stock.sqlite » relève d'un niveau Container) ?",
   "structurizr": {
     "status": "NO_WORKSPACE",
     "saved": false,
@@ -27,19 +27,19 @@
     "contextState": "CONTRADICTORY",
     "criteria": {
       "must": {
-        "detect_incompatible_gap": "La réponse détecte et qualifie l'écart d'incompatible : 'INCOMPATIBLE : Le modèle représente un appel réseau vers un « Système de stock » externe, tandis que l'analyse complète de l'application montre un stockage local embarqué'",
-        "cite_both_sources": "La réponse cite à la fois le modèle fourni et les observations REA : 'Analyse du modèle fourni et des observations' et 'Les observations REA sur la cible `STUDIED_SYSTEM`'",
-        "ask_clarification": "La réponse pose une question de clarification : '1. L'application de gestion d'entrepôt stocke-t-elle les données localement dans une base embarquée sans système externe, ou existe-t-il réellement un Système de stock externe non capturé par les observations locales ?'"
+        "detect_incompatible_gap": "L'écart incompatible est clairement détecté et analysé : « Écart : INCOMPATIBLE. Le modèle affirme que l'application interagit avec un système de stock externe distant, tandis que l'analyse observe un stockage purement local et embarqué, sans communication réseau. »",
+        "cite_both_sources": "Les deux sources sont citées (le modèle initial et l'analyse REA) : « Le modèle indique que l'application de gestion d'entrepôt met à jour les quantités dans un « Système de stock » externe » et « Observations REA (`STUDIED_SYSTEM`, couverture `complete`) : L'analyse de l'application montre qu'elle utilise une base de données locale embarquée... »",
+        "ask_clarification": "Une question de clarification est posée à la fin : « Le système de stock est-il réellement un système externe distant comme l'indique le modèle initial, ou bien la gestion des quantités est-elle entièrement locale... ? »"
       },
       "must_not": {
-        "silently_choose_interpretation": "La réponse ne choisit pas silencieusement une interprétation, elle pose la question.",
-        "silently_replace_external_system": "La réponse ne remplace pas silencieusement le système externe, elle met en évidence la contradiction.",
-        "display_reasoning_steps": "La réponse ne récite pas les étapes du processus de raisonnement.",
-        "mix_languages": "La réponse est entièrement en français, sans mélange de langues injustifié."
+        "silently_choose_interpretation": "Aucune interprétation n'est choisie silencieusement ; l'écart et la contradiction sont explicitement mis en avant pour clarification.",
+        "silently_replace_external_system": "Le système externe n'est pas remplacé silencieusement.",
+        "display_reasoning_steps": "Pas de récitation des étapes du processus de raisonnement.",
+        "mix_languages": "Pas de mélange de langues non autorisées."
       }
     },
     "failedCriteria": [],
-    "reason": "La réponse de F. Brooks respecte tous les critères 'must' (détection de l'écart incompatible, citation des deux sources, demande de clarification) et ne viole aucun critère 'must_not'."
+    "reason": "La réponse respecte tous les critères demandés : elle détecte l'écart incompatible entre le modèle et les observations REA, cite les deux sources, pose une question de clarification, et ne viole aucun des critères négatifs."
   },
   "checks": {
     "passed": true,
@@ -47,5 +47,26 @@
   },
   "verdict": "PASS",
   "contextState": "CONTRADICTORY",
-  "c4Level": "SYSTEM_CONTEXT"
+  "c4Level": "SYSTEM_CONTEXT",
+  "passRate": "3/3",
+  "runs": [
+    {
+      "verdict": "PASS",
+      "contextState": "CONTRADICTORY",
+      "c4Level": "SYSTEM_CONTEXT",
+      "failures": []
+    },
+    {
+      "verdict": "PASS",
+      "contextState": "CONTRADICTORY",
+      "c4Level": "SYSTEM_CONTEXT",
+      "failures": []
+    },
+    {
+      "verdict": "PASS",
+      "contextState": "CONTRADICTORY",
+      "c4Level": "SYSTEM_CONTEXT",
+      "failures": []
+    }
+  ]
 }

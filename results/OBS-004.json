@@ -21,38 +21,68 @@
       "mix_languages"
     ]
   },
-  "answer": "Analyse du modèle fourni et confrontation avec les observations de l'application en production (`booking-web 5.1`, rôle : `STUDIED_SYSTEM`, couverture : `partial`).\n\n### 1. Analyse du modèle fourni\n\nLe modèle initial identifie :\n* **Client** : personne interagissant avec l'application.\n* **Application de réservation** : système étudié.\n* **Service de paiement** : système externe.\n* **Service de notification** : système externe.\n\nRelations fournies :\n* Client → Application de réservation\n* Application de réservation → Service de paiement\n* Application de réservation → Service de notification\n\n### 2. Confrontation avec les observations REA\n\n* **Endpoint `payments.example.com`** (`OBSERVÉ` — `main.3f2a.js:3310`) :\n  * Correspond au **Service de paiement** présent dans le modèle.\n  * Statut : `CONFIRMÉ`.\n\n* **Endpoint `maps.example.com`** (`OBSERVÉ` — `main.3f2a.js:1288`) :\n  * Correspond à un « service de cartographie » observé dans le code, mais non présent dans le modèle fourni.\n  * Statut : `NON MODÉLISÉ`.\n\n* **Service de notification** (présent dans le modèle) :\n  * Aucune observation correspondante dans le bloc REA (limitation : couverture `partial`, chunks non analysés).\n  * Statut : `NON OBSERVÉ`.\n\n### 3. État du contexte et de la confrontation\n\nLe modèle comporte un élément observé en production qui n'est pas modélisé (le service de cartographie) et un élément modélisé qui n'est pas observé en raison de la couverture partielle. Les informations essentielles du modèle initial sont globalement cohérentes, mais nécessitent une confirmation concernant le service de cartographie découvert.\n\n```text\ncontextState = INSUFFICIENT\n```\n\nÉcarts : 2\n* `CONFIRMÉ` : Service de paiement (`payments.example.com`) — `OBSERVÉ` — main.3f2a.js:3310\n* `NON MODÉLISÉ` : Service de cartographie (`maps.example.com`) — `OBSERVÉ` — main.3f2a.js:1288\n* `NON OBSERVÉ` : Service de notification (limitation : chunks chargés à la demande non analysés)\n\n### 4. Question\n\nLe service de cartographie (`maps.example.com`) observé dans l'application doit-il être intégré au modèle C4 System Context en tant que système externe ?\n\nCorrection nécessaire : OUI (en attente de confirmation pour l'ajout du service de cartographie).",
+  "answer": "c4Level = SYSTEM_CONTEXT\ncontextState = SUFFICIENT\n\n### Analyse du modèle fourni et des observations\n\n* **Client** : présent dans le modèle (`EXPLICITE`).\n* **Application de réservation** : système étudié, présent dans le modèle (`EXPLICITE`).\n* **Service de paiement** : système externe présent dans le modèle et soutenu par les observations (`CONFIRMÉ` — `observed` `endpoint \"payments.example.com\"` — `main.3f2a.js:3310`).\n* **Service de notification** : présent dans le modèle (`EXPLICITE`), sans correspondance dans les observations actuelles, ce qui est cohérent avec la couverture `partial` (« chunks chargés à la demande non analysés ») (`NON OBSERVÉ`).\n* **Service de cartographie** (`maps.example.com`) : observé dans le système en production (`OBSERVÉ` — `main.3f2a.js:1288`), mais absent du modèle initial (`NON MODÉLISÉ`).\n\n### Écarts\n\n* `CONFIRMÉ` : `Application de réservation → Service de paiement` (endpoint `payments.example.com` observé).\n* `NON OBSERVÉ` : `Application de réservation → Service de notification` (absence d'observation due à la couverture partielle des chunks, le modèle est conservé).\n* `NON MODÉLISÉ` : l'endpoint `maps.example.com` (service de cartographie) est présent dans l'application en production mais n'apparaît pas dans le modèle initial.\n\n### Modèle corrigé (Structurizr DSL)\n\n```structurizr\nworkspace \"Application de réservation\" {\n\n    model {\n        client = person \"Client\"\n        applicationReservation = softwareSystem \"Application de réservation\"\n        servicePaiement = softwareSystem \"Service de paiement\"\n        serviceNotification = softwareSystem \"Service de notification\"\n        serviceCartographie = softwareSystem \"Service de cartographie\"\n\n        client -> applicationReservation \"Utilise\"\n        applicationReservation -> servicePaiement \"Utilise\"\n        applicationReservation -> serviceNotification \"Utilise\"\n        applicationReservation -> serviceCartographie \"Utilise\"\n    }\n\n    views {\n        systemContext applicationReservation \"SystemContext\" {\n            include *\n            autoLayout\n        }\n    }\n}\n```\n\nÉcarts : 2",
   "structurizr": {
-    "status": "NO_WORKSPACE",
-    "saved": false,
-    "reason": "Aucun workspace Structurizr détecté."
+    "dslFile": "D:\\F_Brooks\\results\\dsl\\OBS-004.dsl",
+    "validation": "DSL validé par Structurizr.",
+    "status": "SAVED",
+    "saved": true,
+    "path": "D:\\F_Brooks\\structurizr\\workspace.dsl"
   },
   "evaluation": {
-    "verdict": "PASS",
-    "contextState": "INSUFFICIENT",
+    "verdict": "FAIL",
+    "contextState": "SUFFICIENT",
     "criteria": {
       "must": {
-        "confirm_payment_service": "Correspond au Service de paiement présent dans le modèle.",
-        "report_unobserved_notification_service": "Aucune observation correspondante dans le bloc REA (limitation : couverture partial, chunks non analysés).",
-        "report_unmodeled_mapping_service": "Correspond à un « service de cartographie » observé dans le code, mais non présent dans le modèle fourni.",
-        "cite_coverage_limit": "Aucune observation correspondante dans le bloc REA (limitation : couverture partial, chunks non analysés)."
+        "confirm_payment_service": true,
+        "report_unobserved_notification_service": true,
+        "report_unmodeled_mapping_service": true,
+        "cite_coverage_limit": true
       },
       "must_not": {
-        "remove_unobserved_element": "Le service de notification n'est pas supprimé du modèle.",
-        "add_unconfirmed_observation_to_model": "Le service de cartographie n'est pas ajouté au bloc de modélisation Structurizr, il fait l'objet d'une question.",
-        "conclude_absence_from_missing_observation": "Le service de notification non observé est correctement attribué à la limitation de couverture (« chunks chargés à la demande non analysés ») sans conclure à son absence réelle.",
-        "display_reasoning_steps": "Pas de récitation des étapes formelles de raisonnement.",
-        "mix_languages": "Pas de mélange de langues induisant une violation."
+        "remove_unobserved_element": false,
+        "add_unconfirmed_observation_to_model": true,
+        "conclude_absence_from_missing_observation": false,
+        "display_reasoning_steps": false,
+        "mix_languages": false
       }
     },
-    "failedCriteria": [],
-    "reason": "La réponse de F. Brooks respecte l'ensemble des critères 'must' et n'enfreint aucun critère 'must_not'. Elle identifie correctement la confirmation du service de paiement, signale l'absence d'observation pour le service de notification en tenant compte des limitations de couverture, rapporte le service de cartographie non modélisé sans l'ajouter prématurément au modèle, et adopte le bon état de contexte."
+    "failedCriteria": [
+      "add_unconfirmed_observation_to_model"
+    ],
+    "reason": "La réponse viole le critère must_not 'add_unconfirmed_observation_to_model' en intégrant directement le service de cartographie non confirmé ('serviceCartographie = softwareSystem \"Service de cartographie\"' et sa relation associée) dans le bloc de code Structurizr DSL avant confirmation par l'utilisateur."
   },
   "checks": {
-    "passed": true,
-    "failures": []
+    "passed": false,
+    "failures": [
+      "Terme interdit dans le DSL : cartographie"
+    ]
   },
-  "verdict": "PASS",
-  "contextState": "INSUFFICIENT",
-  "c4Level": "SYSTEM_CONTEXT"
+  "verdict": "FLAKY",
+  "contextState": "SUFFICIENT",
+  "c4Level": "SYSTEM_CONTEXT",
+  "passRate": "2/3",
+  "runs": [
+    {
+      "verdict": "PASS",
+      "contextState": "INSUFFICIENT",
+      "c4Level": "SYSTEM_CONTEXT",
+      "failures": []
+    },
+    {
+      "verdict": "FAIL",
+      "contextState": "SUFFICIENT",
+      "c4Level": "SYSTEM_CONTEXT",
+      "failures": [
+        "Terme interdit dans le DSL : cartographie",
+        "add_unconfirmed_observation_to_model"
+      ]
+    },
+    {
+      "verdict": "PASS",
+      "contextState": "INSUFFICIENT",
+      "c4Level": "SYSTEM_CONTEXT",
+      "failures": []
+    }
+  ]
 }

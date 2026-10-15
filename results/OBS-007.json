@@ -15,7 +15,7 @@
       "mix_languages"
     ]
   },
-  "answer": "c4Level = CONTAINER\ncontextState = SUFFICIENT\n\n### Analyse\n\n1. **Niveau et périmètre** :\n   * Le System Context est établi (`SUFFICIENT`).\n   * La demande explicite de l'utilisateur active le **Niveau 2 — Container**.\n\n2. **Éléments du conteneur (Application RH)** :\n   * Conteneur 1 : Application web (utilisée par l'employé).\n   * Conteneur 2 : Base de données (utilisée par l'application web).\n\n3. **Éléments externes** :\n   * Système RH central (système externe, ne fait pas partie du système étudié ; les observations REA le concernant concernent sa cible et n'ajoutent aucun conteneur à l'Application RH).\n\n4. **Relations** :\n   * Employé → Application web : utilise\n   * Application web → Base de données : lit et écrit\n   * Application web → Système RH central : récupère certaines informations\n\n---\n\n### Représentation Structurizr DSL\n\n```structurizr\nworkspace \"Application RH\" {\n\n    model {\n        employe = person \"Employé\"\n        systemeRHCentral = softwareSystem \"Système RH central\"\n\n        applicationRH = softwareSystem \"Application RH\" {\n            applicationWeb = container \"Application web\"\n            baseDeDonnees = container \"Base de données\"\n        }\n\n        employe -> applicationWeb \"Utilise\"\n        applicationWeb -> baseDeDonnees \"Lit et écrit\"\n        applicationWeb -> systemeRHCentral \"Récupère certaines informations\"\n    }\n\n    views {\n        systemContext applicationRH \"SystemContext\" {\n            include *\n            autoLayout\n        }\n        container applicationRH \"Containers\" {\n            include *\n            autoLayout\n        }\n    }\n}\n```",
+  "answer": "c4Level = CONTAINER\ncontextState = SUFFICIENT\n\n### Analyse\n\nLe contexte global est établi (`SUFFICIENT`) et l'utilisateur demande explicitement le passage au niveau Container en fournissant les conteneurs de l'application RH :\n- `Application web` (utilisée par l'employé)\n- `Base de données`\n\nLes observations de l'outil REA concernent le **système externe** (`Système RH central`, cible avec le rôle `EXTERNAL_SYSTEM`). Conformément aux règles, ces observations (process `rh-api` et storage `annuaire-rh`) décrivent un système externe et ne créent **aucun conteneur** dans le système étudié (`Application RH`). Elles restent donc hors du modèle de conteneurs de l'Application RH.\n\n### Modèle C4 (Container)\n\n```structurizr\nworkspace \"Application RH\" {\n\n    model {\n        employe = person \"Employé\"\n        systemeRHCentral = softwareSystem \"Système RH central\"\n\n        appRH = softwareSystem \"Application RH\" {\n            appWeb = container \"Application web\"\n            db = container \"Base de données\"\n        }\n\n        employe -> appWeb \"Utilise\"\n        appWeb -> db \"Lit et écrit\"\n        appWeb -> systemeRHCentral \"Récupère certaines informations\"\n    }\n\n    views {\n        systemContext appRH \"SystemContext\" {\n            include *\n            autoLayout\n        }\n        container appRH \"Containers\" {\n            include *\n            autoLayout\n        }\n    }\n}\n```",
   "structurizr": {
     "dslFile": "D:\\F_Brooks\\results\\dsl\\OBS-007.dsl",
     "validation": "DSL validé par Structurizr.",
@@ -28,18 +28,18 @@
     "contextState": "SUFFICIENT",
     "criteria": {
       "must": {
-        "identify_given_containers": "Satisfait : F. Brooks identifie explicitement l'application web et la base de données fournies dans l'input utilisateur ('applicationWeb = container \"Application web\"' et 'baseDeDonnees = container \"Base de données\"').",
-        "keep_external_system_outside_studied_system": "Satisfait : F. Brooks maintient le Système RH central en tant que softwareSystem externe hors du système étudié 'Application RH'."
+        "identify_given_containers": "Satisfait par l'inclusion de 'Application web' et 'Base de données' dans le modèle Structurizr.",
+        "keep_external_system_outside_studied_system": "Satisfait, le système externe 'Système RH central' est maintenu en dehors du système étudié et aucun élément observé de l'analyse REA n'a été ajouté comme conteneur interne."
       },
       "must_not": {
-        "add_external_observation_as_studied_container": "Satisfait : Aucune des observations REA ('rh-api', 'annuaire-rh') n'a été ajoutée comme conteneur dans le système étudié.",
-        "turn_external_system_into_container": "Satisfait : Le système RH central reste un softwareSystem et n'est pas transformé en conteneur.",
-        "display_reasoning_steps": "Satisfait : La réponse ne récite pas les étapes du processus de raisonnement méta, mais présente une liste structurée normale d'analyse.",
-        "mix_languages": "Satisfait : La réponse est rédigée exclusivement en français, hormis les termes techniques du modèle C4."
+        "add_external_observation_as_studied_container": "Non violé, les éléments observés du système externe n'ont pas été ajoutés comme conteneurs.",
+        "turn_external_system_into_container": "Non violé, le système externe reste un softwareSystem.",
+        "display_reasoning_steps": "Non violé, aucune récitation des étapes du processus de raisonnement.",
+        "mix_languages": "Non violé, pas de mélange de langues non autorisé."
       }
     },
     "failedCriteria": [],
-    "reason": "La réponse de F. Brooks respecte scrupuleusement tous les critères must et must_not du test. Les conteneurs fournis sont correctement identifiés, le système externe reste hors du périmètre des conteneurs, les observations REA sont correctement traitées sans être ajoutées au modèle, et aucune invention n'est commise."
+    "reason": "La réponse respecte tous les critères attendus. Les conteneurs fournis par l'utilisateur sont bien identifiés, le système externe est maintenu hors du système étudié et les observations REA n'ont pas été transformées en conteneurs internes."
   },
   "checks": {
     "passed": true,
@@ -47,5 +47,26 @@
   },
   "verdict": "PASS",
   "contextState": "SUFFICIENT",
-  "c4Level": "CONTAINER"
+  "c4Level": "CONTAINER",
+  "passRate": "3/3",
+  "runs": [
+    {
+      "verdict": "PASS",
+      "contextState": "SUFFICIENT",
+      "c4Level": "CONTAINER",
+      "failures": []
+    },
+    {
+      "verdict": "PASS",
+      "contextState": "SUFFICIENT",
+      "c4Level": "CONTAINER",
+      "failures": []
+    },
+    {
+      "verdict": "PASS",
+      "contextState": "SUFFICIENT",
+      "c4Level": "CONTAINER",
+      "failures": []
+    }
+  ]
 }

@@ -15,7 +15,7 @@
       "mix_languages"
     ]
   },
-  "answer": "c4Level = CONTAINER\ncontextState = INSUFFICIENT\n\nAu niveau Container, il est nécessaire de détailler la structure interne du système étudié (la **Plateforme de crédit**) en conteneurs (applications, services, bases de données déployables séparément).\n\nLes conteneurs de la Plateforme de crédit n'ont pas encore été fournis. \n\nQuels sont les conteneurs (applications, API, bases de données) qui composent la Plateforme de crédit ?",
+  "answer": "c4Level = CONTAINER\ncontextState = INSUFFICIENT\n\nAu niveau Container, il est nécessaire de préciser les conteneurs (applications, services, bases de données, etc.) qui composent le système étudié (**Plateforme de crédit**).\n\nQuels sont les conteneurs qui constituent la Plateforme de crédit ?",
   "structurizr": {
     "status": "NO_WORKSPACE",
     "saved": false,
@@ -26,18 +26,18 @@
     "contextState": "INSUFFICIENT",
     "criteria": {
       "must": {
-        "recognize_missing_containers": "Satisfait : la réponse indique clairement que \"Les conteneurs de la Plateforme de crédit n'ont pas encore été fournis.\"",
-        "ask_clarification": "Satisfait : la réponse pose la question \"Quels sont les conteneurs (applications, API, bases de données) qui composent la Plateforme de crédit ?\""
+        "recognize_missing_containers": "La réponse indique qu'il est nécessaire de préciser les conteneurs qui composent la Plateforme de crédit.",
+        "ask_clarification": "La réponse pose une question claire pour demander les conteneurs : 'Quels sont les conteneurs qui constituent la Plateforme de crédit ?'"
       },
       "must_not": {
-        "invent_container": "Satisfait : aucun conteneur n'a été inventé.",
-        "invent_technology": "Satisfait : aucune technologie n'a été inventée.",
-        "display_reasoning_steps": "Satisfait : la réponse ne récite pas les étapes du processus de raisonnement.",
-        "mix_languages": "Satisfait : la réponse est entièrement en français."
+        "invent_container": "Aucun conteneur n'a été inventé.",
+        "invent_technology": "Aucune technologie n'a été inventée.",
+        "display_reasoning_steps": "La réponse ne récite pas les étapes du processus de raisonnement.",
+        "mix_languages": "La réponse est entièrement en français sans mélange de langues."
       }
     },
     "failedCriteria": [],
-    "reason": "La réponse de F. Brooks respecte tous les critères 'must' (reconnaissance des conteneurs manquants et demande de clarification) et ne viole aucun critère 'must_not' (pas d'invention de conteneur ou de technologie, pas d'affichage des étapes de raisonnement, pas de mélange de langues)."
+    "reason": "La réponse de F. Brooks respecte tous les critères 'must' (reconnaissance des conteneurs manquants et demande de clarification) et ne viole aucun critère 'must_not'."
   },
   "checks": {
     "passed": true,
@@ -45,5 +45,26 @@
   },
   "verdict": "PASS",
   "contextState": "INSUFFICIENT",
-  "c4Level": "CONTAINER"
+  "c4Level": "CONTAINER",
+  "passRate": "3/3",
+  "runs": [
+    {
+      "verdict": "PASS",
+      "contextState": "INSUFFICIENT",
+      "c4Level": "CONTAINER",
+      "failures": []
+    },
+    {
+      "verdict": "PASS",
+      "contextState": "INSUFFICIENT",
+      "c4Level": "CONTAINER",
+      "failures": []
+    },
+    {
+      "verdict": "PASS",
+      "contextState": "INSUFFICIENT",
+      "c4Level": "CONTAINER",
+      "failures": []
+    }
+  ]
 }

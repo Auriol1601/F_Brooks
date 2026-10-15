@@ -18,7 +18,7 @@
       "mix_languages"
     ]
   },
-  "answer": "contextState = SUFFICIENT\n\n### Analyse du contexte\n\n* **Client** : personne qui utilise la plateforme de crédit (EXPLICITE).\n* **Plateforme de crédit** : système étudié (EXPLICITE).\n* **Service externe de scoring** : système externe utilisé par la plateforme de crédit (EXPLICITE / INFÉRÉ).\n* **Relations** :\n  * Client → Plateforme de crédit (EXPLICITE)\n  * Plateforme de crédit → Service externe de scoring : utilise pour évaluer les demandes (EXPLICITE)\n\n---\n\n### Modèle C4 (System Context)\n\n```structurizr\nworkspace \"Plateforme de crédit\" {\n\n    model {\n        client = person \"Client\"\n        plateformeCredit = softwareSystem \"Plateforme de crédit\"\n        serviceScoring = softwareSystem \"Service externe de scoring\"\n\n        client -> plateformeCredit \"Utilise\"\n        plateformeCredit -> serviceScoring \"Utilise pour évaluer les demandes\"\n    }\n\n    views {\n        systemContext plateformeCredit \"SystemContext\" {\n            include *\n            autoLayout\n        }\n    }\n}\n```",
+  "answer": "c4Level = SYSTEM_CONTEXT\ncontextState = SUFFICIENT\n\n### Analyse du contexte\n\n1. **Éléments identifiés (EXPLICITE) :**\n   - **Client** : personne qui utilise la plateforme.\n   - **Plateforme de crédit** : système étudié.\n   - **Service externe de scoring** : système logiciel externe utilisé par la plateforme.\n\n2. **Relations identifiées (EXPLICITE / INFÉRÉ) :**\n   - Le Client utilise la Plateforme de crédit.\n   - La Plateforme de crédit utilise le Service externe de scoring pour évaluer les demandes.\n\n3. **Inconnues :**\n   - Nom commercial ou fournisseur du service externe de scoring (`INCONNU`).\n\n---\n\n### Représentation C4 (System Context)\n\n```structurizr\nworkspace \"Plateforme de crédit\" {\n\n    model {\n        client = person \"Client\"\n        plateformeCredit = softwareSystem \"Plateforme de crédit\"\n        serviceScoring = softwareSystem \"Service externe de scoring\"\n\n        client -> plateformeCredit \"Utilise\"\n        plateformeCredit -> serviceScoring \"Utilise pour évaluer les demandes\"\n    }\n\n    views {\n        systemContext plateformeCredit \"SystemContext\" {\n            include *\n            autoLayout\n        }\n    }\n}\n```",
   "structurizr": {
     "dslFile": "D:\\F_Brooks\\results\\dsl\\CTX-003.dsl",
     "validation": "DSL validé par Structurizr.",
@@ -31,22 +31,22 @@
     "contextState": "SUFFICIENT",
     "criteria": {
       "must": {
-        "identify_client": "Satisfait par l'identification du client dans l'analyse et le modèle ('Client = person \"Client\"').",
-        "identify_credit_platform": "Satisfait par l'identification de la plateforme de crédit ('plateformeCredit = softwareSystem \"Plateforme de crédit\"').",
-        "identify_scoring_system": "Satisfait par l'identification du service de scoring ('serviceScoring = softwareSystem \"Service externe de scoring\"').",
-        "identify_context_relationships": "Satisfait par les relations du contexte ('client -> plateformeCredit \"Utilise\"', 'plateformeCredit -> serviceScoring \"Utilise pour évaluer les demandes\"')."
+        "identify_client": "La réponse identifie le client dans l'analyse et dans le modèle Structurizr (`client = person \"Client\"`).",
+        "identify_credit_platform": "La réponse identifie la plateforme de crédit (`plateformeCredit = softwareSystem \"Plateforme de crédit\"`).",
+        "identify_scoring_system": "La réponse identifie le système externe de scoring (`serviceScoring = softwareSystem \"Service externe de scoring\"`).",
+        "identify_context_relationships": "La réponse identifie les relations de contexte entre le client, la plateforme et le service de scoring."
       },
       "must_not": {
-        "invent_postgresql": "Non violé (aucune base PostgreSQL inventée).",
-        "invent_redis": "Non violé (aucun Redis inventé).",
-        "invent_api_gateway": "Non violé (aucune API Gateway inventée).",
-        "invent_microservices": "Non violé (aucun microservice inventé).",
-        "display_reasoning_steps": "Non violé (pas de récitation des étapes du processus de raisonnement).",
-        "mix_languages": "Non violé (uniquement du français utilisé, hors termes Structurizr)."
+        "invent_postgresql": "Aucune base de données PostgreSQL n'est inventée dans la réponse.",
+        "invent_redis": "Aucun cache Redis n'est inventé dans la réponse.",
+        "invent_api_gateway": "Aucune API Gateway n'est inventée dans la réponse.",
+        "invent_microservices": "Aucune architecture microservices n'est inventée dans la réponse.",
+        "display_reasoning_steps": "La réponse ne récite pas les étapes du processus de raisonnement, elle présente une structure d'analyse normale.",
+        "mix_languages": "La réponse est entièrement en français (hormis les mots-clés du langage Structurizr)."
       }
     },
     "failedCriteria": [],
-    "reason": "La réponse de F. Brooks identifie correctement tous les éléments requis du contexte (client, plateforme de crédit, service de scoring et relations) sans inventer d'éléments interdits, tout en respectant strictement le format et les critères du test."
+    "reason": "La réponse de F. Brooks respecte l'ensemble des critères 'must' en identifiant correctement les éléments du contexte (client, plateforme de crédit, service de scoring) ainsi que leurs relations, tout en évitant strictement l'ensemble des inventions interdites par les critères 'must_not'."
   },
   "checks": {
     "passed": true,
@@ -54,5 +54,26 @@
   },
   "verdict": "PASS",
   "contextState": "SUFFICIENT",
-  "c4Level": "SYSTEM_CONTEXT"
+  "c4Level": "SYSTEM_CONTEXT",
+  "passRate": "3/3",
+  "runs": [
+    {
+      "verdict": "PASS",
+      "contextState": "SUFFICIENT",
+      "c4Level": "SYSTEM_CONTEXT",
+      "failures": []
+    },
+    {
+      "verdict": "PASS",
+      "contextState": "SUFFICIENT",
+      "c4Level": "SYSTEM_CONTEXT",
+      "failures": []
+    },
+    {
+      "verdict": "PASS",
+      "contextState": "SUFFICIENT",
+      "c4Level": "SYSTEM_CONTEXT",
+      "failures": []
+    }
+  ]
 }

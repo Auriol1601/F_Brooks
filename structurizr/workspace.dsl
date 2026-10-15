@@ -4,22 +4,22 @@ workspace "Application RH" {
         employe = person "Employé"
         systemeRHCentral = softwareSystem "Système RH central"
 
-        applicationRH = softwareSystem "Application RH" {
-            applicationWeb = container "Application web"
-            baseDeDonnees = container "Base de données"
+        appRH = softwareSystem "Application RH" {
+            appWeb = container "Application web"
+            db = container "Base de données"
         }
 
-        employe -> applicationWeb "Utilise"
-        applicationWeb -> baseDeDonnees "Lit et écrit"
-        applicationWeb -> systemeRHCentral "Récupère certaines informations"
+        employe -> appWeb "Utilise"
+        appWeb -> db "Lit et écrit"
+        appWeb -> systemeRHCentral "Récupère certaines informations"
     }
 
     views {
-        systemContext applicationRH "SystemContext" {
+        systemContext appRH "SystemContext" {
             include *
             autoLayout
         }
-        container applicationRH "Containers" {
+        container appRH "Containers" {
             include *
             autoLayout
         }

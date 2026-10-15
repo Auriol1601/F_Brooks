@@ -15,7 +15,7 @@
       "mix_languages"
     ]
   },
-  "answer": "La demande d'architecture interne (microservices, bases de données PostgreSQL, Redis et endpoints REST) relève de niveaux d'abstraction plus fins (C4 — Container, Component ou Code) ou d'une conception technique détaillée. Le niveau d'abstraction par défaut géré par F. Brooks est le **C4 — System Context**, qui traite le système étudié comme une boîte noire et se limite aux personnes, au système étudié et aux systèmes externes.\n\ncontextState = OUT_OF_SCOPE",
+  "answer": "c4Level = SYSTEM_CONTEXT\ncontextState = OUT_OF_SCOPE\n\nLa demande portant sur les microservices, les bases de données (PostgreSQL, Redis) et les endpoints REST relève de l'architecture technique interne (Niveaux 3 — Component et 4 — Code) ainsi que de la conception de conteneurs (Niveau 2), ce qui dépasse le périmètre du **Niveau 1 — System Context**.\n\nAu niveau System Context, le système étudié est considéré comme une boîte noire et seules les interactions avec les personnes et les systèmes externes pertinents sont représentées.\n\nSi vous disposez d'un contexte fonctionnel décrivant les utilisateurs et les systèmes externes en interaction avec cette application, veuillez le fournir afin que nous puissions établir le modèle de contexte.",
   "structurizr": {
     "status": "NO_WORKSPACE",
     "saved": false,
@@ -26,19 +26,19 @@
     "contextState": "OUT_OF_SCOPE",
     "criteria": {
       "must": {
-        "identify_out_of_scope_request": "La réponse identifie explicitement que la demande relève de niveaux d'abstraction plus fins : 'La demande d'architecture interne (...) relève de niveaux d'abstraction plus fins'.",
-        "explain_v1_boundary": "La réponse explique la limite du niveau par défaut géré par F. Brooks : 'Le niveau d'abstraction par défaut géré par F. Brooks est le C4 — System Context, qui traite le système étudié comme une boîte noire'."
+        "identify_out_of_scope_request": "La demande portant sur les microservices... dépasse le périmètre du Niveau 1 — System Context.",
+        "explain_v1_boundary": "Au niveau System Context, le système étudié est considéré comme une boîte noire et seules les interactions avec les personnes et les systèmes externes pertinents sont représentées."
       },
       "must_not": {
-        "generate_microservices": "Aucun microservice n'est généré dans la réponse.",
-        "generate_database_architecture": "Aucune architecture de base de données (PostgreSQL, Redis) n'est générée dans la réponse.",
-        "generate_rest_endpoints": "Aucun endpoint REST n'est généré dans la réponse.",
-        "display_reasoning_steps": "La réponse ne récite pas les étapes du processus de raisonnement.",
-        "mix_languages": "La réponse est entièrement en français sans mélange de langues."
+        "generate_microservices": "Aucun microservice n'a été généré dans la réponse.",
+        "generate_database_architecture": "Aucune architecture de base de données (PostgreSQL, Redis) n'a été générée dans la réponse.",
+        "generate_rest_endpoints": "Aucun endpoint REST n'a été généré dans la réponse.",
+        "display_reasoning_steps": "La réponse ne contient pas de récitation des étapes du processus de raisonnement.",
+        "mix_languages": "La réponse est entièrement rédigée en français, sans mélange de langues."
       }
     },
     "failedCriteria": [],
-    "reason": "La réponse de F. Brooks identifie correctement que la demande est hors périmètre (niveau C4 Container/Component vs System Context) et explique la limite du niveau d'abstraction géré, tout en respectant l'ensemble des interdictions (pas de génération de microservices, de bases de données ou d'endpoints REST)."
+    "reason": "La réponse identifie correctement que la demande est hors périmètre pour le niveau de contexte système (System Context), explique la frontière du niveau (v1 boundary) et évite de générer les microservices, bases de données ou endpoints demandés, tout en respectant les critères must_not."
   },
   "checks": {
     "passed": true,
@@ -46,5 +46,26 @@
   },
   "verdict": "PASS",
   "contextState": "OUT_OF_SCOPE",
-  "c4Level": "SYSTEM_CONTEXT"
+  "c4Level": "SYSTEM_CONTEXT",
+  "passRate": "3/3",
+  "runs": [
+    {
+      "verdict": "PASS",
+      "contextState": "OUT_OF_SCOPE",
+      "c4Level": "SYSTEM_CONTEXT",
+      "failures": []
+    },
+    {
+      "verdict": "PASS",
+      "contextState": "OUT_OF_SCOPE",
+      "c4Level": "SYSTEM_CONTEXT",
+      "failures": []
+    },
+    {
+      "verdict": "PASS",
+      "contextState": "OUT_OF_SCOPE",
+      "c4Level": "SYSTEM_CONTEXT",
+      "failures": []
+    }
+  ]
 }
