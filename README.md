@@ -400,6 +400,16 @@ http://localhost:8080
 
 Cette séparation permet à F. Brooks de se concentrer sur le **cadrage et la modélisation**, tandis que Structurizr assure la représentation graphique du modèle.
 
+### Travailler sur un vrai projet
+
+1. Copier `.env.example` en `.env` et y indiquer le dossier d'architecture du projet :
+   `FBROOKS_PROJECT_DIR=D:/mon_projet/architecture`.
+2. `docker compose up -d` (ou `docker compose up -d --force-recreate` après un changement de dossier) : Structurizr affiche ce dossier.
+3. Lancer `pi` depuis ce dépôt. L'extension [.pi/extensions/save-dsl.ts](.pi/extensions/save-dsl.ts) écrit automatiquement chaque bloc DSL produit par F. Brooks dans `<dossier>/workspace.dsl` (nom imposé par Structurizr) ; une réponse sans DSL ne modifie rien.
+4. Rafraîchir `http://localhost:8080`. L'historique des diagrammes se gère avec git, dans le dépôt du projet.
+
+Sans `.env`, le dossier utilisé est `structurizr/` de ce dépôt.
+
 ---
 
 ## Hors périmètre
