@@ -6,3 +6,4 @@ tests_results/
 .DS_Store
 node_modules/
 repo_rea/
+.env

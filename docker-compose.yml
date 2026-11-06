@@ -8,5 +8,7 @@ services:
     ports:
       - "8080:8080"
     volumes:
-      - ./structurizr:/usr/local/structurizr
+      # Dossier affiché : celui du projet en cours (FBROOKS_PROJECT_DIR,
+      # défini dans .env), sinon le dossier des tests.
+      - ${FBROOKS_PROJECT_DIR:-./structurizr}:/usr/local/structurizr
     restart: unless-stopped
